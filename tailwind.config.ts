@@ -26,7 +26,9 @@ export default {
 				foreground: 'hsl(var(--foreground))',
 				primary: {
 					DEFAULT: 'hsl(var(--primary))',
-					foreground: 'hsl(var(--primary-foreground))'
+					foreground: 'hsl(var(--primary-foreground))',
+					light: 'hsl(var(--primary-light))',
+					dark: 'hsl(var(--primary-dark))'
 				},
 				secondary: {
 					DEFAULT: 'hsl(var(--secondary))',
@@ -35,6 +37,10 @@ export default {
 				destructive: {
 					DEFAULT: 'hsl(var(--destructive))',
 					foreground: 'hsl(var(--destructive-foreground))'
+				},
+				success: {
+					DEFAULT: 'hsl(var(--success))',
+					foreground: 'hsl(var(--success-foreground))'
 				},
 				muted: {
 					DEFAULT: 'hsl(var(--muted))',
@@ -51,6 +57,13 @@ export default {
 				card: {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
+				},
+				fitness: {
+					hero: 'hsl(var(--fitness-hero))',
+					'hero-light': 'hsl(var(--fitness-hero-light))',
+					secondary: 'hsl(var(--fitness-secondary))',
+					dark: 'hsl(var(--fitness-dark))',
+					light: 'hsl(var(--fitness-light))'
 				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
@@ -88,7 +101,22 @@ export default {
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'fade-up': 'fade-up 0.6s ease-out',
+				'scale-in': 'scale-in 0.5s ease-out'
+			},
+			backgroundImage: {
+				'fitness-gradient': 'var(--gradient-hero)',
+				'feature-gradient': 'var(--gradient-feature)',
+				'testimonial-gradient': 'var(--gradient-testimonial)'
+			},
+			boxShadow: {
+				'fitness-hero': 'var(--shadow-hero)',
+				'fitness-card': 'var(--shadow-card)',
+				'fitness-button': 'var(--shadow-button)'
+			},
+			fontWeight: {
+				'black': '900'
 			}
 		}
 	},
