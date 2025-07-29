@@ -3,20 +3,20 @@ import { Card, CardContent } from "@/components/ui/card";
 const steps = [
   {
     number: "01",
-    title: "Sign Up & Assessment",
-    description: "Complete our comprehensive fitness assessment and tell us your goals. We analyze your lifestyle, preferences, and limitations.",
+    title: "Cadastro e Avaliação",
+    description: "Complete nossa avaliação física abrangente e nos conte seus objetivos. Analisamos seu estilo de vida, preferências e limitações.",
     icon: "👤"
   },
   {
     number: "02", 
-    title: "Get Your Personalized Plan",
-    description: "Receive a custom workout and nutrition plan designed specifically for your body type, goals, and schedule.",
+    title: "Receba Seu Plano Personalizado",
+    description: "Receba um plano personalizado de treino e nutrição desenvolvido especificamente para seu tipo físico, objetivos e rotina.",
     icon: "📋"
   },
   {
     number: "03",
-    title: "Weekly Check-ins & Support", 
-    description: "Track progress with weekly follow-ups, plan adjustments, and 24/7 support from our certified trainers.",
+    title: "Acompanhamento e Suporte Semanal", 
+    description: "Monitore o progresso com acompanhamentos semanais, ajustes no plano e suporte 24/7 de nossos personal trainers certificados.",
     icon: "📈"
   }
 ];
@@ -27,10 +27,10 @@ export default function HowItWorks() {
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-black mb-6 text-fitness-dark">
-            How It Works
+            Como Funciona
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Our proven 3-step process has helped thousands achieve their fitness goals
+            Nosso processo comprovado de 3 etapas já ajudou milhares a alcançar seus objetivos fitness
           </p>
         </div>
 

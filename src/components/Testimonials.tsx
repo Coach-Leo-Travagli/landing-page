@@ -3,26 +3,26 @@ import transformationImage from "@/assets/transformation.jpg";
 
 const testimonials = [
   {
-    name: "Sarah Johnson",
+    name: "Ana Silva",
     age: 28,
-    result: "Lost 35 lbs in 12 weeks",
-    quote: "I never thought I could look this good! The personalized plan made all the difference. My trainer understood my busy schedule and created workouts I could actually stick to.",
+    result: "Perdeu 16kg em 12 semanas",
+    quote: "Nunca pensei que poderia ficar assim! O plano personalizado fez toda a diferença. Meu personal entendeu minha rotina corrida e criou treinos que eu conseguia seguir.",
     rating: 5,
     image: transformationImage
   },
   {
-    name: "Mike Rodriguez", 
+    name: "Carlos Santos", 
     age: 34,
-    result: "Gained 20 lbs muscle",
-    quote: "After years of inconsistent results, this program finally got me the physique I wanted. The nutrition guidance was a game-changer for my muscle building goals.",
+    result: "Ganhou 9kg de massa muscular",
+    quote: "Após anos de resultados inconsistentes, esse programa finalmente me deu o físico que eu queria. A orientação nutricional mudou tudo para meus objetivos de ganho de massa.",
     rating: 5,
     image: transformationImage
   },
   {
-    name: "Emma Chen",
+    name: "Mariana Costa",
     age: 25, 
-    result: "Transformed in 16 weeks",
-    quote: "The weekly check-ins kept me accountable and motivated. Seeing my progress tracked professionally made such a huge difference in staying committed.",
+    result: "Transformação em 16 semanas",
+    quote: "Os check-ins semanais me mantiveram responsável e motivada. Ver meu progresso acompanhado profissionalmente fez uma diferença enorme para me manter comprometida.",
     rating: 5,
     image: transformationImage
   }
@@ -34,10 +34,10 @@ export default function Testimonials() {
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-black mb-6 text-fitness-dark">
-            Real Results From Real People
+            Resultados Reais de Pessoas Reais
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            See the incredible transformations our clients have achieved
+            Veja as transformações incríveis que nossos clientes alcançaram
           </p>
         </div>
 
@@ -49,7 +49,7 @@ export default function Testimonials() {
                 <div className="mb-6 relative overflow-hidden rounded-lg">
                   <img 
                     src={testimonial.image} 
-                    alt={`${testimonial.name} transformation`}
+                    alt={`Transformação de ${testimonial.name}`}
                     className="w-full h-48 object-cover"
                   />
                   <div className="absolute bottom-2 left-2 bg-primary text-white px-3 py-1 rounded-full text-xs font-bold">
@@ -72,7 +72,7 @@ export default function Testimonials() {
                 {/* Author */}
                 <div className="border-t pt-4">
                   <div className="font-bold text-fitness-dark">{testimonial.name}</div>
-                  <div className="text-sm text-muted-foreground">Age {testimonial.age}</div>
+                  <div className="text-sm text-muted-foreground">{testimonial.age} anos</div>
                 </div>
               </CardContent>
             </Card>
@@ -87,8 +87,8 @@ export default function Testimonials() {
               ))}
             </div>
             <div className="text-left">
-              <div className="font-bold text-fitness-dark">5,000+ Success Stories</div>
-              <div className="text-sm text-muted-foreground">Average 25lb weight loss in 12 weeks</div>
+              <div className="font-bold text-fitness-dark">5.000+ Histórias de Sucesso</div>
+              <div className="text-sm text-muted-foreground">Perda média de 11kg em 12 semanas</div>
             </div>
           </div>
         </div>

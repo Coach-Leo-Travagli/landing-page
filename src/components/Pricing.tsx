@@ -4,32 +4,32 @@ import { Check } from "lucide-react";
 
 const plans = [
   {
-    name: "Basic",
+    name: "Básico",
     price: "$49",
-    period: "/month",
-    description: "Perfect for beginners starting their fitness journey",
+    period: " USD/mês",
+    description: "Perfeito para iniciantes que estão começando sua jornada fitness",
     features: [
-      "Personalized workout plans",
-      "Exercise video library",
-      "Progress tracking",
-      "Basic nutrition guidelines",
-      "Email support"
+      "Planos de treino personalizados",
+      "Biblioteca de vídeos de exercícios",
+      "Acompanhamento de progresso",
+      "Diretrizes básicas de nutrição",
+      "Suporte por email"
     ],
     popular: false,
     variant: "outline" as const
   },
   {
-    name: "Standard", 
+    name: "Padrão", 
     price: "$99",
-    period: "/month",
-    description: "Most popular choice for serious transformations",
+    period: " USD/mês",
+    description: "Escolha mais popular para transformações sérias",
     features: [
-      "Everything in Basic",
-      "Custom nutrition meal plans",
-      "Supplement recommendations",
-      "Weekly progress check-ins",
-      "Priority chat support",
-      "Recipe database access"
+      "Tudo do plano Básico",
+      "Planos de refeições personalizados",
+      "Recomendações de suplementos",
+      "Check-ins semanais de progresso",
+      "Suporte prioritário por chat",
+      "Acesso ao banco de receitas"
     ],
     popular: true,
     variant: "hero" as const
@@ -37,16 +37,16 @@ const plans = [
   {
     name: "VIP",
     price: "$199", 
-    period: "/month",
-    description: "Premium coaching with maximum results",
+    period: " USD/mês",
+    description: "Coaching premium com resultados máximos",
     features: [
-      "Everything in Standard",
-      "1-on-1 video calls (2x/month)",
-      "24/7 trainer support",
-      "Meal prep planning",
-      "Body composition analysis",
-      "Priority plan adjustments",
-      "Exclusive community access"
+      "Tudo do plano Padrão",
+      "Videochamadas 1-a-1 (2x/mês)",
+      "Suporte 24/7 do personal trainer",
+      "Planejamento de meal prep",
+      "Análise de composição corporal",
+      "Ajustes prioritários no plano",
+      "Acesso à comunidade exclusiva"
     ],
     popular: false,
     variant: "cta" as const
@@ -59,10 +59,10 @@ export default function Pricing() {
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-black mb-6 text-fitness-dark">
-            Choose Your Plan
+            Escolha Seu Plano
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Select the perfect coaching package for your fitness goals and budget
+            Selecione o pacote de coaching perfeito para seus objetivos fitness e orçamento
           </p>
         </div>
 
@@ -72,7 +72,7 @@ export default function Pricing() {
               {plan.popular && (
                 <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-10">
                   <span className="bg-fitness-secondary text-white px-6 py-2 rounded-full text-sm font-bold">
-                    MOST POPULAR
+                    MAIS POPULAR
                   </span>
                 </div>
               )}
@@ -108,7 +108,7 @@ export default function Pricing() {
                     size="lg" 
                     className="w-full"
                   >
-                    {plan.popular ? 'Start Now' : 'Get Started'}
+                    {plan.popular ? 'Comece Agora' : 'Começar'}
                   </Button>
                 </CardContent>
               </Card>
@@ -118,10 +118,10 @@ export default function Pricing() {
 
         <div className="text-center mt-12">
           <p className="text-muted-foreground mb-4">
-            All plans include a 30-day money-back guarantee
+            Todos os planos incluem 30 dias de garantia de devolução do dinheiro
           </p>
           <p className="text-sm text-muted-foreground">
-            Cancel anytime • No hidden fees • Secure payment
+            Cancele a qualquer momento • Sem taxas ocultas • Pagamento seguro
           </p>
         </div>
       </div>

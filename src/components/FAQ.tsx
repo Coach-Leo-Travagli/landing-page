@@ -7,36 +7,36 @@ import {
 
 const faqs = [
   {
-    question: "How quickly will I see results?",
-    answer: "Most clients see noticeable changes within 2-3 weeks, with significant transformations occurring within 8-12 weeks. Results vary based on starting point, consistency, and individual factors."
+    question: "Em quanto tempo verei resultados?",
+    answer: "A maioria dos clientes vê mudanças perceptíveis em 2-3 semanas, com transformações significativas ocorrendo em 8-12 semanas. Os resultados variam baseados no ponto de partida, consistência e fatores individuais."
   },
   {
-    question: "Do I need gym equipment?",
-    answer: "Our plans are flexible! We can create home workouts with minimal equipment or full gym routines. During onboarding, we'll assess your available equipment and preferences."
+    question: "Preciso de equipamentos de academia?",
+    answer: "Nossos planos são flexíveis! Podemos criar treinos caseiros com equipamentos mínimos ou rotinas completas de academia. Durante o cadastro, avaliaremos seus equipamentos disponíveis e preferências."
   },
   {
-    question: "What if I have dietary restrictions?",
-    answer: "Absolutely no problem! Our nutrition plans accommodate all dietary restrictions including vegetarian, vegan, keto, gluten-free, and any food allergies. Just let us know during setup."
+    question: "E se eu tiver restrições alimentares?",
+    answer: "Absolutamente sem problema! Nossos planos nutricionais acomodam todas as restrições alimentares incluindo vegetariana, vegana, keto, sem glúten e qualquer alergia alimentar. Apenas nos informe durante a configuração."
   },
   {
-    question: "How much time do I need to commit daily?",
-    answer: "Workouts typically range from 30-60 minutes, 4-6 times per week depending on your goals and availability. We work with your schedule to create a sustainable routine."
+    question: "Quanto tempo preciso dedicar diariamente?",
+    answer: "Os treinos variam tipicamente de 30-60 minutos, 4-6 vezes por semana dependendo dos seus objetivos e disponibilidade. Trabalhamos com sua agenda para criar uma rotina sustentável."
   },
   {
-    question: "Can I switch plans if needed?",
-    answer: "Yes! You can upgrade or downgrade your plan at any time. We want to ensure you have the level of support that best fits your current needs and goals."
+    question: "Posso trocar de plano se necessário?",
+    answer: "Sim! Você pode fazer upgrade ou downgrade do seu plano a qualquer momento. Queremos garantir que você tenha o nível de suporte que melhor se adapta às suas necessidades e objetivos atuais."
   },
   {
-    question: "What if I'm not satisfied?",
-    answer: "We offer a 30-day money-back guarantee. If you're not completely satisfied with your results or experience, we'll refund your payment, no questions asked."
+    question: "E se eu não ficar satisfeito?",
+    answer: "Oferecemos 30 dias de garantia de devolução do dinheiro. Se você não estiver completamente satisfeito com seus resultados ou experiência, reembolsaremos seu pagamento, sem perguntas."
   },
   {
-    question: "Do you work with beginners?",
-    answer: "Absolutely! Many of our most successful transformations come from complete beginners. Our trainers specialize in creating safe, progressive programs for all fitness levels."
+    question: "Vocês trabalham com iniciantes?",
+    answer: "Absolutamente! Muitas de nossas transformações mais bem-sucedidas vêm de iniciantes completos. Nossos personal trainers se especializam em criar programas seguros e progressivos para todos os níveis de condicionamento."
   },
   {
-    question: "How do the video calls work (VIP plan)?",
-    answer: "VIP members get two 30-minute video calls per month with their dedicated trainer. These can be used for form checks, motivation, plan adjustments, or any questions you have."
+    question: "Como funcionam as videochamadas (plano VIP)?",
+    answer: "Membros VIP recebem duas videochamadas de 30 minutos por mês com seu personal trainer dedicado. Podem ser usadas para verificação de forma, motivação, ajustes no plano ou qualquer dúvida que você tenha."
   }
 ];
 
@@ -46,10 +46,10 @@ export default function FAQ() {
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-black mb-6 text-fitness-dark">
-            Frequently Asked Questions
+            Perguntas Frequentes
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Everything you need to know about our fitness coaching program
+            Tudo que você precisa saber sobre nosso programa de coaching fitness
           </p>
         </div>
 
@@ -74,13 +74,13 @@ export default function FAQ() {
 
         <div className="text-center mt-12">
           <p className="text-muted-foreground mb-4">
-            Still have questions?
+            Ainda tem dúvidas?
           </p>
           <a 
-            href="mailto:support@fitnesscoach.com" 
+            href="mailto:suporte@fitnesscoach.com" 
             className="text-primary font-semibold hover:underline"
           >
-            Contact our support team
+            Entre em contato com nossa equipe de suporte
           </a>
         </div>
       </div>

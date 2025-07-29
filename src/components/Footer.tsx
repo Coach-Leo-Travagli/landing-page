@@ -8,17 +8,17 @@ export default function Footer() {
         {/* CTA Section */}
         <div className="text-center mb-16 py-12 bg-fitness-gradient rounded-2xl">
           <h2 className="text-3xl md:text-4xl font-black mb-4">
-            Ready to Start Your Transformation?
+            Pronto Para Começar Sua Transformação?
           </h2>
           <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
-            Join thousands of people who have already transformed their bodies and lives
+            Junte-se a milhares de pessoas que já transformaram seus corpos e vidas
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button variant="secondary" size="xl" className="bg-white text-primary hover:bg-white/90">
-              Start Free Trial
+              Iniciar Teste Grátis
             </Button>
             <Button variant="outline-hero" size="xl" className="border-white text-white hover:bg-white hover:text-primary">
-              Schedule Consultation
+              Agendar Consultoria
             </Button>
           </div>
         </div>
@@ -29,8 +29,8 @@ export default function Footer() {
           <div>
             <h3 className="text-2xl font-black mb-6 text-gradient">FitCoach Pro</h3>
             <p className="text-gray-300 mb-6 leading-relaxed">
-              Transforming lives through personalized fitness and nutrition coaching. 
-              Your journey to a healthier, stronger you starts here.
+              Transformando vidas através de coaching personalizado de fitness e nutrição. 
+              Sua jornada para um você mais saudável e forte começa aqui.
             </p>
             <div className="flex space-x-4">
               <a href="#" className="w-10 h-10 bg-primary rounded-full flex items-center justify-center hover:bg-primary-light transition-colors">
@@ -50,53 +50,53 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-lg font-bold mb-6">Quick Links</h4>
+            <h4 className="text-lg font-bold mb-6">Links Rápidos</h4>
             <ul className="space-y-3 text-gray-300">
-              <li><a href="#how-it-works" className="hover:text-primary transition-colors">How It Works</a></li>
-              <li><a href="#pricing" className="hover:text-primary transition-colors">Pricing</a></li>
-              <li><a href="#testimonials" className="hover:text-primary transition-colors">Success Stories</a></li>
+              <li><a href="#how-it-works" className="hover:text-primary transition-colors">Como Funciona</a></li>
+              <li><a href="#pricing" className="hover:text-primary transition-colors">Preços</a></li>
+              <li><a href="#testimonials" className="hover:text-primary transition-colors">Histórias de Sucesso</a></li>
               <li><a href="#faq" className="hover:text-primary transition-colors">FAQ</a></li>
               <li><a href="#" className="hover:text-primary transition-colors">Blog</a></li>
-              <li><a href="#" className="hover:text-primary transition-colors">About Us</a></li>
+              <li><a href="#" className="hover:text-primary transition-colors">Sobre Nós</a></li>
             </ul>
           </div>
 
           {/* Support */}
           <div>
-            <h4 className="text-lg font-bold mb-6">Support</h4>
+            <h4 className="text-lg font-bold mb-6">Suporte</h4>
             <ul className="space-y-3 text-gray-300">
-              <li><a href="#" className="hover:text-primary transition-colors">Help Center</a></li>
-              <li><a href="#" className="hover:text-primary transition-colors">Contact Support</a></li>
-              <li><a href="#" className="hover:text-primary transition-colors">Privacy Policy</a></li>
-              <li><a href="#" className="hover:text-primary transition-colors">Terms of Service</a></li>
-              <li><a href="#" className="hover:text-primary transition-colors">Refund Policy</a></li>
-              <li><a href="#" className="hover:text-primary transition-colors">Cookie Policy</a></li>
+              <li><a href="#" className="hover:text-primary transition-colors">Central de Ajuda</a></li>
+              <li><a href="#" className="hover:text-primary transition-colors">Contatar Suporte</a></li>
+              <li><a href="#" className="hover:text-primary transition-colors">Política de Privacidade</a></li>
+              <li><a href="#" className="hover:text-primary transition-colors">Termos de Serviço</a></li>
+              <li><a href="#" className="hover:text-primary transition-colors">Política de Reembolso</a></li>
+              <li><a href="#" className="hover:text-primary transition-colors">Política de Cookies</a></li>
             </ul>
           </div>
 
           {/* Contact Info */}
           <div>
-            <h4 className="text-lg font-bold mb-6">Contact Us</h4>
+            <h4 className="text-lg font-bold mb-6">Entre em Contato</h4>
             <div className="space-y-4 text-gray-300">
               <div className="flex items-center gap-3">
                 <Mail className="w-5 h-5 text-primary" />
-                <span>support@fitcoachpro.com</span>
+                <span>suporte@fitcoachpro.com</span>
               </div>
               <div className="flex items-center gap-3">
                 <Phone className="w-5 h-5 text-primary" />
-                <span>+1 (555) 123-4567</span>
+                <span>+55 (11) 99999-9999</span>
               </div>
               <div className="flex items-center gap-3">
                 <MapPin className="w-5 h-5 text-primary" />
-                <span>San Francisco, CA</span>
+                <span>São Paulo, SP</span>
               </div>
             </div>
             
             <div className="mt-6">
-              <h5 className="font-semibold mb-2">Business Hours</h5>
+              <h5 className="font-semibold mb-2">Horário de Atendimento</h5>
               <p className="text-gray-300 text-sm">
-                Monday - Friday: 6AM - 10PM<br />
-                Saturday - Sunday: 8AM - 8PM
+                Segunda - Sexta: 6h - 22h<br />
+                Sábado - Domingo: 8h - 20h
               </p>
             </div>
           </div>
@@ -105,11 +105,11 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="border-t border-gray-700 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-400 text-sm">
-            © 2024 FitCoach Pro. All rights reserved. Made with ❤️ for your fitness journey.
+            © 2024 FitCoach Pro. Todos os direitos reservados. Feito com ❤️ para sua jornada fitness.
           </p>
           <div className="flex space-x-6 mt-4 md:mt-0">
-            <a href="#" className="text-gray-400 hover:text-primary text-sm transition-colors">Privacy</a>
-            <a href="#" className="text-gray-400 hover:text-primary text-sm transition-colors">Terms</a>
+            <a href="#" className="text-gray-400 hover:text-primary text-sm transition-colors">Privacidade</a>
+            <a href="#" className="text-gray-400 hover:text-primary text-sm transition-colors">Termos</a>
             <a href="#" className="text-gray-400 hover:text-primary text-sm transition-colors">Cookies</a>
           </div>
         </div>

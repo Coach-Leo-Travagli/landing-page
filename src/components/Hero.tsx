@@ -16,21 +16,21 @@ export default function Hero() {
       <div className="relative z-10 container mx-auto px-4 text-center text-white">
         <div className="animate-fade-up">
           <h1 className="text-5xl md:text-7xl font-black mb-6 leading-tight">
-            Transform Your Body
-            <span className="block text-gradient">In 90 Days</span>
+            Transforme Seu Corpo
+            <span className="block text-gradient">Em 90 Dias</span>
           </h1>
           
           <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto leading-relaxed opacity-90">
-            Get personalized workout and nutrition plans designed by certified trainers. 
-            Join thousands who've achieved their dream physique with our proven system.
+            Receba planos personalizados de treino e nutrição desenvolvidos por personal trainers certificados. 
+            Junte-se a milhares que alcançaram o físico dos sonhos com nosso sistema comprovado.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
             <Button variant="hero" size="xl" className="min-w-[200px]">
-              Start Your Transformation
+              Comece Sua Transformação
             </Button>
             <Button variant="outline-hero" size="xl" className="min-w-[200px]">
-              Watch Success Stories
+              Veja Histórias de Sucesso
             </Button>
           </div>
 
@@ -42,11 +42,11 @@ export default function Hero() {
                 <div className="w-8 h-8 rounded-full bg-fitness-secondary border-2 border-white"></div>
                 <div className="w-8 h-8 rounded-full bg-success border-2 border-white"></div>
               </div>
-              <span>5000+ transformations completed</span>
+              <span>5000+ transformações realizadas</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="text-fitness-secondary text-lg">⭐⭐⭐⭐⭐</span>
-              <span>4.9/5 average rating</span>
+              <span>4.9/5 avaliação média</span>
             </div>
           </div>
         </div>
