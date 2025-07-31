@@ -5,8 +5,8 @@ import { Check } from "lucide-react";
 const plans = [
   {
     name: "Básico",
-    price: "$49",
-    period: " USD/mês",
+    price: "R$ 129",
+    period: "/mês",
     description: "Perfeito para iniciantes que estão começando sua jornada fitness",
     features: [
       "Planos de treino personalizados",
@@ -20,8 +20,8 @@ const plans = [
   },
   {
     name: "Padrão", 
-    price: "$99",
-    period: " USD/mês",
+    price: "R$ 199",
+    period: "/mês",
     description: "Escolha mais popular para transformações sérias",
     features: [
       "Tudo do plano Básico",
@@ -36,8 +36,8 @@ const plans = [
   },
   {
     name: "VIP",
-    price: "$199", 
-    period: " USD/mês",
+    price: "R$ 399", 
+    period: "/mês",
     description: "Coaching premium com resultados máximos",
     features: [
       "Tudo do plano Padrão",

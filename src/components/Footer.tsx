@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Instagram, Facebook, Twitter, Youtube, Mail, Phone, MapPin } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export default function Footer() {
   return (
@@ -67,8 +68,8 @@ export default function Footer() {
             <ul className="space-y-3 text-gray-300">
               <li><a href="#" className="hover:text-primary transition-colors">Central de Ajuda</a></li>
               <li><a href="#" className="hover:text-primary transition-colors">Contatar Suporte</a></li>
-              <li><a href="#" className="hover:text-primary transition-colors">Política de Privacidade</a></li>
-              <li><a href="#" className="hover:text-primary transition-colors">Termos de Serviço</a></li>
+              <li><Link to="/politica-de-privacidade" className="hover:text-primary transition-colors">Política de Privacidade</Link></li>
+              <li><Link to="/termos-de-servico" className="hover:text-primary transition-colors">Termos de Serviço</Link></li>
               <li><a href="#" className="hover:text-primary transition-colors">Política de Reembolso</a></li>
               <li><a href="#" className="hover:text-primary transition-colors">Política de Cookies</a></li>
             </ul>
@@ -108,8 +109,8 @@ export default function Footer() {
             © 2024 FitCoach Pro. Todos os direitos reservados. Feito com ❤️ para sua jornada fitness.
           </p>
           <div className="flex space-x-6 mt-4 md:mt-0">
-            <a href="#" className="text-gray-400 hover:text-primary text-sm transition-colors">Privacidade</a>
-            <a href="#" className="text-gray-400 hover:text-primary text-sm transition-colors">Termos</a>
+            <Link to="/politica-de-privacidade" className="text-gray-400 hover:text-primary text-sm transition-colors">Privacidade</Link>
+            <Link to="/termos-de-servico" className="text-gray-400 hover:text-primary text-sm transition-colors">Termos</Link>
             <a href="#" className="text-gray-400 hover:text-primary text-sm transition-colors">Cookies</a>
           </div>
         </div>
