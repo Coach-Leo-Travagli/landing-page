@@ -7,12 +7,20 @@ import Footer from "@/components/Footer";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background scroll-smooth">
       <Hero />
-      <HowItWorks />
-      <Pricing />
-      <Testimonials />
-      <FAQ />
+      <div id="how-it-works">
+        <HowItWorks />
+      </div>
+      <div id="pricing">
+        <Pricing />
+      </div>
+      <div id="testimonials">
+        <Testimonials />
+      </div>
+      <div id="faq">
+        <FAQ />
+      </div>
       <Footer />
     </div>
   );

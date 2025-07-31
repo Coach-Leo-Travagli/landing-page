@@ -53,12 +53,11 @@ export default function Footer() {
           <div>
             <h4 className="text-lg font-bold mb-6">Links Rápidos</h4>
             <ul className="space-y-3 text-gray-300">
-              <li><a href="#how-it-works" className="hover:text-primary transition-colors">Como Funciona</a></li>
-              <li><a href="#pricing" className="hover:text-primary transition-colors">Preços</a></li>
-              <li><a href="#testimonials" className="hover:text-primary transition-colors">Histórias de Sucesso</a></li>
-              <li><a href="#faq" className="hover:text-primary transition-colors">FAQ</a></li>
-              <li><a href="#" className="hover:text-primary transition-colors">Blog</a></li>
-              <li><a href="#" className="hover:text-primary transition-colors">Sobre Nós</a></li>
+              <li><a href="#how-it-works" className="hover:text-primary transition-colors scroll-smooth">Como Funciona</a></li>
+              <li><a href="#pricing" className="hover:text-primary transition-colors scroll-smooth">Preços</a></li>
+              <li><a href="#testimonials" className="hover:text-primary transition-colors scroll-smooth">Histórias de Sucesso</a></li>
+              <li><a href="#faq" className="hover:text-primary transition-colors scroll-smooth">FAQ</a></li>
+              <li><Link to="/sobre-nos" className="hover:text-primary transition-colors">Sobre Nós</Link></li>
             </ul>
           </div>
 
@@ -66,12 +65,9 @@ export default function Footer() {
           <div>
             <h4 className="text-lg font-bold mb-6">Suporte</h4>
             <ul className="space-y-3 text-gray-300">
-              <li><a href="#" className="hover:text-primary transition-colors">Central de Ajuda</a></li>
-              <li><a href="#" className="hover:text-primary transition-colors">Contatar Suporte</a></li>
               <li><Link to="/politica-de-privacidade" className="hover:text-primary transition-colors">Política de Privacidade</Link></li>
               <li><Link to="/termos-de-servico" className="hover:text-primary transition-colors">Termos de Serviço</Link></li>
               <li><a href="#" className="hover:text-primary transition-colors">Política de Reembolso</a></li>
-              <li><a href="#" className="hover:text-primary transition-colors">Política de Cookies</a></li>
             </ul>
           </div>
 
