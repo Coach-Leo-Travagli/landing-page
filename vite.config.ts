@@ -5,7 +5,9 @@ import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
+  base: '/', // importante para roteamento
   server: {
+    historyApiFallback: true,
     host: "::",
     port: 5173,
   },
