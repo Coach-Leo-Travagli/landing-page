@@ -4,6 +4,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { useEffect, useState } from "react";
 
 const faqs = [
   {
@@ -41,6 +42,30 @@ const faqs = [
 ];
 
 export default function FAQ() {
+  const [openItem, setOpenItem] = useState<string | undefined>();
+
+  useEffect(() => {
+    // Check if we need to auto-expand the refund policy question
+    const checkForRefundExpansion = () => {
+      const hash = window.location.hash;
+      if (hash === '#refund-policy') {
+        // Find the index of the refund policy question
+        const refundIndex = faqs.findIndex(faq => faq.question === "E se eu não ficar satisfeito?");
+        if (refundIndex !== -1) {
+          setOpenItem(`item-${refundIndex}`);
+          // Clear the hash after expanding
+          window.history.replaceState(null, '', window.location.pathname);
+        }
+      }
+    };
+
+    // Check immediately and also when hash changes
+    checkForRefundExpansion();
+    window.addEventListener('hashchange', checkForRefundExpansion);
+    
+    return () => window.removeEventListener('hashchange', checkForRefundExpansion);
+  }, []);
+
   return (
     <section className="py-20 bg-fitness-light">
       <div className="container mx-auto px-4">
@@ -54,7 +79,13 @@ export default function FAQ() {
         </div>
 
         <div className="max-w-4xl mx-auto">
-          <Accordion type="single" collapsible className="space-y-4">
+          <Accordion 
+            type="single" 
+            collapsible 
+            className="space-y-4"
+            value={openItem}
+            onValueChange={setOpenItem}
+          >
             {faqs.map((faq, index) => (
               <AccordionItem 
                 key={index} 

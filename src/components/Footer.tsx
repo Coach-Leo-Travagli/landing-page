@@ -67,7 +67,7 @@ export default function Footer() {
             <ul className="space-y-3 text-gray-300">
               <li><Link to="/politica-de-privacidade" className="hover:text-primary transition-colors">Política de Privacidade</Link></li>
               <li><Link to="/termos-de-servico" className="hover:text-primary transition-colors">Termos de Serviço</Link></li>
-              <li><a href="#" className="hover:text-primary transition-colors">Política de Reembolso</a></li>
+              <li><a href="#faq#refund-policy" className="hover:text-primary transition-colors scroll-smooth">Política de Reembolso</a></li>
             </ul>
           </div>
 
