@@ -1,6 +1,7 @@
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Check, CreditCard } from "lucide-react";
+import { Check } from "lucide-react";
+import CheckoutButton from "@/components/CheckoutButton";
+import { PlanType } from "@/lib/stripe";
 
 const plans = [
   {
@@ -17,7 +18,8 @@ const plans = [
       "Suporte por email"
     ],
     popular: false,
-    variant: "outline" as const
+    variant: "outline" as const,
+    planType: "basic" as PlanType
   },
   {
     name: "Padrão", 
@@ -34,7 +36,8 @@ const plans = [
       "Acesso ao banco de receitas"
     ],
     popular: true,
-    variant: "hero" as const
+    variant: "hero" as const,
+    planType: "standard" as PlanType
   },
   {
     name: "VIP",
@@ -52,7 +55,8 @@ const plans = [
       "Acesso à comunidade exclusiva"
     ],
     popular: false,
-    variant: "cta" as const
+    variant: "cta" as const,
+    planType: "vip" as PlanType
   }
 ];
 
@@ -109,22 +113,13 @@ export default function Pricing() {
                     ))}
                   </ul>
                   
-                  <Button
-                    variant={plan.variant === 'hero' ? 'default' : plan.variant === 'cta' ? 'default' : plan.variant}
+                  <CheckoutButton
+                    planType={plan.planType}
+                    variant={plan.variant}
                     size="lg"
-                    className={`w-full ${
-                      plan.popular 
-                        ? 'bg-primary hover:bg-primary/90 text-white' 
-                        : plan.variant === 'cta' 
-                          ? 'bg-fitness-secondary hover:bg-fitness-secondary/90 text-white'
-                          : ''
-                    }`}
                   >
-                    <div className="flex items-center gap-2">
-                      <CreditCard className="w-4 h-4" />
-                      {plan.popular ? 'Assinar Agora' : 'Assinar Plano'}
-                    </div>
-                  </Button>
+                    {plan.popular ? 'Assinar Agora' : 'Assinar Plano'}
+                  </CheckoutButton>
                 </CardContent>
               </Card>
             </div>
