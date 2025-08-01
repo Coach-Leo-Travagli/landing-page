@@ -41,7 +41,7 @@ export default function HowItWorks() {
                 <CardContent className="p-8 text-center">
                   <div className="text-6xl mb-6">{step.icon}</div>
                   <div className="text-5xl font-black text-primary mb-4">{step.number}</div>
-                  <h3 className="text-2xl font-bold mb-4 text-fitness-dark">{step.title}</h3>
+                  <h3 className="text-lg sm:text-xl lg:text-2xl font-bold mb-4 text-fitness-dark leading-tight">{step.title}</h3>
                   <p className="text-muted-foreground leading-relaxed">{step.description}</p>
                 </CardContent>
               </Card>

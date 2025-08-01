@@ -34,16 +34,16 @@ export default function Footer() {
               Sua jornada para um você mais saudável e forte começa aqui.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="w-10 h-10 bg-primary rounded-full flex items-center justify-center hover:bg-primary-light transition-colors">
+              <a href="#" className="w-10 h-10 bg-primary !rounded-full flex items-center justify-center hover:bg-primary-light transition-colors">
                 <Instagram className="w-5 h-5" />
               </a>
-              <a href="#" className="w-10 h-10 bg-primary rounded-full flex items-center justify-center hover:bg-primary-light transition-colors">
+              <a href="#" className="w-10 h-10 bg-primary !rounded-full flex items-center justify-center hover:bg-primary-light transition-colors">
                 <Facebook className="w-5 h-5" />
               </a>
-              <a href="#" className="w-10 h-10 bg-primary rounded-full flex items-center justify-center hover:bg-primary-light transition-colors">
+              <a href="#" className="w-10 h-10 bg-primary !rounded-full flex items-center justify-center hover:bg-primary-light transition-colors">
                 <Twitter className="w-5 h-5" />
               </a>
-              <a href="#" className="w-10 h-10 bg-primary rounded-full flex items-center justify-center hover:bg-primary-light transition-colors">
+              <a href="#" className="w-10 h-10 bg-primary !rounded-full flex items-center justify-center hover:bg-primary-light transition-colors">
                 <Youtube className="w-5 h-5" />
               </a>
             </div>
