@@ -26,10 +26,20 @@ export default function Hero() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-            <Button variant="hero" size="xl" className="min-w-[200px]">
+            <Button 
+              variant="hero" 
+              size="xl" 
+              className="min-w-[200px]"
+              onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })}
+            >
               Comece Sua Transformação
             </Button>
-            <Button variant="outline-hero" size="xl" className="min-w-[200px]">
+            <Button 
+              variant="outline-hero" 
+              size="xl" 
+              className="min-w-[200px]"
+              onClick={() => document.getElementById('testimonials')?.scrollIntoView({ behavior: 'smooth' })}
+            >
               Veja Histórias de Sucesso
             </Button>
           </div>
