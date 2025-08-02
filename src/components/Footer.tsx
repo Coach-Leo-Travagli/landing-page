@@ -33,7 +33,7 @@ export default function Footer() {
               Transformando vidas através de coaching personalizado de fitness e nutrição. 
               Sua jornada para um você mais saudável e forte começa aqui.
             </p>
-            <div className="grid grid-cols-2 sm:flex sm:space-x-4 gap-4 sm:gap-0 max-w-[120px] sm:max-w-none">
+            <div className="grid grid-cols-2 sm:flex sm:space-x-4 gap-4 sm:gap-0 max-w-[240px] sm:max-w-none">
               <a href="#" className="w-10 h-10 bg-primary rounded-full flex items-center justify-center hover:bg-primary-light transition-colors">
                 <Instagram className="w-5 h-5" />
               </a>
