@@ -51,7 +51,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       billing_address_collection: 'required',
       payment_method_collection: 'always',
       subscription_data: {
-        trial_period_days: 0,
         metadata: { plan_type: planType, plan_name: plan.name, duration_months: '12' },
       },
       metadata: { plan_type: planType, plan_name: plan.name },
