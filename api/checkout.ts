@@ -16,8 +16,6 @@ const PLANS = {
   },
 } as const;
 
-type PlanType = keyof typeof PLANS;
-
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
     if (req.method !== 'POST') {
@@ -33,11 +31,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     const { priceId, planType } = req.body;
 
-    if (!planType || !PLANS[planType as PlanType]) {
+    if (!planType || !(planType in PLANS)) {
       return res.status(400).json({ error: 'Tipo de plano inválido' });
     }
 
-    const plan = PLANS[planType as PlanType];
+    const plan = PLANS[planType as keyof typeof PLANS];
     const actualPriceId = priceId || plan.priceId;
 
     const origin = req.headers.origin 
@@ -45,12 +43,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
-      line_items: [
-        {
-          price: actualPriceId,
-          quantity: 1,
-        },
-      ],
+      line_items: [{ price: actualPriceId, quantity: 1 }],
       mode: 'subscription',
       success_url: `${origin}/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/cancel`,
@@ -59,30 +52,16 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       payment_method_collection: 'always',
       subscription_data: {
         trial_period_days: 0,
-        metadata: {
-          plan_type: planType,
-          plan_name: plan.name,
-          duration_months: '12',
-        },
+        metadata: { plan_type: planType, plan_name: plan.name, duration_months: '12' },
       },
-      metadata: {
-        plan_type: planType,
-        plan_name: plan.name,
-      },
+      metadata: { plan_type: planType, plan_name: plan.name },
       locale: 'pt-BR',
       automatic_tax: { enabled: false },
     });
 
-    return res.status(200).json({ 
-      url: session.url,
-      sessionId: session.id 
-    });
-
+    return res.status(200).json({ url: session.url, sessionId: session.id });
   } catch (error: unknown) {
     console.error('💥 Error occurred:', error);
-    return res.status(500).json({ 
-      error: 'Erro interno do servidor',
-      details: error instanceof Error ? error.message : 'Unknown error'
-    });
+    return res.status(500).json({ error: 'Erro interno do servidor', details: error instanceof Error ? error.message : 'Unknown error' });
   }
 }
