@@ -34,10 +34,20 @@ export default function Footer() {
             Junte-se a milhares de pessoas que já transformaram seus corpos e vidas
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button variant="secondary" size="xl" className="bg-white text-primary hover:bg-white/90">
+            <Button 
+              variant="secondary" 
+              size="xl" 
+              className="bg-white text-primary hover:bg-white/90"
+              onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })}
+            >
               Iniciar Teste Grátis
             </Button>
-            <Button variant="outline-hero" size="xl" className="border-white text-white hover:bg-white hover:text-primary">
+            <Button 
+              variant="outline-hero" 
+              size="xl" 
+              className="border-white text-white hover:bg-white hover:text-primary"
+              onClick={() => window.open('https://wa.me/5511999999999?text=Oi', '_blank')}
+            >
               Agendar Consultoria
             </Button>
           </div>
@@ -93,11 +103,11 @@ export default function Footer() {
             <div className="space-y-4 text-gray-300">
               <div 
                 className="flex items-center gap-3 cursor-pointer hover:text-primary transition-colors group max-w-full"
-                onClick={handleEmailCopy}
-                title="Clique para copiar o email"
+                onClick={() => window.open('https://wa.me/5511999999999?text=Oi', '_blank')}
+                title="Entre em contato com nossa equipe de suporte"
               >
                 <Mail className="w-5 h-5 text-primary flex-shrink-0" />
-                <span className="truncate text-sm sm:text-base">suporte@fitcoachpro.com</span>
+                <span className="truncate text-sm sm:text-base">Entre em contato com nossa equipe de suporte</span>
               </div>
               <div className="flex items-center gap-3 max-w-full cursor-pointer hover:text-primary transition-colors group"
                 onClick={handlePhoneCopy}
