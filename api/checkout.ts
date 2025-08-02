@@ -16,7 +16,7 @@ const PLANS = {
   },
 } as const;
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+const handler = async (req: VercelRequest, res: VercelResponse) => {
   try {
     if (req.method !== 'POST') {
       return res.status(405).json({ error: 'Método não permitido' });
@@ -63,5 +63,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   } catch (error: unknown) {
     console.error('💥 Error occurred:', error);
     return res.status(500).json({ error: 'Erro interno do servidor', details: error instanceof Error ? error.message : 'Unknown error' });
-  }
-}
+     }
+};
+
+export default handler;
