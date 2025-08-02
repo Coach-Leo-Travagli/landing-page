@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Check } from "lucide-react";
 import CheckoutButton from "@/components/CheckoutButton";
 import { PlanType } from "@/lib/stripe";
+import { useEffect, useState } from "react";
 
 const plans = [
   {
@@ -61,8 +62,31 @@ const plans = [
 ];
 
 export default function Pricing() {
+  const [animate, setAnimate] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setAnimate(true);
+            setTimeout(() => setAnimate(false), 800); // Animation duration
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
+
+    const pricingElement = document.getElementById('pricing');
+    if (pricingElement) {
+      observer.observe(pricingElement);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section className="py-20 bg-white">
+    <section className="py-20 bg-white" id="pricing">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-black mb-6 text-fitness-dark">
@@ -88,6 +112,8 @@ export default function Pricing() {
               )}
               
               <Card className={`h-full transition-all duration-300 hover:scale-105 ${
+                animate ? 'scale-105' : ''
+              } ${
                 plan.popular 
                   ? 'shadow-fitness-hero border-primary border-2' 
                   : 'shadow-fitness-card hover:shadow-lg border-0'
