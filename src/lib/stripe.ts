@@ -1,13 +1,10 @@
 import { loadStripe } from '@stripe/stripe-js';
 
-// Initialize Stripe with public key
+// Initialize Stripe with public key (optional for development environments)
 const stripePublicKey = import.meta.env.VITE_STRIPE_PUBLIC_KEY;
 
-if (!stripePublicKey) {
-  throw new Error('VITE_STRIPE_PUBLIC_KEY is not defined in environment variables');
-}
-
-export const stripePromise = loadStripe(stripePublicKey);
+// Only initialize Stripe if the public key is available
+export const stripePromise = stripePublicKey ? loadStripe(stripePublicKey) : null;
 
 // Plan configurations
 export const STRIPE_PLANS = {
@@ -56,6 +53,11 @@ export type PlanType = keyof typeof STRIPE_PLANS;
 
 // Checkout session creation
 export const createCheckoutSession = async (planType: PlanType) => {
+  // Check if Stripe is available
+  if (!stripePublicKey) {
+    throw new Error('Stripe não está configurado. Configure VITE_STRIPE_PUBLIC_KEY para usar pagamentos.');
+  }
+
   const plan = STRIPE_PLANS[planType];
   
   if (!plan) {
