@@ -14,7 +14,7 @@ export const STRIPE_PLANS = {
   basic: {
     name: 'Básico',
     price: 129,
-    priceId: 'price_basic_monthly', // Replace with actual Stripe Price ID
+    priceId: import.meta.env.VITE_STRIPE_PRICE_BASIC_ID || 'price_1RsSBmDCX7K7Umj2BCugUnyC', // Your actual Stripe Price ID
     features: [
       'Planos de treino personalizados',
       'Biblioteca de vídeos de exercícios',
@@ -26,7 +26,7 @@ export const STRIPE_PLANS = {
   standard: {
     name: 'Padrão',
     price: 199,
-    priceId: 'price_standard_monthly', // Replace with actual Stripe Price ID
+    priceId: import.meta.env.VITE_STRIPE_PRICE_STANDARD_ID || 'price_1RsSBmDCX7K7Umj2thhoygiC', // Your actual Stripe Price ID
     features: [
       'Tudo do plano Básico',
       'Planos de refeições personalizados',
@@ -39,7 +39,7 @@ export const STRIPE_PLANS = {
   vip: {
     name: 'VIP',
     price: 399,
-    priceId: 'price_vip_monthly', // Replace with actual Stripe Price ID
+    priceId: import.meta.env.VITE_STRIPE_PRICE_VIP_ID || 'price_1RsSByDCX7K7Umj2YiskvogS', // Your actual Stripe Price ID
     features: [
       'Tudo do plano Padrão',
       'Videochamadas 1-a-1 (2x/mês)',
