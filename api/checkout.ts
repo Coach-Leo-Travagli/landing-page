@@ -47,7 +47,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       mode: 'subscription',
       success_url: `${origin}/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/cancel`,
-      customer_creation: 'always',
       billing_address_collection: 'required',
       payment_method_collection: 'always',
       subscription_data: {
