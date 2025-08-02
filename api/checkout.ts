@@ -34,6 +34,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
+    // Debug environment variables
+    console.log('Environment variables:', {
+      STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY ? 'SET' : 'MISSING',
+      STRIPE_PRICE_BASIC_ID: process.env.STRIPE_PRICE_BASIC_ID || 'MISSING',
+      STRIPE_PRICE_STANDARD_ID: process.env.STRIPE_PRICE_STANDARD_ID || 'MISSING',
+      STRIPE_PRICE_VIP_ID: process.env.STRIPE_PRICE_VIP_ID || 'MISSING',
+    });
+
     const { priceId, planType } = req.body;
 
     // Validate plan type
@@ -42,6 +50,16 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     const plan = PLANS[planType as PlanType];
+    
+    // Use the priceId from frontend if provided, otherwise use plan config
+    const actualPriceId = priceId || plan.priceId;
+    
+    console.log('Plan details:', {
+      planType,
+      frontendPriceId: priceId,
+      configPriceId: plan.priceId,
+      actualPriceId,
+    });
     
     // Get the base URL for redirects
     const origin = req.headers.origin || req.headers.host 
@@ -53,19 +71,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       payment_method_types: ['card'],
       line_items: [
         {
-          price_data: {
-            currency: 'brl',
-            product_data: {
-              name: `Coach Leo Travagli - ${plan.name}`,
-              description: `Assinatura mensal do ${plan.name} por 12 meses`,
-              images: [`${origin}/placeholder.svg`], // You can replace with actual product image
-            },
-            unit_amount: plan.price,
-            recurring: {
-              interval: 'month',
-              interval_count: 1,
-            },
-          },
+          price: actualPriceId,
           quantity: 1,
         },
       ],
