@@ -1,11 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import Stripe from 'stripe';
 
-// Initialize Stripe with secret key
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2025-07-30.basil',
-});
-
 // Plan configurations with actual price amounts
 const PLANS = {
   basic: {
@@ -28,19 +23,40 @@ const PLANS = {
 type PlanType = keyof typeof PLANS;
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  // Only allow POST requests
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Método não permitido' });
-  }
-
   try {
-    // Debug environment variables
-    console.log('Environment variables:', {
-      STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY ? 'SET' : 'MISSING',
+    console.log('🚀 Function started');
+    
+    // Only allow POST requests
+    if (req.method !== 'POST') {
+      console.log('❌ Method not allowed:', req.method);
+      return res.status(405).json({ error: 'Método não permitido' });
+    }
+
+    console.log('📋 Request received:', {
+      body: req.body,
+      headers: req.headers,
+    });
+
+    // Check environment variables
+    const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
+    console.log('🔑 Environment variables:', {
+      STRIPE_SECRET_KEY: stripeSecretKey ? `${stripeSecretKey.substring(0, 12)}...` : 'MISSING',
       STRIPE_PRICE_BASIC_ID: process.env.STRIPE_PRICE_BASIC_ID || 'MISSING',
       STRIPE_PRICE_STANDARD_ID: process.env.STRIPE_PRICE_STANDARD_ID || 'MISSING',
       STRIPE_PRICE_VIP_ID: process.env.STRIPE_PRICE_VIP_ID || 'MISSING',
     });
+
+    if (!stripeSecretKey) {
+      console.log('❌ Stripe secret key missing');
+      return res.status(500).json({ error: 'Configuração do Stripe ausente' });
+    }
+
+    // Initialize Stripe inside the function
+    console.log('🔧 Initializing Stripe...');
+    const stripe = new Stripe(stripeSecretKey, {
+      apiVersion: '2025-07-30.basil', // Use a stable API version
+    });
+    console.log('✅ Stripe initialized successfully');
 
     const { priceId, planType } = req.body;
 
@@ -108,13 +124,18 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     });
 
   } catch (error) {
-    console.error('Erro ao criar sessão de checkout:', error);
+    console.error('💥 Error occurred:', error);
     
     // Return appropriate error message
     if (error instanceof Stripe.errors.StripeError) {
+      console.error('🔴 Stripe error:', error.message);
       return res.status(400).json({ error: `Erro do Stripe: ${error.message}` });
     }
 
-    return res.status(500).json({ error: 'Erro interno do servidor. Tente novamente.' });
+    console.error('🔴 General error:', error);
+    return res.status(500).json({ 
+      error: 'Erro interno do servidor',
+      details: error instanceof Error ? error.message : 'Unknown error'
+    });
   }
 }
