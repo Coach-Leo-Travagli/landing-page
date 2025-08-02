@@ -40,7 +40,7 @@ export default function Footer() {
               className="bg-white text-primary hover:bg-white/90"
               onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })}
             >
-              Iniciar Teste Grátis
+              Comece Sua Transformação
             </Button>
             <Button 
               variant="outline-hero" 
@@ -140,7 +140,6 @@ export default function Footer() {
           <div className="flex space-x-6 mt-4 md:mt-0">
             <Link to="/politica-de-privacidade" className="text-gray-400 hover:text-primary text-sm transition-colors">Privacidade</Link>
             <Link to="/termos-de-servico" className="text-gray-400 hover:text-primary text-sm transition-colors">Termos</Link>
-            <a href="#" className="text-gray-400 hover:text-primary text-sm transition-colors">Cookies</a>
           </div>
         </div>
       </div>
