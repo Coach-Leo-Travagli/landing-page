@@ -1,5 +1,5 @@
-import Stripe from "stripe";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
+import Stripe from "stripe";
 
 const PLANS = {
   basic: {
@@ -16,7 +16,7 @@ const PLANS = {
   },
 } as const;
 
-const handler = async (req: VercelRequest, res: VercelResponse) => {
+export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
     if (req.method !== 'POST') {
       return res.status(405).json({ error: 'Método não permitido' });
@@ -64,6 +64,4 @@ const handler = async (req: VercelRequest, res: VercelResponse) => {
     console.error('💥 Error occurred:', error);
     return res.status(500).json({ error: 'Erro interno do servidor', details: error instanceof Error ? error.message : 'Unknown error' });
      }
-};
-
-export default handler;
+}

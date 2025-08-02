@@ -4,7 +4,7 @@ import type { VercelRequest, VercelResponse } from "@vercel/node";
 
 export const config = { api: { bodyParser: false } };
 
-const handler = async (req: VercelRequest, res: VercelResponse) => {
+export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Método não permitido" });
   }
@@ -58,6 +58,4 @@ const handler = async (req: VercelRequest, res: VercelResponse) => {
     console.error("Erro ao processar evento:", error);
     return res.status(500).json({ error: "Erro ao processar webhook" });
   }
-};
-
-export default handler;
+}
