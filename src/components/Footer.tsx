@@ -1,8 +1,27 @@
 import { Button } from "@/components/ui/button";
 import { Instagram, Facebook, Twitter, Youtube, Mail, Phone, MapPin } from "lucide-react";
 import { Link } from "react-router-dom";
+import { toast } from "sonner";
 
 export default function Footer() {
+  const handleEmailCopy = async () => {
+    try {
+      await navigator.clipboard.writeText('suporte@fitcoachpro.com');
+      toast.success('Email copiado para a área de transferência!');
+    } catch (err) {
+      toast.error('Erro ao copiar email');
+    }
+  };
+
+  const handlePhoneCopy = async () => {
+    try {
+      await navigator.clipboard.writeText('+55 (11) 99999-9999');
+      toast.success('Telefone copiado para a área de transferência!');
+    } catch (err) {
+      toast.error('Erro ao copiar telefone');
+    }
+  };
+
   return (
     <footer className="bg-fitness-dark text-white py-16">
       <div className="container mx-auto px-4">
@@ -72,17 +91,24 @@ export default function Footer() {
           <div>
             <h4 className="text-lg font-bold mb-6">Entre em Contato</h4>
             <div className="space-y-4 text-gray-300">
-              <div className="flex items-center gap-3">
-                <Mail className="w-5 h-5 text-primary" />
-                <span>suporte@fitcoachpro.com</span>
+              <div 
+                className="flex items-center gap-3 cursor-pointer hover:text-primary transition-colors group max-w-full"
+                onClick={handleEmailCopy}
+                title="Clique para copiar o email"
+              >
+                <Mail className="w-5 h-5 text-primary flex-shrink-0" />
+                <span className="truncate text-sm sm:text-base">suporte@fitcoachpro.com</span>
               </div>
-              <div className="flex items-center gap-3">
-                <Phone className="w-5 h-5 text-primary" />
-                <span>+55 (11) 99999-9999</span>
+              <div className="flex items-center gap-3 max-w-full cursor-pointer hover:text-primary transition-colors group"
+                onClick={handlePhoneCopy}
+                title="Clique para copiar o telefone"
+              >
+                <Phone className="w-5 h-5 text-primary flex-shrink-0" />
+                <span className="truncate text-sm sm:text-base">+55 (11) 99999-9999</span>
               </div>
-              <div className="flex items-center gap-3">
-                <MapPin className="w-5 h-5 text-primary" />
-                <span>São Paulo, SP</span>
+              <div className="flex items-center gap-3 max-w-full">
+                <MapPin className="w-5 h-5 text-primary flex-shrink-0" />
+                <span className="truncate text-sm sm:text-base">São Paulo, SP</span>
               </div>
             </div>
             
