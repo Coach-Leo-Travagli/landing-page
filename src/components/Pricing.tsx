@@ -69,8 +69,8 @@ export default function Pricing() {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            setAnimate(true);
-            setTimeout(() => setAnimate(false), 800); // Animation duration
+            setTimeout(() => setAnimate(true), 500); // Animation delay
+            setTimeout(() => setAnimate(false), 1100); // Animation duration
           }
         });
       },

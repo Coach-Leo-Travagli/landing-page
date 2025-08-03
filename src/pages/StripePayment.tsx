@@ -12,7 +12,7 @@ import { toast } from 'sonner';
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY || '');
 
 // Payment form component
-function PaymentForm({ clientSecret, planDetails }: { clientSecret: string; planDetails: any }) {
+function PaymentForm({ clientSecret, planDetails }: { clientSecret: string; planDetails: { name: string; price: number; features: string[] } }) {
   const stripe = useStripe();
   const elements = useElements();
   const [isLoading, setIsLoading] = useState(false);
@@ -75,7 +75,7 @@ function PaymentForm({ clientSecret, planDetails }: { clientSecret: string; plan
 export default function StripePayment() {
   const [searchParams] = useSearchParams();
   const [clientSecret, setClientSecret] = useState<string>('');
-  const [planDetails, setPlanDetails] = useState<any>(null);
+  const [planDetails, setPlanDetails] = useState<{ name: string; price: number; features: string[] } | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   const planType = searchParams.get('plan') || 'standard';
