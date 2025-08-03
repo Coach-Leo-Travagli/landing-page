@@ -80,7 +80,26 @@ function PaymentForm({
         return;
       }
 
-      // Step 2: Confirm the setup intent with payment method
+      // Step 2: Submit elements form first (required before confirmSetup)
+      const { error: submitError } = await elements.submit();
+      
+      if (submitError) {
+        console.error('Submit error:', submitError);
+        
+        // If user cancelled or there's a validation error
+        if (submitError.code === 'canceled' || 
+            submitError.type === 'validation_error' ||
+            submitError.message?.toLowerCase().includes('cancel')) {
+          navigate('/cancel');
+          return;
+        }
+        
+        toast.error(submitError.message || 'Erro ao validar dados de pagamento');
+        setIsLoading(false);
+        return;
+      }
+
+      // Step 3: Confirm the setup intent with payment method
       const { error: setupError } = await stripe.confirmSetup({
         clientSecret: intentData.client_secret,
         elements,
@@ -106,7 +125,7 @@ function PaymentForm({
         return;
       }
 
-      // Step 3: Create the subscription
+      // Step 4: Create the subscription
       const subscriptionResponse = await fetch('/api/create-subscription', {
         method: 'POST',
         headers: {
