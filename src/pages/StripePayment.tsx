@@ -12,10 +12,22 @@ import { toast } from 'sonner';
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY || '');
 
 // Payment form component
-function PaymentForm({ clientSecret, planDetails }: { clientSecret: string; planDetails: { name: string; price: number; features: string[] } }) {
+function PaymentForm({ 
+  clientSecret, 
+  planDetails, 
+  customerId, 
+  setupIntentId 
+}: { 
+  clientSecret: string; 
+  planDetails: { name: string; price: number; features: string[] }; 
+  customerId: string;
+  setupIntentId: string;
+}) {
   const stripe = useStripe();
   const elements = useElements();
   const [isLoading, setIsLoading] = useState(false);
+  const [searchParams] = useSearchParams();
+  const planType = searchParams.get('plan') || 'standard';
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -26,15 +38,54 @@ function PaymentForm({ clientSecret, planDetails }: { clientSecret: string; plan
 
     setIsLoading(true);
 
-    const { error } = await stripe.confirmPayment({
-      elements,
-      confirmParams: {
-        return_url: `${window.location.origin}/success`,
-      },
-    });
+    try {
+      // Confirm the setup intent (for future payments)
+      const { error: setupError } = await stripe.confirmSetup({
+        elements,
+        confirmParams: {
+          return_url: `${window.location.origin}/success`,
+        },
+        redirect: 'if_required',
+      });
 
-    if (error) {
-      toast.error(error.message || 'Erro ao processar pagamento');
+      if (setupError) {
+        toast.error(setupError.message || 'Erro ao configurar pagamento');
+        setIsLoading(false);
+        return;
+      }
+
+      // Create the subscription
+      const plans = {
+        basic: 'price_1RsSBmDCX7K7Umj2BCugUnyC',
+        standard: 'price_1RsSBmDCX7K7Umj2thhoygiC', 
+        vip: 'price_1RsSByDCX7K7Umj2YiskvogS'
+      };
+
+      const response = await fetch('/api/create-subscription', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          setup_intent_id: setupIntentId,
+          customer_id: customerId,
+          price_id: plans[planType as keyof typeof plans],
+          plan_type: planType,
+          plan_name: planDetails.name,
+        }),
+      });
+
+      const subscriptionData = await response.json();
+
+      if (response.ok) {
+        // Redirect to success page with subscription info
+        window.location.href = `/success?subscription_id=${subscriptionData.subscription_id}&plan=${planType}`;
+      } else {
+        toast.error(subscriptionData.error || 'Erro ao criar assinatura');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      toast.error('Erro ao processar assinatura');
     }
 
     setIsLoading(false);
@@ -75,6 +126,8 @@ function PaymentForm({ clientSecret, planDetails }: { clientSecret: string; plan
 export default function StripePayment() {
   const [searchParams] = useSearchParams();
   const [clientSecret, setClientSecret] = useState<string>('');
+  const [customerId, setCustomerId] = useState<string>('');
+  const [setupIntentId, setSetupIntentId] = useState<string>('');
   const [planDetails, setPlanDetails] = useState<{ name: string; price: number; features: string[] } | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -127,7 +180,7 @@ export default function StripePayment() {
         const selectedPlan = plans[planType as keyof typeof plans];
         setPlanDetails(selectedPlan);
 
-        // Create payment intent - replace this with your actual API call
+        // Create subscription setup intent
         const response = await fetch('/api/create-subscription-intent', {
           method: 'POST',
           headers: {
@@ -135,7 +188,6 @@ export default function StripePayment() {
           },
           body: JSON.stringify({
             planType,
-            amount: selectedPlan.price * 100, // Convert to cents
           }),
         });
 
@@ -143,6 +195,8 @@ export default function StripePayment() {
         
         if (data.client_secret) {
           setClientSecret(data.client_secret);
+          setCustomerId(data.customer_id);
+          setSetupIntentId(data.setup_intent_id);
         } else {
           toast.error('Erro ao inicializar pagamento');
         }
@@ -199,9 +253,11 @@ export default function StripePayment() {
                 <CardHeader>
                   <div className="flex items-center justify-between">
                     <CardTitle className="text-xl">{planDetails?.name}</CardTitle>
-                    <Badge variant="secondary" className="bg-primary text-white">
-                      MAIS POPULAR
-                    </Badge>
+                    {planDetails?.name === 'Plano Padrão' && (
+                      <Badge variant="secondary" className="bg-primary text-white">
+                        MAIS POPULAR
+                      </Badge>
+                    )}
                   </div>
                   <div className="text-3xl font-bold text-primary">
                     R$ {planDetails?.price}
@@ -258,7 +314,12 @@ export default function StripePayment() {
                         },
                       }}
                     >
-                      <PaymentForm clientSecret={clientSecret} planDetails={planDetails} />
+                      <PaymentForm 
+                        clientSecret={clientSecret} 
+                        planDetails={planDetails} 
+                        customerId={customerId}
+                        setupIntentId={setupIntentId}
+                      />
                     </Elements>
                   ) : (
                     <div className="text-center py-8">
