@@ -169,7 +169,7 @@ function PaymentForm({
           options={{
             layout: 'tabs',
             business: {
-              name: 'FitCoach Pro'
+              name: 'Coach Travagli'
             }
           }}
         />

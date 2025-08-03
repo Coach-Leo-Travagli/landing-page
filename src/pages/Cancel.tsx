@@ -63,15 +63,15 @@ export default function Cancel() {
                 </Button>
                 
                 <Button asChild variant="outline" size="lg" className="flex-1">
-                  <Link to="/#contact">
+                  <a href="https://wa.me/5511999999999?text=Oi" target="_blank" rel="noopener noreferrer">
                     <MessageCircle className="w-4 h-4 mr-2" />
                     Falar com Suporte
-                  </Link>
+                  </a>
                 </Button>
               </div>
             </div>
 
-            <div className="flex justify-center pt-4">
+            <div className="flex justify-center pt-2">
               <Button asChild variant="ghost" size="lg">
                 <Link to="/">
                   <Home className="w-4 h-4 mr-2" />
@@ -91,7 +91,7 @@ export default function Cancel() {
                 </a>
               </p>
               <p className="text-xs text-muted-foreground mt-2">
-                WhatsApp: (11) 99999-9999 • Atendimento: Seg-Sex 8h às 18h
+                WhatsApp: +55 (11) 99999-9999 • Atendimento: Seg-Sex 8h às 18h
               </p>
             </div>
           </CardContent>
