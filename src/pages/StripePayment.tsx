@@ -102,7 +102,6 @@ function PaymentForm({
       // Step 3: Confirm the setup intent with payment method
       const { error: setupError } = await stripe.confirmSetup({
         clientSecret: intentData.client_secret,
-        elements,
         confirmParams: {
           return_url: `${window.location.origin}/success`,
         },
