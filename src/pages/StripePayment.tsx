@@ -235,17 +235,49 @@ export default function StripePayment() {
   }, [navigate]);
 
   useEffect(() => {
-    const initializePage = () => {
-      // Validate plan type
-      if (!isValidPlanType(planType)) {
-        toast.error('Tipo de plano inválido');
-        navigate('/cancel');
-        return;
+    const initializePage = async () => {
+      try {
+        setIsLoading(true);
+        
+        // Validate plan type
+        if (!isValidPlanType(planType)) {
+          toast.error('Tipo de plano inválido');
+          navigate('/cancel');
+          return;
+        }
+        
+        const selectedPlan = plans[planType];
+        setPlanDetails(selectedPlan);
+
+        // Create setup intent for payment form
+        const response = await fetch('/api/create-subscription-intent', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            planType,
+          }),
+        });
+
+        const data = await response.json();
+        
+        if (data.client_secret) {
+          setClientSecret(data.client_secret);
+          setCustomerId(data.customer_id);
+          setSetupIntentId(data.setup_intent_id);
+        } else {
+          toast.error('Erro ao inicializar pagamento');
+          setTimeout(() => navigate('/cancel'), 2000);
+        }
+        
+      } catch (error) {
+        console.error('Error initializing page:', error);
+        toast.error('Erro ao carregar página');
+        setTimeout(() => navigate('/cancel'), 2000);
+      } finally {
+        setIsLoading(false);
       }
-      
-      const selectedPlan = plans[planType];
-      setPlanDetails(selectedPlan);
-      setIsLoading(false);
     };
 
     initializePage();
