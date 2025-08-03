@@ -31,10 +31,6 @@ function PaymentForm({
   const navigate = useNavigate();
   const planType = searchParams.get('plan') || 'standard';
 
-  const handleCancel = () => {
-    navigate('/cancel');
-  };
-
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
@@ -115,16 +111,15 @@ function PaymentForm({
       </div>
       
       <div className="flex gap-3">
-        <Button 
+        {/* <Button 
           type="button"
           variant="outline" 
           disabled={isLoading}
           onClick={handleCancel}
           className="h-12 px-6"
         >
-          <X className="w-4 h-4 mr-2" />
           Cancelar
-        </Button>
+        </Button> */}
         
         <Button 
           type="submit" 
@@ -253,7 +248,7 @@ export default function StripePayment() {
           {/* Header */}
           <div className="mb-8">
             <Link 
-              to="/" 
+              to="/cancel"
               className="inline-flex items-center gap-2 text-white hover:text-primary transition-colors mb-6"
             >
               <ArrowLeft className="w-5 h-5" />
