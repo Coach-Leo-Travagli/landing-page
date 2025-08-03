@@ -5,8 +5,8 @@ import { PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js'
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Check, ArrowLeft, Loader2 } from 'lucide-react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Check, ArrowLeft, Loader2, X } from 'lucide-react';
+import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { STRIPE_PRICE_IDS, getPlansForPaymentPage, getPlan, isValidPlanType, type PlanType } from '@/utils/plans';
 
@@ -28,7 +28,12 @@ function PaymentForm({
   const elements = useElements();
   const [isLoading, setIsLoading] = useState(false);
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const planType = searchParams.get('plan') || 'standard';
+
+  const handleCancel = () => {
+    navigate('/cancel');
+  };
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -50,6 +55,16 @@ function PaymentForm({
       });
 
       if (setupError) {
+        console.error('Setup error:', setupError);
+        
+        // If user cancelled the payment or there's a specific cancellation error
+        if (setupError.code === 'canceled' || 
+            setupError.type === 'card_error' ||
+            setupError.message?.toLowerCase().includes('cancel')) {
+          navigate('/cancel');
+          return;
+        }
+        
         toast.error(setupError.message || 'Erro ao configurar pagamento');
         setIsLoading(false);
         return;
@@ -99,27 +114,41 @@ function PaymentForm({
         />
       </div>
       
-      <Button 
-        type="submit" 
-        disabled={!stripe || isLoading}
-        className="w-full h-12 text-lg font-semibold"
-        size="lg"
-      >
-        {isLoading ? (
-          <div className="flex items-center gap-2">
-            <Loader2 className="w-5 h-5 animate-spin" />
-            Processando...
-          </div>
-        ) : (
-          `Assinar por R$ ${planDetails?.price || 0}/mês`
-        )}
-      </Button>
+      <div className="flex gap-3">
+        <Button 
+          type="button"
+          variant="outline" 
+          disabled={isLoading}
+          onClick={handleCancel}
+          className="h-12 px-6"
+        >
+          <X className="w-4 h-4 mr-2" />
+          Cancelar
+        </Button>
+        
+        <Button 
+          type="submit" 
+          disabled={!stripe || isLoading}
+          className="flex-1 h-12 text-lg font-semibold"
+          size="lg"
+        >
+          {isLoading ? (
+            <div className="flex items-center gap-2">
+              <Loader2 className="w-5 h-5 animate-spin" />
+              Processando...
+            </div>
+          ) : (
+            `Assinar por R$ ${planDetails?.price || 0}/mês`
+          )}
+        </Button>
+      </div>
     </form>
   );
 }
 
 export default function StripePayment() {
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const [clientSecret, setClientSecret] = useState<string>('');
   const [customerId, setCustomerId] = useState<string>('');
   const [setupIntentId, setSetupIntentId] = useState<string>('');
@@ -131,6 +160,33 @@ export default function StripePayment() {
   // Memoize plans to prevent unnecessary re-renders and API calls
   const plans = useMemo(() => getPlansForPaymentPage(), []);
 
+  // Handle page unload - detect when user navigates away
+  useEffect(() => {
+    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+      // Only show warning if there's an active payment session
+      if (clientSecret && !isLoading) {
+        event.preventDefault();
+        event.returnValue = 'Tem certeza que deseja sair? Seu pagamento será cancelado.';
+        return event.returnValue;
+      }
+    };
+
+    const handlePopState = () => {
+      // User clicked back button
+      if (clientSecret) {
+        navigate('/cancel');
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    window.addEventListener('popstate', handlePopState);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, [clientSecret, isLoading, navigate]);
+
   useEffect(() => {
     const createPaymentIntent = async () => {
       try {
@@ -139,6 +195,7 @@ export default function StripePayment() {
         // Validate plan type
         if (!isValidPlanType(planType)) {
           toast.error('Tipo de plano inválido');
+          navigate('/cancel');
           return;
         }
         
@@ -164,17 +221,19 @@ export default function StripePayment() {
           setSetupIntentId(data.setup_intent_id);
         } else {
           toast.error('Erro ao inicializar pagamento');
+          setTimeout(() => navigate('/cancel'), 2000); // Redirect to cancel after showing error
         }
       } catch (error) {
         console.error('Error creating payment intent:', error);
         toast.error('Erro ao carregar dados de pagamento');
+        setTimeout(() => navigate('/cancel'), 2000); // Redirect to cancel after showing error
       } finally {
         setIsLoading(false);
       }
     };
 
     createPaymentIntent();
-  }, [planType]); // Remove 'plans' dependency as it's memoized and won't change
+  }, [planType, navigate, plans]); // Include all dependencies
 
   if (isLoading) {
     return (
