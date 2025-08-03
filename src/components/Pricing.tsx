@@ -35,10 +35,10 @@ export default function Pricing() {
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-black mb-6 text-fitness-dark">
-            Escolha Seu Plano
+            Escolha o Plano Ideal para Você
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Selecione o pacote de coaching perfeito para seus objetivos fitness e orçamento
+            Selecione o pacote de treino e nutrição ideal para você
           </p>
           <p className="text-lg text-primary font-semibold mt-4">
             Assinatura mensal com cobrança automática
@@ -99,10 +99,7 @@ export default function Pricing() {
 
         <div className="text-center mt-12">
           <p className="text-muted-foreground mb-4">
-            Cancele sua assinatura a qualquer momento • 30 dias de garantia
-          </p>
-          <p className="text-sm text-muted-foreground">
-            Cobrança automática mensal • Sem taxas ocultas • Suporte 24/7
+            Você pode cancelar sua assinatura a qualquer momento. 30 dias de garantia.
           </p>
         </div>
       </div>

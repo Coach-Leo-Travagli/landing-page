@@ -16,13 +16,14 @@ export default function Hero() {
       <div className="relative z-10 container mx-auto px-4 text-center text-white">
         <div className="animate-fade-up">
           <h1 className="text-5xl md:text-7xl font-black mb-6 leading-tight">
-            Transforme Seu Corpo
-            <span className="block text-gradient">Em 90 Dias</span>
+            {/* Alcance Seus Objetivos com
+            <span className="block text-gradient">Treinos e Nutrição Personalizados</span> */}
+            Alcance Sua Melhor Versão
+            <span className="block text-gradient">No Seu Ritmo</span>
           </h1>
           
           <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto leading-relaxed opacity-90">
-            Receba planos personalizados de treino e nutrição desenvolvidos por personal trainers certificados. 
-            Junte-se a milhares que alcançaram o físico dos sonhos com nosso sistema comprovado.
+            Acompanhamento individualizado para você treinar com segurança, se alimentar melhor e ver progresso de verdade.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
@@ -32,7 +33,7 @@ export default function Hero() {
               className="min-w-[200px]"
               onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })}
             >
-              Comece Sua Transformação
+              Começar Agora
             </Button>
             <Button 
               variant="outline-hero" 
@@ -40,12 +41,12 @@ export default function Hero() {
               className="min-w-[200px]"
               onClick={() => document.getElementById('testimonials')?.scrollIntoView({ behavior: 'smooth' })}
             >
-              Veja Histórias de Sucesso
+              Depoimentos de Alunos
             </Button>
           </div>
 
           {/* Social Proof */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-8 text-sm opacity-80">
+          {/* <div className="flex flex-col sm:flex-row items-center justify-center gap-8 text-sm opacity-80">
             <div className="flex items-center gap-2">
               <div className="flex -space-x-2">
                 <div className="w-8 h-8 rounded-full bg-primary border-2 border-white"></div>
@@ -58,7 +59,7 @@ export default function Hero() {
               <span className="text-fitness-secondary text-lg">⭐⭐⭐⭐⭐</span>
               <span>4.9/5 avaliação média</span>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
 
