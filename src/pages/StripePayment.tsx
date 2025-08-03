@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import { PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
@@ -128,7 +128,8 @@ export default function StripePayment() {
 
   const planType = searchParams.get('plan') || 'standard';
 
-  const plans = getPlansForPaymentPage();
+  // Memoize plans to prevent unnecessary re-renders and API calls
+  const plans = useMemo(() => getPlansForPaymentPage(), []);
 
   useEffect(() => {
     const createPaymentIntent = async () => {
@@ -173,7 +174,7 @@ export default function StripePayment() {
     };
 
     createPaymentIntent();
-  }, [planType, plans]);
+  }, [planType]); // Remove 'plans' dependency as it's memoized and won't change
 
   if (isLoading) {
     return (

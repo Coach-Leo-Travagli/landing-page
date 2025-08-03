@@ -2,7 +2,7 @@ import type { VercelRequest, VercelResponse } from "@vercel/node";
 import Stripe from "stripe";
 
 // Import plans configuration
-import { PLANS, isValidPlanType } from './plans-config.js';
+const { PLANS, isValidPlanType } = require('./plans-config.js');
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
