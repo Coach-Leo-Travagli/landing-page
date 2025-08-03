@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import heroImage from "@/assets/hero-fitness.jpg";
+import heroImage from "@/assets/hero-fitness-couple.jpg";
 
 export default function Hero() {
   return (
