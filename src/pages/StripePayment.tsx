@@ -27,9 +27,16 @@ function PaymentForm({
   const stripe = useStripe();
   const elements = useElements();
   const [isLoading, setIsLoading] = useState(false);
+  const [email, setEmail] = useState('');
+  const [emailError, setEmailError] = useState('');
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const planType = searchParams.get('plan') || 'standard';
+
+  const validateEmail = (email: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -38,11 +45,44 @@ function PaymentForm({
       return;
     }
 
+    // Validate email
+    if (!email.trim()) {
+      setEmailError('Email é obrigatório');
+      return;
+    }
+
+    if (!validateEmail(email)) {
+      setEmailError('Digite um email válido');
+      return;
+    }
+
+    setEmailError('');
     setIsLoading(true);
 
     try {
-      // Step 1: Confirm setup with Stripe (includes email from PaymentElement)
-      const { error: setupError, setupIntent } = await stripe.confirmSetup({
+      // Step 1: Create setup intent with email
+      const intentResponse = await fetch('/api/create-subscription-intent', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          planType,
+          email: email,
+        }),
+      });
+
+      const intentData = await intentResponse.json();
+
+      if (!intentData.client_secret) {
+        toast.error('Erro ao inicializar pagamento');
+        setIsLoading(false);
+        return;
+      }
+
+      // Step 2: Confirm the setup intent with payment method
+      const { error: setupError } = await stripe.confirmSetup({
+        clientSecret: intentData.client_secret,
         elements,
         confirmParams: {
           return_url: `${window.location.origin}/success`,
@@ -66,17 +106,6 @@ function PaymentForm({
         return;
       }
 
-      // Step 2: Extract payment method ID - email will be retrieved on backend
-      const paymentMethodId = typeof setupIntent.payment_method === 'string' 
-        ? setupIntent.payment_method 
-        : setupIntent.payment_method?.id || '';
-      
-      if (!paymentMethodId) {
-        toast.error('Erro ao processar método de pagamento');
-        setIsLoading(false);
-        return;
-      }
-
       // Step 3: Create the subscription
       const subscriptionResponse = await fetch('/api/create-subscription', {
         method: 'POST',
@@ -84,11 +113,12 @@ function PaymentForm({
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          setup_intent_id: setupIntent.id,
-          payment_method_id: paymentMethodId,
+          setup_intent_id: intentData.setup_intent_id,
+          customer_id: intentData.customer_id,
           price_id: STRIPE_PRICE_IDS[planType as PlanType],
           plan_type: planType,
           plan_name: planDetails.name,
+          email: email,
         }),
       });
 
@@ -96,8 +126,7 @@ function PaymentForm({
 
       if (subscriptionResponse.ok) {
         // Redirect to success page with subscription info
-        const customerEmail = subscriptionData.customer_email || '';
-        window.location.href = `/success?subscription_id=${subscriptionData.subscription_id}&plan=${planType}&email=${encodeURIComponent(customerEmail)}`;
+        window.location.href = `/success?subscription_id=${subscriptionData.subscription_id}&plan=${planType}&email=${encodeURIComponent(email)}`;
       } else {
         toast.error(subscriptionData.error || 'Erro ao criar assinatura');
       }
@@ -111,19 +140,36 @@ function PaymentForm({
 
       return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      {/* Payment Method with Email Collection */}
+      {/* Email Input */}
       <div className="bg-white p-6 rounded-lg shadow-sm border">
+        <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+          Email para cobrança e confirmações
+        </label>
+        <input
+          id="email"
+          type="email"
+          value={email}
+          onChange={(e) => {
+            setEmail(e.target.value);
+            if (emailError) setEmailError('');
+          }}
+          placeholder="seu@email.com"
+          className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent ${
+            emailError ? 'border-red-500' : 'border-gray-300'
+          }`}
+          disabled={isLoading}
+        />
+        {emailError && (
+          <p className="mt-2 text-sm text-red-600">{emailError}</p>
+        )}
+      </div>
+
+      {/* Payment Method */}
+      <div className="bg-white p-6 rounded-lg shadow-sm border">
+        <h3 className="text-lg font-medium text-gray-900 mb-4">Método de Pagamento</h3>
         <PaymentElement 
           options={{
             layout: 'tabs',
-            fields: {
-              billingDetails: {
-                email: 'auto',
-                name: 'auto',
-                phone: 'never',
-                address: 'never',
-              }
-            },
             business: {
               name: 'FitCoach Pro'
             }
@@ -296,7 +342,6 @@ export default function StripePayment() {
                     options={{
                       mode: 'setup',
                       currency: 'brl',
-                      setupFutureUsage: 'off_session',
                       appearance: {
                         theme: 'stripe',
                         variables: {
