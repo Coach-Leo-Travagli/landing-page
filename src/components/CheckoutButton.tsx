@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { CreditCard, Loader2 } from 'lucide-react';
-import { PlanType } from '@/lib/stripe';
+import { type PlanType } from '@/utils/plans';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 

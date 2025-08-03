@@ -1,20 +1,8 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import Stripe from "stripe";
 
-const PLANS = {
-  basic: {
-    name: 'Plano Básico',
-    priceId: process.env.STRIPE_PRICE_BASIC_ID || 'price_1RsSBmDCX7K7Umj2BCugUnyC',
-  },
-  standard: {
-    name: 'Plano Padrão', 
-    priceId: process.env.STRIPE_PRICE_STANDARD_ID || 'price_1RsSBmDCX7K7Umj2thhoygiC',
-  },
-  vip: {
-    name: 'Plano VIP',
-    priceId: process.env.STRIPE_PRICE_VIP_ID || 'price_1RsSByDCX7K7Umj2YiskvogS',
-  },
-} as const;
+// Import plans configuration
+import { PLANS, isValidPlanType } from './plans-config.js';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
@@ -30,11 +18,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const stripe = new Stripe(stripeSecretKey);
     const { planType } = req.body;
 
-    if (!planType || !(planType in PLANS)) {
+    if (!planType || !isValidPlanType(planType)) {
       return res.status(400).json({ error: 'Tipo de plano inválido' });
     }
 
-    const plan = PLANS[planType as keyof typeof PLANS];
+    const plan = PLANS[planType];
 
     // Create a customer first
     const customer = await stripe.customers.create({

@@ -1,4 +1,5 @@
 import { loadStripe } from '@stripe/stripe-js';
+import { PLANS, type PlanType } from '@/utils/plans';
 
 // Initialize Stripe with public key (optional for development environments)
 const stripePublicKey = import.meta.env.VITE_STRIPE_PUBLIC_KEY;
@@ -6,50 +7,9 @@ const stripePublicKey = import.meta.env.VITE_STRIPE_PUBLIC_KEY;
 // Only initialize Stripe if the public key is available
 export const stripePromise = stripePublicKey ? loadStripe(stripePublicKey) : null;
 
-// Plan configurations
-export const STRIPE_PLANS = {
-  basic: {
-    name: 'Básico',
-    price: 129,
-    priceId: import.meta.env.VITE_STRIPE_PRICE_BASIC_ID || 'price_1RsSBmDCX7K7Umj2BCugUnyC', // Your actual Stripe Price ID
-    features: [
-      'Planos de treino personalizados',
-      'Biblioteca de vídeos de exercícios',
-      'Acompanhamento de progresso',
-      'Diretrizes básicas de nutrição',
-      'Suporte por email'
-    ]
-  },
-  standard: {
-    name: 'Padrão',
-    price: 199,
-    priceId: import.meta.env.VITE_STRIPE_PRICE_STANDARD_ID || 'price_1RsSBmDCX7K7Umj2thhoygiC', // Your actual Stripe Price ID
-    features: [
-      'Tudo do plano Básico',
-      'Planos de refeições personalizados',
-      'Recomendações de suplementos',
-      'Check-ins semanais de progresso',
-      'Suporte prioritário por chat',
-      'Acesso ao banco de receitas'
-    ]
-  },
-  vip: {
-    name: 'VIP',
-    price: 399,
-    priceId: import.meta.env.VITE_STRIPE_PRICE_VIP_ID || 'price_1RsSByDCX7K7Umj2YiskvogS', // Your actual Stripe Price ID
-    features: [
-      'Tudo do plano Padrão',
-      'Videochamadas 1-a-1 (2x/mês)',
-      'Suporte 24/7 do personal trainer',
-      'Planejamento de meal prep',
-      'Análise de composição corporal',
-      'Ajustes prioritários no plano',
-      'Acesso à comunidade exclusiva'
-    ]
-  }
-} as const;
-
-export type PlanType = keyof typeof STRIPE_PLANS;
+// Re-export for backwards compatibility
+export const STRIPE_PLANS = PLANS;
+export type { PlanType };
 
 // Checkout session creation
 export const createCheckoutSession = async (planType: PlanType) => {
@@ -58,7 +18,7 @@ export const createCheckoutSession = async (planType: PlanType) => {
     throw new Error('Stripe não está configurado. Configure VITE_STRIPE_PUBLIC_KEY para usar pagamentos.');
   }
 
-  const plan = STRIPE_PLANS[planType];
+  const plan = PLANS[planType];
   
   if (!plan) {
     throw new Error(`Plano inválido: ${planType}`);
