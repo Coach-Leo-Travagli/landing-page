@@ -91,7 +91,7 @@ export default function PrivacyPolicy() {
               Para exercer seus direitos ou esclarecer dúvidas sobre esta política, entre em contato:
             </p>
             <p className="text-muted-foreground">
-              Email: privacidade@fitcoachpro.com<br />
+              Email: suporte@coachtravagli.com<br />
               Telefone: +55 (11) 99999-9999
             </p>
           </section>

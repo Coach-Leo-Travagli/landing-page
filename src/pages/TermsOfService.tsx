@@ -25,7 +25,7 @@ export default function TermsOfService() {
           <section className="mb-8">
             <h2 className="text-2xl font-bold text-fitness-dark mb-4">1. Aceitação dos Termos</h2>
             <p className="text-muted-foreground mb-4">
-              Ao acessar e usar os serviços da FitCoach Pro, você concorda em cumprir estes Termos de Serviço. 
+              Ao acessar e usar os serviços da Coach Travagli, você concorda em cumprir estes Termos de Serviço. 
               Se você não concorda com qualquer parte destes termos, não deve usar nossos serviços.
             </p>
           </section>
@@ -33,7 +33,7 @@ export default function TermsOfService() {
           <section className="mb-8">
             <h2 className="text-2xl font-bold text-fitness-dark mb-4">2. Descrição dos Serviços</h2>
             <p className="text-muted-foreground mb-4">
-              A FitCoach Pro oferece serviços de coaching fitness online, incluindo:
+              A Coach Travagli oferece serviços de coaching fitness online, incluindo:
             </p>
             <ul className="list-disc pl-6 text-muted-foreground space-y-2">
               <li>Planos de treino personalizados</li>
@@ -85,7 +85,7 @@ export default function TermsOfService() {
           <section className="mb-8">
             <h2 className="text-2xl font-bold text-fitness-dark mb-4">6. Propriedade Intelectual</h2>
             <p className="text-muted-foreground mb-4">
-              Todo o conteúdo fornecido pela FitCoach Pro, incluindo planos de treino, materiais educacionais 
+              Todo o conteúdo fornecido pela Coach Travagli, incluindo planos de treino, materiais educacionais 
               e recursos, são de nossa propriedade e protegidos por direitos autorais. O uso é licenciado 
               apenas para uso pessoal e não comercial.
             </p>
@@ -106,7 +106,7 @@ export default function TermsOfService() {
               Para questões sobre estes termos, entre em contato:
             </p>
             <p className="text-muted-foreground">
-              Email: suporte@fitcoachpro.com<br />
+              Email: suporte@coachtravagli.com<br />
               Telefone: +55 (11) 99999-9999<br />
               Endereço: São Paulo, SP
             </p>

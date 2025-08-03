@@ -53,7 +53,7 @@ export default function AboutUs() {
           <div className="max-w-4xl mx-auto text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-black mb-8">Nossa Missão</h2>
             <p className="text-lg text-muted-foreground leading-relaxed mb-8">
-              Na FitCoach Pro, acreditamos que cada pessoa merece viver sua melhor versão. Nossa missão é 
+              Na Coach Travagli, acreditamos que cada pessoa merece viver sua melhor versão. Nossa missão é 
               democratizar o acesso a coaching de fitness personalizado e de alta qualidade, oferecendo 
               planos sob medida que respeitam as necessidades, limitações e objetivos únicos de cada cliente.
             </p>

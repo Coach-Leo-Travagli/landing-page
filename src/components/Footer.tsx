@@ -6,7 +6,7 @@ import { toast } from "sonner";
 export default function Footer() {
   const handleEmailCopy = async () => {
     try {
-      await navigator.clipboard.writeText('suporte@fitcoachpro.com');
+      await navigator.clipboard.writeText('suporte@coachtravagli.com');
       toast.success('Email copiado para a área de transferência!');
     } catch (err) {
       toast.error('Erro ao copiar email');
@@ -48,7 +48,7 @@ export default function Footer() {
         <div className="grid md:grid-cols-4 gap-8 mb-12">
           {/* Company Info */}
           <div>
-            <h3 className="text-2xl font-black mb-6 text-gradient">FitCoach Pro</h3>
+            <h3 className="text-2xl font-black mb-6 text-gradient">Coach Travagli</h3>
             <p className="text-gray-300 mb-6 leading-relaxed">
               Transformando vidas através de coaching personalizado de fitness e nutrição. 
               Sua jornada para um você mais saudável e forte começa aqui.
@@ -74,7 +74,7 @@ export default function Footer() {
               <li><a href="#pricing" className="hover:text-primary transition-colors scroll-smooth">Preços</a></li>
               <li><a href="#testimonials" className="hover:text-primary transition-colors scroll-smooth">Histórias de Sucesso</a></li>
               <li><a href="#faq" className="hover:text-primary transition-colors scroll-smooth">FAQ</a></li>
-              <li><Link to="/sobre-nos" className="hover:text-primary transition-colors">Sobre Nós</Link></li>
+              {/* <li><Link to="/sobre-nos" className="hover:text-primary transition-colors">Sobre Nós</Link></li> */}
             </ul>
           </div>
 
@@ -98,7 +98,7 @@ export default function Footer() {
                 title="Clique para copiar o email"
               >
                 <Mail className="w-5 h-5 text-primary flex-shrink-0" />
-                <span className="truncate text-sm sm:text-base">contato@fitcoachpro.com</span>
+                <span className="truncate text-sm sm:text-base">suporte@coachtravagli.com</span>
               </div>
               <div className="flex items-center gap-3 max-w-full cursor-pointer hover:text-primary transition-colors group"
                 onClick={() => window.open('https://wa.me/5511999999999?text=Oi', '_blank')}
@@ -116,8 +116,7 @@ export default function Footer() {
             <div className="mt-6">
               <h5 className="font-semibold mb-2">Horário de Atendimento</h5>
               <p className="text-gray-300 text-sm">
-                Segunda - Sexta: 6h - 22h<br />
-                Sábado - Domingo: 8h - 20h
+                Segunda - Sexta: 8h - 18h
               </p>
             </div>
           </div>
@@ -126,7 +125,7 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="border-t border-gray-700 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-400 text-sm">
-            © 2024 FitCoach Pro. Todos os direitos reservados. Feito com ❤️ para sua jornada fitness.
+            © 2024 Coach Travagli. Todos os direitos reservados. Feito com ❤️ para sua jornada fitness.
           </p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <Link to="/politica-de-privacidade" className="text-gray-400 hover:text-primary text-sm transition-colors">Privacidade</Link>
