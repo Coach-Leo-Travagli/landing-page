@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { CreditCard, Loader2 } from 'lucide-react';
-import { createCheckoutSession, PlanType } from '@/lib/stripe';
+import { PlanType } from '@/lib/stripe';
 import { toast } from 'sonner';
+import { useNavigate } from 'react-router-dom';
 
 interface CheckoutButtonProps {
   planType: PlanType;
@@ -20,16 +21,22 @@ export default function CheckoutButton({
   size = 'lg'
 }: CheckoutButtonProps) {
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleCheckout = async () => {
     setIsLoading(true);
     
     try {
-      // Create checkout session
-      const checkoutUrl = await createCheckoutSession(planType);
+      // Check if Stripe is configured
+      if (!import.meta.env.VITE_STRIPE_PUBLIC_KEY) {
+        toast.error('Stripe não está configurado. Configure VITE_STRIPE_PUBLIC_KEY para usar pagamentos.');
+        setIsLoading(false);
+        return;
+      }
       
-      // Redirect to Stripe Checkout
-      window.location.href = checkoutUrl;
+      // Redirect to our custom payment page
+      navigate(`/pagamento?plan=${planType}`);
+      // No need to setIsLoading(false) as component will unmount
     } catch (error) {
       console.error('Erro no checkout:', error);
       
