@@ -34,10 +34,10 @@ export default function Testimonials() {
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-black mb-6 text-fitness-dark">
-            Resultados Reais de Pessoas Reais
+            Histórias de Clientes
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Veja as transformações incríveis que nossos clientes alcançaram
+            Conheça pessoas que já tiveram evolução com nosso acompanhamento
           </p>
         </div>
 
@@ -58,11 +58,11 @@ export default function Testimonials() {
                 </div>
 
                 {/* Rating */}
-                <div className="flex mb-4">
+                {/* <div className="flex mb-4">
                   {[...Array(testimonial.rating)].map((_, i) => (
                     <span key={i} className="text-fitness-secondary text-lg">⭐</span>
                   ))}
-                </div>
+                </div> */}
 
                 {/* Quote */}
                 <blockquote className="text-muted-foreground mb-6 italic leading-relaxed">
@@ -79,7 +79,7 @@ export default function Testimonials() {
           ))}
         </div>
 
-        <div className="text-center mt-12">
+        {/* <div className="text-center mt-12">
           <div className="inline-flex items-center gap-4 bg-white px-8 py-4 rounded-full shadow-fitness-card">
             <div className="flex -space-x-2">
               {[...Array(5)].map((_, i) => (
@@ -91,7 +91,7 @@ export default function Testimonials() {
               <div className="text-sm text-muted-foreground">Perda média de 11kg em 12 semanas</div>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </section>
   );

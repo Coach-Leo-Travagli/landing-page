@@ -10,42 +10,42 @@ const faqs = [
   {
     id: "results-timeline",
     question: "Em quanto tempo verei resultados?",
-    answer: "A maioria dos clientes vê mudanças perceptíveis em 2-3 semanas, com transformações significativas ocorrendo em 8-12 semanas. Os resultados variam baseados no ponto de partida, consistência e fatores individuais."
+    answer: "Isso varia de pessoa para pessoa. Algumas mudanças sutis podem ser percebidas já nas primeiras semanas, mas resultados consistentes costumam aparecer após 8 a 12 semanas de dedicação ao plano."
   },
   {
     id: "gym-equipment",
     question: "Preciso de equipamentos de academia?",
-    answer: "Nossos planos são flexíveis! Podemos criar treinos caseiros com equipamentos mínimos ou rotinas completas de academia. Durante o cadastro, avaliaremos seus equipamentos disponíveis e preferências."
+    answer: "Não necessariamente. Podemos criar treinos que funcionam em casa com equipamentos básicos ou montar uma rotina completa para academia, dependendo da sua preferência e recursos disponíveis."
   },
   {
     id: "dietary-restrictions",
     question: "E se eu tiver restrições alimentares?",
-    answer: "Absolutamente sem problema! Nossos planos nutricionais acomodam todas as restrições alimentares incluindo vegetariana, vegana, keto, sem glúten e qualquer alergia alimentar. Apenas nos informe durante a configuração."
+    answer: "Sem problema. Ao montar seu plano, levamos em consideração alergias, intolerâncias e preferências alimentares como dieta vegetariana, vegana, sem glúten, entre outras."
   },
   {
     id: "daily-time-commitment",
     question: "Quanto tempo preciso dedicar diariamente?",
-    answer: "Os treinos variam tipicamente de 30-60 minutos, 4-6 vezes por semana dependendo dos seus objetivos e disponibilidade. Trabalhamos com sua agenda para criar uma rotina sustentável."
+    answer: "A maioria dos treinos dura entre 30 e 60 minutos, de 4 a 6 vezes por semana. Ajustamos o programa de acordo com o seu tempo e disponibilidade para que seja sustentável a longo prazo."
   },
   {
     id: "plan-changes",
     question: "Posso trocar de plano se necessário?",
-    answer: "Sim! Você pode fazer upgrade ou downgrade do seu plano a qualquer momento. Queremos garantir que você tenha o nível de suporte que melhor se adapta às suas necessidades e objetivos atuais."
+    answer: "Sim, você pode mudar para outro plano a qualquer momento, seja para obter mais suporte ou simplificar o acompanhamento."
   },
   {
     id: "refund-policy",
     question: "E se eu não ficar satisfeito?",
-    answer: "Oferecemos 30 dias de garantia de devolução do dinheiro. Se você não estiver completamente satisfeito com seus resultados ou experiência, reembolsaremos seu pagamento, sem perguntas."
+    answer: "Oferecemos uma garantia de 30 dias. Caso não esteja satisfeito com o serviço nesse período, devolvemos o valor pago sem burocracia."
   },
   {
     id: "beginners-welcome",
     question: "Vocês trabalham com iniciantes?",
-    answer: "Absolutamente! Muitas de nossas transformações mais bem-sucedidas vêm de iniciantes completos. Nossos personal trainers se especializam em criar programas seguros e progressivos para todos os níveis de condicionamento."
+    answer: "Sim, muitos de nossos clientes estão começando do zero. O acompanhamento é pensado para cada nível de experiência, sempre com foco em evolução segura e gradual."
   },
   {
     id: "video-calls-vip",
     question: "Como funcionam as videochamadas (plano VIP)?",
-    answer: "Membros VIP recebem duas videochamadas de 30 minutos por mês com seu personal trainer dedicado. Podem ser usadas para verificação de forma, motivação, ajustes no plano ou qualquer dúvida que você tenha."
+    answer: "Clientes do plano VIP têm direito a duas videochamadas mensais de 30 minutos com o treinador. Nessas sessões, você pode tirar dúvidas, revisar exercícios e ajustar seu plano."
   }
 ];
 
@@ -141,8 +141,8 @@ export default function FAQ() {
             Ainda tem dúvidas?
           </p>
           <a 
-            href="mailto:suporte@fitnesscoach.com" 
-            className="text-primary font-semibold hover:underline"
+            onClick={() => window.open('https://wa.me/5511999999999?text=Oi', '_blank')}
+            className="text-primary font-semibold hover:underline hover:cursor-pointer"
           >
             Entre em contato com nossa equipe de suporte
           </a>

@@ -45,11 +45,11 @@ export const PLANS: Record<PlanType, PlanConfig> = {
     price: 129,
     priceFormatted: 'R$ 129',
     period: '/mês',
-    description: 'Perfeito para iniciantes que estão começando sua jornada fitness',
+    description: 'Ideal para quem está começando a treinar com orientação profissional',
     features: [
       'Planos de treino personalizados',
-      'Biblioteca de vídeos de exercícios',
-      'Acompanhamento de progresso',
+      'Vídeos demonstrativos dos exercícios',
+      'Acompanhamento do progresso',
       'Diretrizes básicas de nutrição',
       'Suporte por email'
     ],
@@ -65,14 +65,14 @@ export const PLANS: Record<PlanType, PlanConfig> = {
     price: 199,
     priceFormatted: 'R$ 199',
     period: '/mês',
-    description: 'Escolha mais popular para transformações sérias',
+    description: 'Para quem quer personalização completa e acompanhamento mais próximo',
     features: [
       'Tudo do plano Básico',
-      'Planos de refeições personalizados',
+      'Plano de refeições individualizado',
       'Recomendações de suplementos',
       'Check-ins semanais de progresso',
-      'Suporte prioritário por chat',
-      'Acesso ao banco de receitas'
+      'Suporte por whatsapp prioritário',
+      'Acesso a receitas exclusivas'
     ],
     popular: true,
     variant: 'hero',
@@ -86,14 +86,14 @@ export const PLANS: Record<PlanType, PlanConfig> = {
     price: 399,
     priceFormatted: 'R$ 399',
     period: '/mês',
-    description: 'Coaching premium com resultados máximos',
+    description: 'Suporte premium com acompanhamento ainda mais próximo.',
     features: [
       'Tudo do plano Padrão',
       'Videochamadas 1-a-1 (2x/mês)',
       'Suporte 24/7 do personal trainer',
-      'Planejamento de meal prep',
-      'Análise de composição corporal',
       'Ajustes prioritários no plano',
+      'Análise detalhada de composição corporal',
+      'Orientação para planejamento de refeições',
       'Acesso à comunidade exclusiva'
     ],
     popular: false,

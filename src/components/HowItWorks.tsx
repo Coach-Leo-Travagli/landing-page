@@ -4,19 +4,22 @@ const steps = [
   {
     number: "01",
     title: "Cadastro e Avaliação",
-    description: "Complete nossa avaliação física abrangente e nos conte seus objetivos. Analisamos seu estilo de vida, preferências e limitações.",
+    // description: "Preencha nossa avaliação física online contando seus objetivos, estilo de vida e possíveis limitações.",
+    description: "Preencha nosso questionário para entendermos seu histórico, rotina e objetivos. Essa avaliação é a base para um plano que se adapta ao seu perfil.",
     icon: "👤"
   },
   {
     number: "02", 
-    title: "Receba Seu Plano Personalizado",
-    description: "Receba um plano personalizado de treino e nutrição desenvolvido especificamente para seu tipo físico, objetivos e rotina.",
+    title: "Plano Personalizado",
+    // description: "Receba um plano exclusivo de treino e nutrição, desenvolvido de forma individual para atender suas necessidades e rotina.",
+    description: "Com base na avaliação, criamos um plano exclusivo de treino e nutrição, ajustado ao seu nível atual e metas desejadas.",
     icon: "📋"
   },
   {
     number: "03",
-    title: "Acompanhamento e Suporte Semanal", 
-    description: "Monitore o progresso com acompanhamentos semanais, ajustes no plano e suporte 24/7 de nossos personal trainers certificados.",
+    title: "Acompanhamento Semanal", 
+    // description: "Acompanhe seu progresso com revisões semanais e suporte direto do personal trainer para ajustes no plano sempre que necessário.",
+    description: "Você terá acompanhamento semanal para avaliar o progresso e fazer ajustes necessários, além de suporte direto para tirar dúvidas ao longo do processo.",
     icon: "📈"
   }
 ];
@@ -30,11 +33,12 @@ export default function HowItWorks() {
             Como Funciona
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Nosso processo comprovado de 3 etapas já ajudou milhares a alcançar seus objetivos fitness
+            {/* Veja como funciona o acompanhamento para você alcançar seus objetivos com segurança e personalização. */}
+            Nosso processo simples em 3 etapas foi pensado para facilitar sua jornada de transformação, do cadastro ao acompanhamento contínuo.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        <div className="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto">
           {steps.map((step, index) => (
             <div key={index} className="relative">
               <Card className="h-full shadow-fitness-card hover:shadow-lg transition-all duration-300 border-0 bg-white">

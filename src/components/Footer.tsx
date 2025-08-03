@@ -13,15 +13,6 @@ export default function Footer() {
     }
   };
 
-  const handlePhoneCopy = async () => {
-    try {
-      await navigator.clipboard.writeText('+55 (11) 99999-9999');
-      toast.success('Telefone copiado para a área de transferência!');
-    } catch (err) {
-      toast.error('Erro ao copiar telefone');
-    }
-  };
-
   return (
     <footer className="bg-fitness-dark text-white py-16">
       <div className="container mx-auto px-4">
@@ -31,7 +22,7 @@ export default function Footer() {
             Pronto Para Começar Sua Transformação?
           </h2>
           <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
-            Junte-se a milhares de pessoas que já transformaram seus corpos e vidas
+            Conte com orientação profissional para evoluir no seu ritmo
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button 
@@ -40,7 +31,7 @@ export default function Footer() {
               className="bg-white text-primary hover:bg-white/90"
               onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })}
             >
-              Comece Sua Transformação
+              Escolher Plano
             </Button>
             <Button 
               variant="outline-hero" 
@@ -48,7 +39,7 @@ export default function Footer() {
               className="border-white text-white hover:bg-white hover:text-primary"
               onClick={() => window.open('https://wa.me/5511999999999?text=Oi', '_blank')}
             >
-              Agendar Consultoria
+              Agendar Conversa
             </Button>
           </div>
         </div>
@@ -103,15 +94,15 @@ export default function Footer() {
             <div className="space-y-4 text-gray-300">
               <div 
                 className="flex items-center gap-3 cursor-pointer hover:text-primary transition-colors group max-w-full"
-                onClick={() => window.open('https://wa.me/5511999999999?text=Oi', '_blank')}
-                title="Entre em contato com nossa equipe de suporte"
+                onClick={handleEmailCopy}
+                title="Clique para copiar o email"
               >
                 <Mail className="w-5 h-5 text-primary flex-shrink-0" />
-                <span className="truncate text-sm sm:text-base">Entre em contato com nossa equipe de suporte</span>
+                <span className="truncate text-sm sm:text-base">contato@fitcoachpro.com</span>
               </div>
               <div className="flex items-center gap-3 max-w-full cursor-pointer hover:text-primary transition-colors group"
-                onClick={handlePhoneCopy}
-                title="Clique para copiar o telefone"
+                onClick={() => window.open('https://wa.me/5511999999999?text=Oi', '_blank')}
+                title="Entre em contato pelo whatsapp"
               >
                 <Phone className="w-5 h-5 text-primary flex-shrink-0" />
                 <span className="truncate text-sm sm:text-base">+55 (11) 99999-9999</span>
