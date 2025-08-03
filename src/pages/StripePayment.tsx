@@ -5,7 +5,7 @@ import { PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js'
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Check, ArrowLeft, Loader2, X } from 'lucide-react';
+import { Check, ArrowLeft, Loader2 } from 'lucide-react';
 import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { STRIPE_PRICE_IDS, getPlansForPaymentPage, getPlan, isValidPlanType, type PlanType } from '@/utils/plans';
@@ -41,8 +41,8 @@ function PaymentForm({
     setIsLoading(true);
 
     try {
-      // Confirm the setup intent (for future payments)
-      const { error: setupError } = await stripe.confirmSetup({
+      // Step 1: Confirm setup with Stripe (includes email from PaymentElement)
+      const { error: setupError, setupIntent } = await stripe.confirmSetup({
         elements,
         confirmParams: {
           return_url: `${window.location.origin}/success`,
@@ -66,26 +66,38 @@ function PaymentForm({
         return;
       }
 
-      // Create the subscription
-      const response = await fetch('/api/create-subscription', {
+      // Step 2: Extract payment method ID - email will be retrieved on backend
+      const paymentMethodId = typeof setupIntent.payment_method === 'string' 
+        ? setupIntent.payment_method 
+        : setupIntent.payment_method?.id || '';
+      
+      if (!paymentMethodId) {
+        toast.error('Erro ao processar método de pagamento');
+        setIsLoading(false);
+        return;
+      }
+
+      // Step 3: Create the subscription
+      const subscriptionResponse = await fetch('/api/create-subscription', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          setup_intent_id: setupIntentId,
-          customer_id: customerId,
+          setup_intent_id: setupIntent.id,
+          payment_method_id: paymentMethodId,
           price_id: STRIPE_PRICE_IDS[planType as PlanType],
           plan_type: planType,
           plan_name: planDetails.name,
         }),
       });
 
-      const subscriptionData = await response.json();
+      const subscriptionData = await subscriptionResponse.json();
 
-      if (response.ok) {
+      if (subscriptionResponse.ok) {
         // Redirect to success page with subscription info
-        window.location.href = `/success?subscription_id=${subscriptionData.subscription_id}&plan=${planType}`;
+        const customerEmail = subscriptionData.customer_email || '';
+        window.location.href = `/success?subscription_id=${subscriptionData.subscription_id}&plan=${planType}&email=${encodeURIComponent(customerEmail)}`;
       } else {
         toast.error(subscriptionData.error || 'Erro ao criar assinatura');
       }
@@ -97,12 +109,21 @@ function PaymentForm({
     setIsLoading(false);
   };
 
-  return (
+      return (
     <form onSubmit={handleSubmit} className="space-y-6">
+      {/* Payment Method with Email Collection */}
       <div className="bg-white p-6 rounded-lg shadow-sm border">
         <PaymentElement 
           options={{
             layout: 'tabs',
+            fields: {
+              billingDetails: {
+                email: 'auto',
+                name: 'auto',
+                phone: 'never',
+                address: 'never',
+              }
+            },
             business: {
               name: 'FitCoach Pro'
             }
@@ -144,9 +165,6 @@ function PaymentForm({
 export default function StripePayment() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const [clientSecret, setClientSecret] = useState<string>('');
-  const [customerId, setCustomerId] = useState<string>('');
-  const [setupIntentId, setSetupIntentId] = useState<string>('');
   const [planDetails, setPlanDetails] = useState<{ name: string; price: number; features: string[] } | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -157,77 +175,33 @@ export default function StripePayment() {
 
   // Handle page unload - detect when user navigates away
   useEffect(() => {
-    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
-      // Only show warning if there's an active payment session
-      if (clientSecret && !isLoading) {
-        event.preventDefault();
-        event.returnValue = 'Tem certeza que deseja sair? Seu pagamento será cancelado.';
-        return event.returnValue;
-      }
-    };
-
     const handlePopState = () => {
-      // User clicked back button
-      if (clientSecret) {
-        navigate('/cancel');
-      }
+      // User clicked back button - redirect to cancel
+      navigate('/cancel');
     };
 
-    window.addEventListener('beforeunload', handleBeforeUnload);
     window.addEventListener('popstate', handlePopState);
 
     return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
       window.removeEventListener('popstate', handlePopState);
     };
-  }, [clientSecret, isLoading, navigate]);
+  }, [navigate]);
 
   useEffect(() => {
-    const createPaymentIntent = async () => {
-      try {
-        setIsLoading(true);
-        
-        // Validate plan type
-        if (!isValidPlanType(planType)) {
-          toast.error('Tipo de plano inválido');
-          navigate('/cancel');
-          return;
-        }
-        
-        const selectedPlan = plans[planType];
-        setPlanDetails(selectedPlan);
-
-        // Create subscription setup intent
-        const response = await fetch('/api/create-subscription-intent', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            planType,
-          }),
-        });
-
-        const data = await response.json();
-        
-        if (data.client_secret) {
-          setClientSecret(data.client_secret);
-          setCustomerId(data.customer_id);
-          setSetupIntentId(data.setup_intent_id);
-        } else {
-          toast.error('Erro ao inicializar pagamento');
-          setTimeout(() => navigate('/cancel'), 2000); // Redirect to cancel after showing error
-        }
-      } catch (error) {
-        console.error('Error creating payment intent:', error);
-        toast.error('Erro ao carregar dados de pagamento');
-        setTimeout(() => navigate('/cancel'), 2000); // Redirect to cancel after showing error
-      } finally {
-        setIsLoading(false);
+    const initializePage = () => {
+      // Validate plan type
+      if (!isValidPlanType(planType)) {
+        toast.error('Tipo de plano inválido');
+        navigate('/cancel');
+        return;
       }
+      
+      const selectedPlan = plans[planType];
+      setPlanDetails(selectedPlan);
+      setIsLoading(false);
     };
 
-    createPaymentIntent();
+    initializePage();
   }, [planType, navigate, plans]); // Include all dependencies
 
   if (isLoading) {
@@ -317,41 +291,30 @@ export default function StripePayment() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  {clientSecret ? (
-                    <Elements 
-                      stripe={stripePromise} 
-                      options={{
-                        clientSecret,
-                        appearance: {
-                          theme: 'stripe',
-                          variables: {
-                            colorPrimary: '#16a34a',
-                            colorBackground: '#ffffff',
-                            colorText: '#374151',
-                            borderRadius: '8px',
-                          },
+                  <Elements 
+                    stripe={stripePromise} 
+                    options={{
+                      mode: 'setup',
+                      currency: 'brl',
+                      setupFutureUsage: 'off_session',
+                      appearance: {
+                        theme: 'stripe',
+                        variables: {
+                          colorPrimary: '#348df9',
+                          colorBackground: '#ffffff',
+                          colorText: '#374151',
+                          borderRadius: '8px',
                         },
-                      }}
-                    >
-                      <PaymentForm 
-                        clientSecret={clientSecret} 
-                        planDetails={planDetails} 
-                        customerId={customerId}
-                        setupIntentId={setupIntentId}
-                      />
-                    </Elements>
-                  ) : (
-                    <div className="text-center py-8">
-                      <p className="text-gray-600">Erro ao carregar formulário de pagamento</p>
-                      <Button 
-                        onClick={() => window.location.reload()} 
-                        variant="outline" 
-                        className="mt-4"
-                      >
-                        Tentar novamente
-                      </Button>
-                    </div>
-                  )}
+                      },
+                    }}
+                  >
+                    <PaymentForm 
+                      clientSecret={''} 
+                      planDetails={planDetails} 
+                      customerId={''}
+                      setupIntentId={''}
+                    />
+                  </Elements>
                 </CardContent>
               </Card>
 
