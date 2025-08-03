@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Check, ArrowLeft, Loader2 } from 'lucide-react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { toast } from 'sonner';
+import { STRIPE_PRICE_IDS, getPlansForPaymentPage, getPlan, isValidPlanType, type PlanType } from '@/utils/plans';
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY || '');
 
@@ -55,12 +56,6 @@ function PaymentForm({
       }
 
       // Create the subscription
-      const plans = {
-        basic: 'price_1RsSBmDCX7K7Umj2BCugUnyC',
-        standard: 'price_1RsSBmDCX7K7Umj2thhoygiC', 
-        vip: 'price_1RsSByDCX7K7Umj2YiskvogS'
-      };
-
       const response = await fetch('/api/create-subscription', {
         method: 'POST',
         headers: {
@@ -69,7 +64,7 @@ function PaymentForm({
         body: JSON.stringify({
           setup_intent_id: setupIntentId,
           customer_id: customerId,
-          price_id: plans[planType as keyof typeof plans],
+          price_id: STRIPE_PRICE_IDS[planType as PlanType],
           plan_type: planType,
           plan_name: planDetails.name,
         }),
@@ -133,51 +128,20 @@ export default function StripePayment() {
 
   const planType = searchParams.get('plan') || 'standard';
 
-  // Mock plan details (replace with your actual plan data)
-  const plans = {
-    basic: {
-      name: 'Plano Básico',
-      price: 129,
-      features: [
-        'Planos de treino personalizados',
-        'Biblioteca de vídeos de exercícios',
-        'Acompanhamento de progresso',
-        'Diretrizes básicas de nutrição',
-        'Suporte por email'
-      ]
-    },
-    standard: {
-      name: 'Plano Padrão',
-      price: 199,
-      features: [
-        'Tudo do plano Básico',
-        'Planos de refeições personalizados',
-        'Recomendações de suplementos',
-        'Check-ins semanais de progresso',
-        'Suporte prioritário por chat',
-        'Acesso ao banco de receitas'
-      ]
-    },
-    vip: {
-      name: 'Plano VIP',
-      price: 399,
-      features: [
-        'Tudo do plano Padrão',
-        'Videochamadas 1-a-1 (2x/mês)',
-        'Suporte 24/7 do personal trainer',
-        'Planejamento de meal prep',
-        'Análise de composição corporal',
-        'Ajustes prioritários no plano',
-        'Acesso à comunidade exclusiva'
-      ]
-    }
-  };
+  const plans = getPlansForPaymentPage();
 
   useEffect(() => {
     const createPaymentIntent = async () => {
       try {
         setIsLoading(true);
-        const selectedPlan = plans[planType as keyof typeof plans];
+        
+        // Validate plan type
+        if (!isValidPlanType(planType)) {
+          toast.error('Tipo de plano inválido');
+          return;
+        }
+        
+        const selectedPlan = plans[planType];
         setPlanDetails(selectedPlan);
 
         // Create subscription setup intent
@@ -209,7 +173,7 @@ export default function StripePayment() {
     };
 
     createPaymentIntent();
-  }, [planType]);
+  }, [planType, plans]);
 
   if (isLoading) {
     return (
@@ -253,7 +217,7 @@ export default function StripePayment() {
                 <CardHeader>
                   <div className="flex items-center justify-between">
                     <CardTitle className="text-xl">{planDetails?.name}</CardTitle>
-                    {planDetails?.name === 'Plano Padrão' && (
+                    {getPlan(planType as PlanType)?.popular && (
                       <Badge variant="secondary" className="bg-primary text-white">
                         MAIS POPULAR
                       </Badge>

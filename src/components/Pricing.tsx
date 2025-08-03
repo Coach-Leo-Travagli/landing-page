@@ -1,65 +1,10 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Check } from "lucide-react";
 import CheckoutButton from "@/components/CheckoutButton";
-import { PlanType } from "@/lib/stripe";
+import { getPlansForPricingComponent, type PlanType } from "@/utils/plans";
 import { useEffect, useState } from "react";
 
-const plans = [
-  {
-    name: "Básico",
-    price: "R$ 129",
-    priceValue: 129.00,
-    period: "/mês",
-    description: "Perfeito para iniciantes que estão começando sua jornada fitness",
-    features: [
-      "Planos de treino personalizados",
-      "Biblioteca de vídeos de exercícios",
-      "Acompanhamento de progresso",
-      "Diretrizes básicas de nutrição",
-      "Suporte por email"
-    ],
-    popular: false,
-    variant: "outline" as const,
-    planType: "basic" as PlanType
-  },
-  {
-    name: "Padrão", 
-    price: "R$ 199",
-    priceValue: 199.00,
-    period: "/mês",
-    description: "Escolha mais popular para transformações sérias",
-    features: [
-      "Tudo do plano Básico",
-      "Planos de refeições personalizados",
-      "Recomendações de suplementos",
-      "Check-ins semanais de progresso",
-      "Suporte prioritário por chat",
-      "Acesso ao banco de receitas"
-    ],
-    popular: true,
-    variant: "hero" as const,
-    planType: "standard" as PlanType
-  },
-  {
-    name: "VIP",
-    price: "R$ 399", 
-    priceValue: 399.00,
-    period: "/mês",
-    description: "Coaching premium com resultados máximos",
-    features: [
-      "Tudo do plano Padrão",
-      "Videochamadas 1-a-1 (2x/mês)",
-      "Suporte 24/7 do personal trainer",
-      "Planejamento de meal prep",
-      "Análise de composição corporal",
-      "Ajustes prioritários no plano",
-      "Acesso à comunidade exclusiva"
-    ],
-    popular: false,
-    variant: "cta" as const,
-    planType: "vip" as PlanType
-  }
-];
+const plans = getPlansForPricingComponent();
 
 export default function Pricing() {
   const [animate, setAnimate] = useState(false);

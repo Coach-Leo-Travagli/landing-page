@@ -1,20 +1,8 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import Stripe from "stripe";
 
-const PLANS = {
-  basic: {
-    name: 'Plano Básico',
-    priceId: process.env.STRIPE_PRICE_BASIC_ID || 'price_basic_monthly',
-  },
-  standard: {
-    name: 'Plano Padrão',
-    priceId: process.env.STRIPE_PRICE_STANDARD_ID || 'price_standard_monthly',
-  },
-  vip: {
-    name: 'Plano VIP',
-    priceId: process.env.STRIPE_PRICE_VIP_ID || 'price_vip_monthly',
-  },
-} as const;
+// Import plans configuration
+import { PLANS, isValidPlanType } from './plans-config.js';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
@@ -31,11 +19,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     const { priceId, planType } = req.body;
 
-    if (!planType || !(planType in PLANS)) {
+    if (!planType || !isValidPlanType(planType)) {
       return res.status(400).json({ error: 'Tipo de plano inválido' });
     }
 
-    const plan = PLANS[planType as keyof typeof PLANS];
+    const plan = PLANS[planType];
     const actualPriceId = priceId || plan.priceId;
 
     const origin = req.headers.origin 
