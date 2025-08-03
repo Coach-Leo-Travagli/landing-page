@@ -60,27 +60,7 @@ function PaymentForm({
     setIsLoading(true);
 
     try {
-      // Step 1: Create setup intent with email
-      const intentResponse = await fetch('/api/create-subscription-intent', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          planType,
-          email: email,
-        }),
-      });
-
-      const intentData = await intentResponse.json();
-
-      if (!intentData.client_secret) {
-        toast.error('Erro ao inicializar pagamento');
-        setIsLoading(false);
-        return;
-      }
-
-      // Step 2: Submit elements form first (required before confirmSetup)
+      // Step 1: Submit elements form first to validate payment details
       const { error: submitError } = await elements.submit();
       
       if (submitError) {
@@ -99,11 +79,11 @@ function PaymentForm({
         return;
       }
 
-      // Step 3: Confirm the setup intent with payment method
-      const { error: setupError } = await stripe.confirmSetup({
-        clientSecret: intentData.client_secret,
+      // Step 2: Confirm the setup intent 
+      const { error: setupError, setupIntent } = await stripe.confirmSetup({
+        clientSecret,
         confirmParams: {
-          return_url: `${window.location.origin}/success`,
+          return_url: `${window.location.origin}/success?plan=${planType}&email=${encodeURIComponent(email)}`,
         },
         redirect: 'if_required',
       });
@@ -131,8 +111,8 @@ function PaymentForm({
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          setup_intent_id: intentData.setup_intent_id,
-          customer_id: intentData.customer_id,
+          setup_intent_id: setupIntent?.id,
+          customer_id: customerId,
           price_id: STRIPE_PRICE_IDS[planType as PlanType],
           plan_type: planType,
           plan_name: planDetails.name,
@@ -229,6 +209,9 @@ function PaymentForm({
 export default function StripePayment() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const [clientSecret, setClientSecret] = useState<string>('');
+  const [customerId, setCustomerId] = useState<string>('');
+  const [setupIntentId, setSetupIntentId] = useState<string>('');
   const [planDetails, setPlanDetails] = useState<{ name: string; price: number; features: string[] } | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -355,29 +338,35 @@ export default function StripePayment() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <Elements 
-                    stripe={stripePromise} 
-                    options={{
-                      mode: 'setup',
-                      currency: 'brl',
-                      appearance: {
-                        theme: 'stripe',
-                        variables: {
-                          colorPrimary: '#348df9',
-                          colorBackground: '#ffffff',
-                          colorText: '#374151',
-                          borderRadius: '8px',
+                  {clientSecret ? (
+                    <Elements 
+                      stripe={stripePromise} 
+                      options={{
+                        clientSecret,
+                        appearance: {
+                          theme: 'stripe',
+                          variables: {
+                            colorPrimary: '#348df9',
+                            colorBackground: '#ffffff',
+                            colorText: '#374151',
+                            borderRadius: '8px',
+                          },
                         },
-                      },
-                    }}
-                  >
-                    <PaymentForm 
-                      clientSecret={''} 
-                      planDetails={planDetails} 
-                      customerId={''}
-                      setupIntentId={''}
-                    />
-                  </Elements>
+                      }}
+                    >
+                      <PaymentForm 
+                        clientSecret={clientSecret} 
+                        planDetails={planDetails} 
+                        customerId={customerId}
+                        setupIntentId={setupIntentId}
+                      />
+                    </Elements>
+                  ) : (
+                    <div className="text-center py-8">
+                      <Loader2 className="w-6 h-6 animate-spin mx-auto mb-4" />
+                      <p className="text-gray-600">Carregando formulário de pagamento...</p>
+                    </div>
+                  )}
                 </CardContent>
               </Card>
 
