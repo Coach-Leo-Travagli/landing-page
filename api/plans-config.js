@@ -1,14 +1,14 @@
-// ES modules version of plans configuration for API use
+// CommonJS version of plans configuration for API use
 // This file bridges the gap between our TypeScript utils and API files
 
 const getBasicPriceId = () => 
-  process.env.STRIPE_PRICE_BASIC_ID || 'price_1RsSBmDCX7K7Umj2BCugUnyC';
+  process.env.STRIPE_PRICE_BASIC_ID || 'basic_monthly';
 
 const getStandardPriceId = () => 
-  process.env.STRIPE_PRICE_STANDARD_ID || 'price_1RsSBmDCX7K7Umj2thhoygiC';
+  process.env.STRIPE_PRICE_STANDARD_ID || 'standard_monthly';
 
 const getVipPriceId = () => 
-  process.env.STRIPE_PRICE_VIP_ID || 'price_1RsSByDCX7K7Umj2YiskvogS';
+  process.env.STRIPE_PRICE_VIP_ID || 'vip_monthly';
 
 const PLANS = {
   basic: {
