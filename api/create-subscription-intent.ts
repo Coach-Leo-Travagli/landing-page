@@ -16,7 +16,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     const stripe = new Stripe(stripeSecretKey);
-    const { planType } = req.body;
+    const { planType, email } = req.body;
 
     if (!planType || !isValidPlanType(planType)) {
       return res.status(400).json({ error: 'Tipo de plano inválido' });
@@ -26,6 +26,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     // Create a customer first
     const customer = await stripe.customers.create({
+      email: email || undefined, // Add email if provided
       metadata: {
         plan_type: planType,
         plan_name: plan.name,
