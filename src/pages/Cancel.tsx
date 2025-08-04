@@ -2,8 +2,17 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { XCircle, Home, RefreshCw, MessageCircle } from 'lucide-react';
+import { toast } from 'sonner';
 
 export default function Cancel() {
+  const handleEmailCopy = async () => {
+    try {
+      await navigator.clipboard.writeText('suporte@coachtravagli.com');
+      toast.success('Email copiado para a área de transferência!');
+    } catch (err) {
+      toast.error('Erro ao copiar email');
+    }
+  };
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white flex items-center justify-center px-4">
       <div className="max-w-2xl w-full">
@@ -84,14 +93,14 @@ export default function Cancel() {
               <p className="text-sm text-muted-foreground">
                 Dúvidas sobre nossos planos? Entre em contato:{' '}
                 <a 
-                  href="mailto:suporte@coachtravagli.com" 
-                  className="text-primary hover:underline font-medium"
+                  onClick={handleEmailCopy}
+                  className="text-primary hover:underline font-medium cursor-pointer"
                 >
                   suporte@coachtravagli.com
                 </a>
               </p>
               <p className="text-xs text-muted-foreground mt-2">
-                WhatsApp: +55 (11) 99999-9999 • Atendimento: Seg-Sex 8h às 18h
+                WhatsApp: <a href="https://wa.me/5511999999999?text=Oi" className="text-primary hover:underline font-medium cursor-pointer" target="_blank" rel="noopener noreferrer">+55 (11) 99999-9999</a> • Atendimento: Seg-Sex 8h às 18h
               </p>
             </div>
           </CardContent>
