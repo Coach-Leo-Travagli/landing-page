@@ -35,7 +35,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
     switch (event.type) {
       case "checkout.session.completed":
-        console.log("✅ Checkout concluído:", event.data.object.id);
+        console.log("✅ Checkout concluído:", event.data.object.id, event.data.object);
         
         // Save payment event to database
         try {
@@ -50,7 +50,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
               subscriptionId: session.subscription as string || null,
             },
           });
-          console.log("💾 Payment event saved to database:", event.id);
+          console.log("💾 Payment event saved to database (checkout.session.completed):", event.id);
         } catch (dbError) {
           console.error("❌ Database error saving payment event:", dbError);
           // Don't break the webhook - continue processing
@@ -58,30 +58,31 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         break;
 
       case "invoice.payment_succeeded":
-        console.log("💰 Pagamento de assinatura OK:", event.data.object.id);
-        
-        // Save payment event to database
+        console.log("💰 Pagamento de assinatura OK:", event.data.object.id, event.data.object);
+      
         try {
           const invoice = event.data.object as Stripe.Invoice;
           await prisma.payment.create({
             data: {
               id: event.id,
-              customerEmail: invoice.customer_email || 'unknown',
-              customerName: invoice.customer_name || 'unknown',
-              priceId: (invoice.lines.data[0] as any)?.price_id || 'unknown',
-              status: invoice.status || 'unknown',
+              customerEmail: invoice.customer_email || "unknown",
+              customerName: invoice.customer_name || "unknown",
+              priceId: (invoice.lines.data[0] as any)?.price?.id || "unknown",
+              status: invoice.status || "unknown",
               subscriptionId: (invoice as any).subscription || null,
             },
           });
-          console.log("💾 Payment event saved to database:", event.id);
+          console.log(
+            "💾 Payment event saved to database (invoice.payment_succeeded):",
+            event.id
+          );
         } catch (dbError) {
           console.error("❌ Database error saving payment event:", dbError);
-          // Don't break the webhook - continue processing
         }
         break;
 
       case "invoice.payment_failed":
-        console.log("⚠️ Pagamento falhou:", event.data.object.id);
+        console.log("⚠️ Pagamento falhou:", event.data.object.id, event.data.object);
         
         // Save payment event to database
         try {
@@ -96,7 +97,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
               subscriptionId: (invoice as any).subscription || null,
             },
           });
-          console.log("💾 Payment event saved to database:", event.id);
+          console.log("💾 Payment event saved to database (invoice.payment_failed):", event.id);
         } catch (dbError) {
           console.error("❌ Database error saving payment event:", dbError);
           // Don't break the webhook - continue processing
@@ -104,7 +105,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         break;
 
       case "customer.subscription.deleted":
-        console.log("🛑 Assinatura cancelada:", event.data.object.id);
+        console.log("🛑 Assinatura cancelada:", event.data.object.id, event.data.object);
         
         // Save payment event to database
         try {
@@ -119,7 +120,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
               subscriptionId: subscription.id,
             },
           });
-          console.log("💾 Payment event saved to database:", event.id);
+          console.log("💾 Payment event saved to database (customer.subscription.deleted):", event.id);
         } catch (dbError) {
           console.error("❌ Database error saving payment event:", dbError);
           // Don't break the webhook - continue processing
