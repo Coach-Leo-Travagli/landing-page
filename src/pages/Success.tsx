@@ -3,6 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { CheckCircle, Home, Mail, Download } from 'lucide-react';
+import { toast } from 'sonner';
 
 export default function Success() {
   const [searchParams] = useSearchParams();
@@ -12,11 +13,20 @@ export default function Success() {
   useEffect(() => {
     // In a real implementation, you might want to fetch session details
     // from your backend to show more specific information
-    const email = searchParams.get('customer_email');
+    const email = searchParams.get('email');
     if (email) {
       setCustomerEmail(email);
     }
   }, [searchParams]);
+
+  const handleEmailCopy = async () => {
+    try {
+      await navigator.clipboard.writeText('suporte@coachtravagli.com');
+      toast.success('Email copiado para a área de transferência!');
+    } catch (err) {
+      toast.error('Erro ao copiar email');
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-fitness-light to-white flex items-center justify-center px-4">
@@ -107,11 +117,14 @@ export default function Success() {
               <p className="text-sm text-muted-foreground">
                 Precisa de ajuda? Entre em contato conosco:{' '}
                 <a 
-                  href="mailto:suporte@coachtravagli.com" 
-                  className="text-primary hover:underline font-medium"
+                  onClick={handleEmailCopy}
+                  className="text-primary hover:underline font-medium cursor-pointer"
                 >
                   suporte@coachtravagli.com
                 </a>
+              </p>
+              <p className="text-xs text-muted-foreground mt-2">
+                WhatsApp: <a href="https://wa.me/5511999999999?text=Oi" className="text-primary hover:underline font-medium cursor-pointer" target="_blank" rel="noopener noreferrer">+55 (11) 99999-9999</a> • Atendimento: Seg-Sex 8h às 18h
               </p>
             </div>
           </CardContent>
