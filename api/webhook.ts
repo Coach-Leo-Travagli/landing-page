@@ -35,7 +35,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
     switch (event.type) {
       case "checkout.session.completed":
-        console.log("✅ Checkout concluído:", event.data.object.id, event.data.object);
+        console.log("✅ Checkout concluído:", event.data.object.id, JSON.stringify(event.data.object));
         
         // Save payment event to database
         try {
@@ -58,7 +58,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         break;
 
       case "invoice.payment_succeeded":
-        console.log("💰 Pagamento de assinatura OK:", event.data.object.id, event.data.object);
+        console.log("💰 Pagamento de assinatura OK:", event.data.object.id, JSON.stringify(event.data.object));
       
         try {
           const invoice = event.data.object as Stripe.Invoice;
@@ -82,7 +82,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         break;
 
       case "invoice.payment_failed":
-        console.log("⚠️ Pagamento falhou:", event.data.object.id, event.data.object);
+        console.log("⚠️ Pagamento falhou:", event.data.object.id, JSON.stringify(event.data.object));
         
         // Save payment event to database
         try {
@@ -105,7 +105,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         break;
 
       case "customer.subscription.deleted":
-        console.log("🛑 Assinatura cancelada:", event.data.object.id, event.data.object);
+        console.log("🛑 Assinatura cancelada:", event.data.object.id, JSON.stringify(event.data.object));
         
         // Save payment event to database
         try {
