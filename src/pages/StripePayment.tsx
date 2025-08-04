@@ -208,6 +208,13 @@ function PaymentForm({
         <PaymentElement 
           options={{
             layout: 'tabs',
+            fields: {
+              billingDetails: {
+                address: {
+                  country: 'never',
+                },
+              },
+            },
             business: {
               name: 'Coach Travagli'
             }
@@ -415,6 +422,7 @@ export default function StripePayment() {
                       stripe={stripePromise} 
                       options={{
                         clientSecret,
+                        locale: 'pt-BR',
                         appearance: {
                           theme: 'stripe',
                           variables: {
