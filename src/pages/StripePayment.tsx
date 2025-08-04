@@ -99,6 +99,13 @@ function PaymentForm({
         elements,
         confirmParams: {
           return_url: `${window.location.origin}/success?plan=${planType}&email=${encodeURIComponent(email)}&name=${encodeURIComponent(name)}`,
+          payment_method_data: {
+            billing_details: {
+              address: {
+                country: "BR",
+              },
+            },
+          },
         },
         redirect: 'if_required',
       });
