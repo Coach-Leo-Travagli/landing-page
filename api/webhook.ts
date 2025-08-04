@@ -1,6 +1,7 @@
 import { buffer } from "micro";
 import Stripe from "stripe";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
+import { prisma } from "../lib/prisma";
 
 export const config = { api: { bodyParser: false } };
 
@@ -35,18 +36,93 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     switch (event.type) {
       case "checkout.session.completed":
         console.log("✅ Checkout concluído:", event.data.object.id);
+        
+        // Save payment event to database
+        try {
+          const session = event.data.object as Stripe.Checkout.Session;
+          await prisma.payment.create({
+            data: {
+              id: event.id,
+              customerEmail: session.customer_details?.email || 'unknown',
+              priceId: session.line_items?.data[0]?.price?.id || 'unknown',
+              status: session.payment_status || 'unknown',
+              subscriptionId: session.subscription as string || null,
+            },
+          });
+          console.log("💾 Payment event saved to database:", event.id);
+        } catch (dbError) {
+          console.error("❌ Database error saving payment event:", dbError);
+          // Don't break the webhook - continue processing
+        }
         break;
 
       case "invoice.payment_succeeded":
         console.log("💰 Pagamento de assinatura OK:", event.data.object.id);
+        
+        // Save payment event to database
+        try {
+          const invoice = event.data.object as Stripe.Invoice;
+          await prisma.payment.create({
+            data: {
+              id: event.id,
+              customerEmail: invoice.customer_email || 'unknown',
+              customerName: invoice.customer_name || 'unknown',
+              priceId: (invoice.lines.data[0] as any)?.price_id || 'unknown',
+              status: invoice.status || 'unknown',
+              subscriptionId: (invoice as any).subscription || null,
+            },
+          });
+          console.log("💾 Payment event saved to database:", event.id);
+        } catch (dbError) {
+          console.error("❌ Database error saving payment event:", dbError);
+          // Don't break the webhook - continue processing
+        }
         break;
 
       case "invoice.payment_failed":
         console.log("⚠️ Pagamento falhou:", event.data.object.id);
+        
+        // Save payment event to database
+        try {
+          const invoice = event.data.object as Stripe.Invoice;
+          await prisma.payment.create({
+            data: {
+              id: event.id,
+              customerEmail: invoice.customer_email || 'unknown',
+              customerName: invoice.customer_name || 'unknown',
+              priceId: (invoice.lines.data[0] as any)?.price_id || 'unknown',
+              status: invoice.status || 'unknown',
+              subscriptionId: (invoice as any).subscription || null,
+            },
+          });
+          console.log("💾 Payment event saved to database:", event.id);
+        } catch (dbError) {
+          console.error("❌ Database error saving payment event:", dbError);
+          // Don't break the webhook - continue processing
+        }
         break;
 
       case "customer.subscription.deleted":
         console.log("🛑 Assinatura cancelada:", event.data.object.id);
+        
+        // Save payment event to database
+        try {
+          const subscription = event.data.object as Stripe.Subscription;
+          await prisma.payment.create({
+            data: {
+              id: event.id,
+              customerEmail: 'subscription_deleted', // No email in subscription object
+              customerName: 'subscription_deleted', // No name in subscription object
+              priceId: subscription.items.data[0]?.price.id || 'unknown',
+              status: subscription.status || 'unknown',
+              subscriptionId: subscription.id,
+            },
+          });
+          console.log("💾 Payment event saved to database:", event.id);
+        } catch (dbError) {
+          console.error("❌ Database error saving payment event:", dbError);
+          // Don't break the webhook - continue processing
+        }
         break;
 
       default:
@@ -56,6 +132,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(200).json({ received: true });
   } catch (error: unknown) {
     console.error("Erro ao processar evento:", error);
-    return res.status(500).json({ error: "Erro ao processar webhook" });
+    // Always return 200 to Stripe even if there's an error
+    return res.status(200).json({ error: "Erro ao processar webhook" });
   }
 }
