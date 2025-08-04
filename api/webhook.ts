@@ -62,14 +62,19 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       
         try {
           const invoice = event.data.object as Stripe.Invoice;
+          const lineItem = invoice.lines.data[0];
+      
           await prisma.payment.create({
             data: {
               id: event.id,
               customerEmail: invoice.customer_email || "unknown",
               customerName: invoice.customer_name || "unknown",
-              priceId: (invoice.lines.data[0] as any)?.price?.id || "unknown",
+              priceId: (lineItem as Stripe.InvoiceLineItem)?.pricing?.price_details?.price || "unknown",
               status: invoice.status || "unknown",
-              subscriptionId: (invoice as any).subscription || null,
+              subscriptionId:
+                (lineItem as Stripe.InvoiceLineItem)?.parent?.subscription_item_details?.subscription ||
+                invoice.parent?.subscription_details?.subscription ||
+                null,
             },
           });
           console.log(
@@ -87,14 +92,19 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         // Save payment event to database
         try {
           const invoice = event.data.object as Stripe.Invoice;
+          const lineItem = invoice.lines.data[0];
+
           await prisma.payment.create({
             data: {
               id: event.id,
               customerEmail: invoice.customer_email || 'unknown',
               customerName: invoice.customer_name || 'unknown',
-              priceId: (invoice.lines.data[0] as any)?.price_id || 'unknown',
-              status: invoice.status || 'unknown',
-              subscriptionId: (invoice as any).subscription || null,
+              priceId: (lineItem as Stripe.InvoiceLineItem)?.pricing?.price_details?.price || "unknown",
+              status: invoice.status || "unknown",
+              subscriptionId:
+                (lineItem as Stripe.InvoiceLineItem)?.parent?.subscription_item_details?.subscription ||
+                invoice.parent?.subscription_details?.subscription ||
+                null,
             },
           });
           console.log("💾 Payment event saved to database (invoice.payment_failed):", event.id);
