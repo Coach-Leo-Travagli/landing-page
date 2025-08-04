@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "prisma generate && npm run migrate:deploy && vite build",
+    "postinstall": "prisma generate",
+    "migrate:deploy": "prisma migrate deploy",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
     "preview": "vite preview"
