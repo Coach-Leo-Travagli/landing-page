@@ -13,7 +13,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     const stripe = new Stripe(stripeSecretKey);
-    const { setup_intent_id, customer_id, price_id, plan_type, plan_name, email } = req.body;
+    const { setup_intent_id, customer_id, price_id, plan_type, plan_name, email, name } = req.body;
 
     if (!setup_intent_id || !customer_id || !price_id) {
       return res.status(400).json({ error: 'Parâmetros obrigatórios ausentes' });
@@ -24,6 +24,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     
     if (setupIntent.status !== 'succeeded') {
       return res.status(400).json({ error: 'Setup Intent não foi confirmado' });
+    }
+
+    // Update customer with email and name if provided
+    if (email || name) {
+      const updateData: { email?: string; name?: string } = {};
+      if (email) updateData.email = email;
+      if (name) updateData.name = name;
+      
+      await stripe.customers.update(customer_id, updateData);
     }
 
     // Create the subscription
@@ -42,7 +51,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(200).json({
       subscription_id: subscription.id,
       status: subscription.status,
-      current_period_end: subscription.current_period_end,
       latest_invoice: subscription.latest_invoice,
     });
 

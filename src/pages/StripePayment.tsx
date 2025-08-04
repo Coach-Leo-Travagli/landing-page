@@ -27,6 +27,8 @@ function PaymentForm({
   const stripe = useStripe();
   const elements = useElements();
   const [isLoading, setIsLoading] = useState(false);
+  const [name, setName] = useState('');
+  const [nameError, setNameError] = useState('');
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState('');
   const [searchParams] = useSearchParams();
@@ -44,6 +46,19 @@ function PaymentForm({
     if (!stripe || !elements) {
       return;
     }
+
+    // Validate name
+    if (!name.trim()) {
+      setNameError('Nome é obrigatório');
+      return;
+    }
+
+    if (name.trim().length < 2) {
+      setNameError('Nome deve ter pelo menos 2 caracteres');
+      return;
+    }
+
+    setNameError('');
 
     // Validate email
     if (!email.trim()) {
@@ -83,7 +98,7 @@ function PaymentForm({
       const { error: setupError, setupIntent } = await stripe.confirmSetup({
         elements,
         confirmParams: {
-          return_url: `${window.location.origin}/success?plan=${planType}&email=${encodeURIComponent(email)}`,
+          return_url: `${window.location.origin}/success?plan=${planType}&email=${encodeURIComponent(email)}&name=${encodeURIComponent(name)}`,
         },
         redirect: 'if_required',
       });
@@ -117,6 +132,7 @@ function PaymentForm({
           plan_type: planType,
           plan_name: planDetails.name,
           email: email,
+          name: name,
         }),
       });
 
@@ -124,7 +140,7 @@ function PaymentForm({
 
       if (subscriptionResponse.ok) {
         // Redirect to success page with subscription info
-        window.location.href = `/success?subscription_id=${subscriptionData.subscription_id}&plan=${planType}&email=${encodeURIComponent(email)}`;
+        window.location.href = `/success?subscription_id=${subscriptionData.subscription_id}&plan=${planType}&email=${encodeURIComponent(email)}&name=${encodeURIComponent(name)}`;
       } else {
         toast.error(subscriptionData.error || 'Erro ao criar assinatura');
       }
@@ -138,6 +154,30 @@ function PaymentForm({
 
       return (
     <form onSubmit={handleSubmit} className="space-y-6">
+      {/* Name Input */}
+      <div className="bg-white p-6 rounded-lg shadow-sm border">
+        <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+          Nome completo
+        </label>
+        <input
+          id="name"
+          type="text"
+          value={name}
+          onChange={(e) => {
+            setName(e.target.value);
+            if (nameError) setNameError('');
+          }}
+          placeholder="Seu nome completo"
+          className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent ${
+            nameError ? 'border-red-500' : 'border-gray-300'
+          }`}
+          disabled={isLoading}
+        />
+        {nameError && (
+          <p className="mt-2 text-sm text-red-600">{nameError}</p>
+        )}
+      </div>
+
       {/* Email Input */}
       <div className="bg-white p-6 rounded-lg shadow-sm border">
         <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
