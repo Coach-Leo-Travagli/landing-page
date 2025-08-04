@@ -12,12 +12,22 @@ datasource db {
 
 model Payment {
   id             String    @id // Stripe event id
-  customerEmail  String
-  customerName   String
-  priceId        String
-  status         String
-  subscriptionId String?
-  createdAt      DateTime  @default(now())
+  customerEmail    String
+  customerName     String
+  priceId          String
+  productId        String
+  planName         String
+  planType         String
+  amount           Int
+  currency         String
+  status           String
+  subscriptionId   String?
+  subscriptionStart DateTime?
+  subscriptionEnd   DateTime?
+  invoiceUrl       String
+  invoicePdf       String
+  invoiceStatus    String
+  createdAt        DateTime @default(now())
 
   @@map("payments")
 } 
