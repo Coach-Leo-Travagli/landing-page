@@ -44,6 +44,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             data: {
               id: event.id,
               customerEmail: session.customer_details?.email || 'unknown',
+              customerName: session.customer_details?.name || 'unknown',
               priceId: session.line_items?.data[0]?.price?.id || 'unknown',
               status: session.payment_status || 'unknown',
               subscriptionId: session.subscription as string || null,

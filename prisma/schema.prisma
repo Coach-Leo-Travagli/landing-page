@@ -13,6 +13,7 @@ datasource db {
 model Payment {
   id             String    @id // Stripe event id
   customerEmail  String
+  customerName   String
   priceId        String
   status         String
   subscriptionId String?
