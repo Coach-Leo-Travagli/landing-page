@@ -10,24 +10,40 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Payment {
-  id             String    @id // Stripe event id
-  customerEmail    String
-  customerName     String
-  priceId          String
-  productId        String
-  planName         String
-  planType         String
-  amount           Int
-  currency         String
-  status           String
-  subscriptionId   String?
+model User {
+  id               String    @id @default(cuid())
+  email            String    @unique
+  name             String
+  stripeCustomerId String    @unique
+  subscriptionId   String?   @unique
+  planName         String?
+  planType         String?
+  priceId          String?
+  productId        String?
+  currency         String?
+  amount           Int?
   subscriptionStart DateTime?
   subscriptionEnd   DateTime?
-  invoiceUrl       String
-  invoicePdf       String
-  invoiceStatus    String
-  createdAt        DateTime @default(now())
+  invoiceStatus    String?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  payments Payment[]
+
+  @@map("users")
+}
+
+model Payment {
+  id             String   @id // Stripe event id
+  status         String
+  amount         Int
+  currency       String
+  invoiceUrl     String
+  invoicePdf     String
+  invoiceStatus  String
+  createdAt      DateTime @default(now())
+  userId         String
+  user           User     @relation(fields: [userId], references: [id])
 
   @@map("payments")
 } 
