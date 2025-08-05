@@ -31,6 +31,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         plan_type: planType,
         plan_name: plan.name,
       },
+      preferred_locales: ['pt-BR'],
     });
 
     // Create a setup intent for future payments (subscriptions)
