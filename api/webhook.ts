@@ -63,38 +63,81 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           try {
             const invoice = event.data.object as Stripe.Invoice;
             const lineItem = invoice.lines.data[0];
-        
+            
+            // Extract customer and subscription data
+            const customerEmail = invoice.customer_email || "unknown";
+            const customerName = invoice.customer_name || "unknown";
+            const stripeCustomerId = invoice.customer as string;
+            const subscriptionId = (typeof (lineItem as Stripe.InvoiceLineItem)?.parent?.subscription_item_details?.subscription === 'string' 
+              ? (lineItem as Stripe.InvoiceLineItem)?.parent?.subscription_item_details?.subscription 
+              : null) ||
+              (typeof invoice.parent?.subscription_details?.subscription === 'string'
+                ? invoice.parent?.subscription_details?.subscription
+                : null) ||
+              null;
+            
+            const planName = (lineItem as Stripe.InvoiceLineItem)?.metadata?.plan_name || "unknown";
+            const planType = (lineItem as Stripe.InvoiceLineItem)?.metadata?.plan_type || "unknown";
+            const priceId = (lineItem as Stripe.InvoiceLineItem)?.pricing?.price_details?.price || "unknown";
+            const productId = (lineItem as Stripe.InvoiceLineItem)?.pricing?.price_details?.product || "unknown";
+            const amount = invoice.amount_paid;
+            const currency = invoice.currency;
+            const subscriptionStart = new Date((lineItem as Stripe.InvoiceLineItem)?.period?.start * 1000);
+            const subscriptionEnd = new Date((lineItem as Stripe.InvoiceLineItem)?.period?.end * 1000);
+            const invoiceStatus = invoice.status || "unknown";
+
+            // Upsert user record
+            const user = await prisma.user.upsert({
+              where: { stripeCustomerId },
+              update: {
+                email: customerEmail,
+                name: customerName,
+                subscriptionId,
+                planName,
+                planType,
+                priceId,
+                productId,
+                currency,
+                amount,
+                subscriptionStart,
+                subscriptionEnd,
+                invoiceStatus,
+                updatedAt: new Date(),
+              },
+              create: {
+                email: customerEmail,
+                name: customerName,
+                stripeCustomerId,
+                subscriptionId,
+                planName,
+                planType,
+                priceId,
+                productId,
+                currency,
+                amount,
+                subscriptionStart,
+                subscriptionEnd,
+                invoiceStatus,
+              },
+            });
+
+            // Create payment record linked to user
             await prisma.payment.create({
               data: {
                 id: event.id,
-                customerEmail: invoice.customer_email || "unknown",
-                customerName: invoice.customer_name || "unknown",
-                priceId: (lineItem as Stripe.InvoiceLineItem)?.pricing?.price_details?.price || "unknown",
-                productId: (lineItem as Stripe.InvoiceLineItem)?.pricing?.price_details?.product || "unknown",
-                planName: (lineItem as Stripe.InvoiceLineItem)?.metadata?.plan_name || "unknown",
-                planType: (lineItem as Stripe.InvoiceLineItem)?.metadata?.plan_type || "unknown",
+                status: invoice.status || "unknown",
                 amount: invoice.amount_paid,
                 currency: invoice.currency,
-                status: invoice.status || "unknown",
-                invoiceStatus: invoice.status || "unknown",
                 invoiceUrl: invoice.hosted_invoice_url || "",
                 invoicePdf: invoice.invoice_pdf || "",
-                subscriptionId:
-                  (typeof (lineItem as Stripe.InvoiceLineItem)?.parent?.subscription_item_details?.subscription === 'string' 
-                    ? (lineItem as Stripe.InvoiceLineItem)?.parent?.subscription_item_details?.subscription 
-                    : null) ||
-                  (typeof invoice.parent?.subscription_details?.subscription === 'string'
-                    ? invoice.parent?.subscription_details?.subscription
-                    : null) ||
-                  null,
-                subscriptionStart: new Date((lineItem as Stripe.InvoiceLineItem)?.period?.start * 1000),
-                subscriptionEnd: new Date((lineItem as Stripe.InvoiceLineItem)?.period?.end * 1000),
+                invoiceStatus: invoice.status || "unknown",
+                userId: user.id,
               },
             });
         
-            console.log("💾 Payment event saved with extended data:", event.id);
+            console.log("💾 User and Payment records saved:", event.id);
           } catch (dbError) {
-            console.error("❌ Database error saving payment event:", dbError);
+            console.error("❌ Database error saving user/payment records:", dbError);
           }
           break;
 
