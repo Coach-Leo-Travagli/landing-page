@@ -87,31 +87,59 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             const subscriptionEnd = new Date((lineItem as Stripe.InvoiceLineItem)?.period?.end * 1000);
             const invoiceStatus = invoice.status || "unknown";
 
-            // Check if user exists by stripeCustomerId
+            // Check if user exists by stripeCustomerId first
             let user = await prisma.user.findUnique({
               where: { stripeCustomerId },
             });
 
             if (!user) {
-              // Create new user if they don't exist
-              user = await prisma.user.create({
-                data: {
-                  email: customerEmail,
-                  name: customerName,
-                  stripeCustomerId,
-                  subscriptionId,
-                  planName,
-                  planType,
-                  priceId,
-                  productId,
-                  currency,
-                  amount,
-                  subscriptionStart,
-                  subscriptionEnd,
-                  invoiceStatus,
-                },
+              // If not found by stripeCustomerId, check by email
+              user = await prisma.user.findUnique({
+                where: { email: customerEmail },
               });
-              console.log("👤 New user created:", user.id);
+
+              if (user) {
+                // User exists with this email but different stripeCustomerId
+                // Update the stripeCustomerId to link them
+                user = await prisma.user.update({
+                  where: { email: customerEmail },
+                  data: {
+                    stripeCustomerId,
+                    subscriptionId,
+                    planName,
+                    planType,
+                    priceId,
+                    productId,
+                    currency,
+                    amount,
+                    subscriptionStart,
+                    subscriptionEnd,
+                    invoiceStatus,
+                    updatedAt: new Date(),
+                  },
+                });
+                console.log("👤 Existing user linked with new stripeCustomerId:", user.id);
+              } else {
+                // Create new user if they don't exist by either stripeCustomerId or email
+                user = await prisma.user.create({
+                  data: {
+                    email: customerEmail,
+                    name: customerName,
+                    stripeCustomerId,
+                    subscriptionId,
+                    planName,
+                    planType,
+                    priceId,
+                    productId,
+                    currency,
+                    amount,
+                    subscriptionStart,
+                    subscriptionEnd,
+                    invoiceStatus,
+                  },
+                });
+                console.log("👤 New user created:", user.id);
+              }
             } else {
               // User exists - only update subscription-related fields, not personal info
               user = await prisma.user.update({
@@ -173,10 +201,17 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           const customerName = invoice.customer_name || "unknown";
           const stripeCustomerId = invoice.customer as string;
 
-          // Find existing user
-          const user = await prisma.user.findUnique({
+          // Find existing user by stripeCustomerId first, then by email
+          let user = await prisma.user.findUnique({
             where: { stripeCustomerId },
           });
+
+          if (!user) {
+            // If not found by stripeCustomerId, check by email
+            user = await prisma.user.findUnique({
+              where: { email: customerEmail },
+            });
+          }
 
           if (user) {
             // Create payment record for failed payment
