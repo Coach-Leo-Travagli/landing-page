@@ -2,6 +2,7 @@ import { buffer } from "micro";
 import Stripe from "stripe";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { prisma } from "../lib/prisma";
+import { sendWelcomeEmail, sendPaymentFailedEmail } from "../lib/email";
 
 export const config = { api: { bodyParser: false } };
 
@@ -147,6 +148,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             });
         
             console.log("💾 User and Payment records saved:", event.id);
+
+            // Send welcome email
+            await sendWelcomeEmail({
+              customerName: customerName,
+              customerEmail: customerEmail,
+              companyName: "Coach Leo",
+              companyLogoUrl: "https://example.com/logo.png", // TODO: Replace with actual logo URL
+            });
           } catch (dbError) {
             console.error("❌ Database error saving user/payment records:", dbError);
           }
@@ -155,29 +164,51 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       case "invoice.payment_failed":
         console.log("⚠️ Pagamento falhou:", event.data.object.id, JSON.stringify(event.data.object));
         
-        // // Save payment event to database
-        // try {
-        //   const invoice = event.data.object as Stripe.Invoice;
-        //   const lineItem = invoice.lines.data[0];
+        try {
+          const invoice = event.data.object as Stripe.Invoice;
+          const lineItem = invoice.lines.data[0];
+          
+          // Extract customer data
+          const customerEmail = invoice.customer_email || "unknown";
+          const customerName = invoice.customer_name || "unknown";
+          const stripeCustomerId = invoice.customer as string;
 
-        //   await prisma.payment.create({
-        //     data: {
-        //       id: event.id,
-        //       customerEmail: invoice.customer_email || 'unknown',
-        //       customerName: invoice.customer_name || 'unknown',
-        //       priceId: (lineItem as Stripe.InvoiceLineItem)?.pricing?.price_details?.price || "unknown",
-        //       status: invoice.status || "unknown",
-        //       subscriptionId:
-        //         (lineItem as Stripe.InvoiceLineItem)?.parent?.subscription_item_details?.subscription ||
-        //         invoice.parent?.subscription_details?.subscription ||
-        //         null,
-        //     },
-        //   });
-        //   console.log("💾 Payment event saved to database (invoice.payment_failed):", event.id);
-        // } catch (dbError) {
-        //   console.error("❌ Database error saving payment event:", dbError);
-        //   // Don't break the webhook - continue processing
-        // }
+          // Find existing user
+          const user = await prisma.user.findUnique({
+            where: { stripeCustomerId },
+          });
+
+          if (user) {
+            // Create payment record for failed payment
+            await prisma.payment.create({
+              data: {
+                id: event.id,
+                status: invoice.status || "failed",
+                amount: invoice.amount_due,
+                currency: invoice.currency,
+                invoiceUrl: invoice.hosted_invoice_url || "",
+                invoicePdf: invoice.invoice_pdf || "",
+                invoiceStatus: invoice.status || "failed",
+                userId: user.id,
+              },
+            });
+
+            console.log("💾 Failed payment record saved:", event.id);
+
+            // Send payment failed email
+            await sendPaymentFailedEmail({
+              customerName: customerName,
+              customerEmail: customerEmail,
+              companyName: "Coach Leo",
+              companyLogoUrl: "https://example.com/logo.png", // TODO: Replace with actual logo URL
+            });
+          } else {
+            console.log("⚠️ User not found for failed payment:", stripeCustomerId);
+          }
+        } catch (dbError) {
+          console.error("❌ Database error saving failed payment:", dbError);
+          // Don't break the webhook - continue processing
+        }
         break;
 
       case "customer.subscription.deleted":
