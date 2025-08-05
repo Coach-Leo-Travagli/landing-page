@@ -48,10 +48,18 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       },
     });
 
+    // Get the latest invoice to check for PDF URL
+    let invoicePdfUrl: string | null = null;
+    if (subscription.latest_invoice && typeof subscription.latest_invoice === 'object') {
+      const invoice = subscription.latest_invoice as Stripe.Invoice;
+      invoicePdfUrl = invoice.invoice_pdf || null;
+    }
+
     return res.status(200).json({
       subscription_id: subscription.id,
       status: subscription.status,
       latest_invoice: subscription.latest_invoice,
+      invoice_pdf_url: invoicePdfUrl,
     });
 
   } catch (error: unknown) {

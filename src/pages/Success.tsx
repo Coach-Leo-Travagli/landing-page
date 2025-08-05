@@ -2,13 +2,16 @@ import { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { CheckCircle, Home, Mail, Download } from 'lucide-react';
+import { CheckCircle, Home, Mail, Download, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 
 export default function Success() {
   const [searchParams] = useSearchParams();
   const [customerEmail, setCustomerEmail] = useState<string | null>(null);
+  const [invoicePdfUrl, setInvoicePdfUrl] = useState<string | null>(searchParams.get('invoice_pdf_url'));
+  const [isLoadingPdf, setIsLoadingPdf] = useState(false);
   const sessionId = searchParams.get('session_id');
+  const subscriptionId = searchParams.get('subscription_id');
 
   useEffect(() => {
     // In a real implementation, you might want to fetch session details
@@ -19,12 +22,68 @@ export default function Success() {
     }
   }, [searchParams]);
 
+  // Auto-check for PDF URL if not available initially
+  useEffect(() => {
+    if (!invoicePdfUrl && subscriptionId) {
+      const checkForPdf = async () => {
+        const pdfUrl = await fetchInvoicePdf();
+        if (pdfUrl) {
+          toast.success('Comprovante disponível!');
+        }
+      };
+
+      // Check after 30 seconds
+      const timer = setTimeout(checkForPdf, 30000);
+      return () => clearTimeout(timer);
+    }
+  }, [invoicePdfUrl, subscriptionId]);
+
   const handleEmailCopy = async () => {
     try {
       await navigator.clipboard.writeText('suporte@coachtravagli.com');
       toast.success('Email copiado para a área de transferência!');
     } catch (err) {
       toast.error('Erro ao copiar email');
+    }
+  };
+
+  const fetchInvoicePdf = async () => {
+    if (!subscriptionId) {
+      toast.error('ID da assinatura não encontrado');
+      return null;
+    }
+
+    setIsLoadingPdf(true);
+    try {
+      const response = await fetch(`/api/get-invoice-pdf?subscription_id=${subscriptionId}`);
+      const data = await response.json();
+
+      if (response.ok && data.invoice_pdf_url) {
+        setInvoicePdfUrl(data.invoice_pdf_url);
+        return data.invoice_pdf_url;
+      } else {
+        toast.error('Comprovante ainda não está disponível. Tente novamente em alguns minutos.');
+        return null;
+      }
+    } catch (error) {
+      console.error('Error fetching invoice PDF:', error);
+      toast.error('Erro ao buscar comprovante');
+      return null;
+    } finally {
+      setIsLoadingPdf(false);
+    }
+  };
+
+  const handleDownloadReceipt = async () => {
+    if (invoicePdfUrl) {
+      // Open the PDF URL in a new tab
+      window.open(invoicePdfUrl, '_blank');
+    } else {
+      // Try to fetch the PDF URL
+      const pdfUrl = await fetchInvoicePdf();
+      if (pdfUrl) {
+        window.open(pdfUrl, '_blank');
+      }
     }
   };
 
@@ -85,6 +144,14 @@ export default function Success() {
                     Sua cobrança mensal será automática na data de hoje de cada mês
                   </span>
                 </li>
+                {!invoicePdfUrl && (
+                  <li className="flex items-start gap-3">
+                    <CheckCircle className="w-4 h-4 text-success mt-0.5 flex-shrink-0" />
+                    <span>
+                      Seu comprovante de pagamento estará disponível em alguns minutos
+                    </span>
+                  </li>
+                )}
               </ul>
             </div>
 
@@ -107,9 +174,24 @@ export default function Success() {
                 </Link>
               </Button>
               
-              <Button variant="outline" size="lg" className="flex-1">
-                <Download className="w-4 h-4 mr-2" />
-                Baixar Comprovante
+              <Button 
+                variant="outline" 
+                size="lg" 
+                className="flex-1"
+                onClick={handleDownloadReceipt}
+                disabled={isLoadingPdf}
+              >
+                {isLoadingPdf ? (
+                  <>
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    Buscando Comprovante...
+                  </>
+                ) : (
+                  <>
+                    <Download className="w-4 h-4 mr-2" />
+                    {invoicePdfUrl ? 'Baixar Comprovante' : 'Buscar Comprovante'}
+                  </>
+                )}
               </Button>
             </div>
 

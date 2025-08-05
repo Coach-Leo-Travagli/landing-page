@@ -80,8 +80,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
                 invoiceUrl: invoice.hosted_invoice_url || "",
                 invoicePdf: invoice.invoice_pdf || "",
                 subscriptionId:
-                  (lineItem as Stripe.InvoiceLineItem)?.parent?.subscription_item_details?.subscription ||
-                  invoice.parent?.subscription_details?.subscription ||
+                  (typeof (lineItem as Stripe.InvoiceLineItem)?.parent?.subscription_item_details?.subscription === 'string' 
+                    ? (lineItem as Stripe.InvoiceLineItem)?.parent?.subscription_item_details?.subscription 
+                    : null) ||
+                  (typeof invoice.parent?.subscription_details?.subscription === 'string'
+                    ? invoice.parent?.subscription_details?.subscription
+                    : null) ||
                   null,
                 subscriptionStart: new Date((lineItem as Stripe.InvoiceLineItem)?.period?.start * 1000),
                 subscriptionEnd: new Date((lineItem as Stripe.InvoiceLineItem)?.period?.end * 1000),

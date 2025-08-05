@@ -147,7 +147,14 @@ function PaymentForm({
 
       if (subscriptionResponse.ok) {
         // Redirect to success page with subscription info
-        window.location.href = `/success?subscription_id=${subscriptionData.subscription_id}&plan=${planType}&email=${encodeURIComponent(email)}&name=${encodeURIComponent(name)}`;
+        const successUrl = `/success?subscription_id=${subscriptionData.subscription_id}&plan=${planType}&email=${encodeURIComponent(email)}&name=${encodeURIComponent(name)}`;
+        
+        // Add invoice PDF URL if available
+        if (subscriptionData.invoice_pdf_url) {
+          window.location.href = `${successUrl}&invoice_pdf_url=${encodeURIComponent(subscriptionData.invoice_pdf_url)}`;
+        } else {
+          window.location.href = successUrl;
+        }
       } else {
         toast.error(subscriptionData.error || 'Erro ao criar assinatura');
       }
