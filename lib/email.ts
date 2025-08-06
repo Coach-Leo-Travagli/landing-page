@@ -42,10 +42,16 @@ export async function sendWelcomeEmail(data: EmailData): Promise<void> {
     };
 
     const result = await resend.emails.send(emailData);
-    console.log('✅ Welcome email sent successfully:', result.data?.id);
+
+    console.log('📧 Resend response:', result);
+
+    if (result.error) {
+      console.error('❌ Resend API error:', result.error);
+    } else if (result.data) {
+      console.log('✅ Welcome email sent successfully:', result.data.id);
+    }
   } catch (error) {
     console.error('❌ Error sending welcome email:', error);
-    // Don't throw - we don't want to break the webhook
   }
 }
 
