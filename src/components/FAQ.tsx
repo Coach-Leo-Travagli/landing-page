@@ -20,7 +20,7 @@ const faqs = [
   {
     id: "dietary-restrictions",
     question: "E se eu tiver restrições alimentares?",
-    answer: "Sem problema. Ao montar seu plano, levamos em consideração alergias, intolerâncias e preferências alimentares como dieta vegetariana, vegana, sem glúten, entre outras."
+    answer: "Sem problema. O nutricionista parceiro leva em consideração alergias, intolerâncias e preferências alimentares, como dieta vegetariana, vegana, sem glúten, entre outras, para elaborar seu plano alimentar personalizado."
   },
   {
     id: "daily-time-commitment",
@@ -31,6 +31,11 @@ const faqs = [
     id: "plan-changes",
     question: "Posso trocar de plano se necessário?",
     answer: "Sim, você pode mudar para outro plano a qualquer momento, seja para obter mais suporte ou simplificar o acompanhamento."
+  },
+  {
+    id: "nutrition-responsibility",
+    question: "Quem é responsável pelos planos alimentares?",
+    answer: "Todos os planos alimentares oferecidos na plataforma são elaborados e assinados exclusivamente por nutricionistas devidamente registrados nos conselhos profissionais. O Coach Travagli atua apenas como treinador físico e não prescreve dietas ou orientações nutricionais sem a supervisão de um nutricionista."
   },
   {
     id: "refund-policy",
