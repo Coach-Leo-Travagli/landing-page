@@ -48,7 +48,7 @@ export async function sendWelcomeEmail(data: EmailData): Promise<void> {
     if (result.error) {
       console.error('❌ Resend API error:', result.error);
     } else if (result.data) {
-      console.log('✅ Welcome email sent successfully:', result.data.id);
+      console.log('✅ Welcome email sent successfully:', result.data);
     }
   } catch (error) {
     console.error('❌ Error sending welcome email:', error);
@@ -68,9 +68,14 @@ export async function sendPaymentFailedEmail(data: EmailData): Promise<void> {
     };
 
     const result = await resend.emails.send(emailData);
-    console.log('✅ Payment failed email sent successfully:', result.data?.id);
+    
+    if (result.error) {
+      console.error('❌ Resend API error:', result.error);
+    } else {
+      console.log('✅ Payment failed email sent successfully:', result.data);
+    }
   } catch (error) {
     console.error('❌ Error sending payment failed email:', error);
-    // Don't throw - we don't want to break the webhook
+    // Não lançar erro para não quebrar o webhook
   }
-} 
+}
