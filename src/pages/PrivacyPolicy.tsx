@@ -16,7 +16,7 @@ export default function PrivacyPolicy() {
             Política de Privacidade
           </h1>
           <p className="text-muted-foreground">
-            Última atualização: Janeiro de 2024
+            Última atualização: Agosto de 2025
           </p>
         </div>
 
@@ -30,7 +30,7 @@ export default function PrivacyPolicy() {
             </p>
             <ul className="list-disc pl-6 text-muted-foreground space-y-2">
               <li>Nome, email e informações de contato</li>
-              <li>Dados de saúde e fitness quando fornecidos voluntariamente</li>
+              <li>Dados de saúde e fitness (como peso, hábitos alimentares e restrições médicas), quando fornecidos voluntariamente, tratados com base no seu consentimento</li>
               <li>Preferências alimentares e objetivos de treino</li>
               <li>Informações de pagamento (processadas com segurança por terceiros)</li>
             </ul>
@@ -43,7 +43,7 @@ export default function PrivacyPolicy() {
             </p>
             <ul className="list-disc pl-6 text-muted-foreground space-y-2">
               <li>Fornecer e personalizar nossos serviços de coaching</li>
-              <li>Criar planos de treino e nutrição personalizados</li>
+              <li>Criar planos de treino (pelo treinador) e planos de nutrição personalizados (exclusivamente por profissional nutricionista registrado)</li>
               <li>Comunicar sobre seu progresso e atualizações do serviço</li>
               <li>Melhorar nossos serviços e desenvolver novos recursos</li>
               <li>Processar pagamentos e gerenciar sua conta</li>
@@ -58,7 +58,7 @@ export default function PrivacyPolicy() {
             <ul className="list-disc pl-6 text-muted-foreground space-y-2">
               <li>Com seu consentimento explícito</li>
               <li>Para cumprir obrigações legais</li>
-              <li>Com provedores de serviços que nos ajudam a operar nossa plataforma</li>
+              <li>Com profissionais autorizados (como nutricionistas parceiros), que seguem esta Política e a legislação de proteção de dados</li>
               <li>Para proteger nossos direitos e segurança</li>
             </ul>
           </section>
@@ -86,13 +86,27 @@ export default function PrivacyPolicy() {
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-bold text-fitness-dark mb-4">6. Contato</h2>
+            <h2 className="text-2xl font-bold text-fitness-dark mb-4">6. Dados Sensíveis e Responsabilidade Profissional</h2>
+            <p className="text-muted-foreground mb-4">
+              Os planos de treino são desenvolvidos por profissionais de educação física, enquanto os planos alimentares e nutricionais são elaborados exclusivamente por nutricionistas devidamente registrados.
+            </p>
+            <p className="text-muted-foreground">
+              Garantimos que qualquer informação sensível fornecida por você será compartilhada apenas com profissionais autorizados, conforme exigido pela legislação aplicável.
+            </p>
+          </section>
+
+          <section className="mb-8">
+            <h2 className="text-2xl font-bold text-fitness-dark mb-4">7. Contato</h2>
             <p className="text-muted-foreground mb-4">
               Para exercer seus direitos ou esclarecer dúvidas sobre esta política, entre em contato:
             </p>
-            <p className="text-muted-foreground">
+            <p className="text-muted-foreground mb-4">
               Email: suporte@coachtravagli.com<br />
-              Telefone: +55 (11) 99999-9999
+              Telefone: +55 (11) 99999-9999<br />
+              Endereço: São Paulo, SP
+            </p>
+            <p className="text-muted-foreground mb-4">
+              Nosso horário de atendimento é de segunda a sexta, das 8h às 18h (horário de Brasília).
             </p>
           </section>
         </div>

@@ -4,11 +4,11 @@
 
 **URL**: https://lovable.dev/projects/1ed73914-6b8c-4b3e-843e-0569407417f2
 
-## Sobre a Landing Page - Coach Leo
+## Sobre a Landing Page - Coach Travagli
 
 ### 🎯 **Visão Geral**
 
-Esta é a landing page oficial da **Coach Leo**, uma plataforma de coaching fitness que oferece transformação física e mental através de treinos personalizados, acompanhamento nutricional e suporte especializado.
+Esta é a landing page oficial da **Coach Travagli**, uma plataforma de coaching fitness que oferece transformação física e mental através de treinos personalizados, acompanhamento nutricional e suporte especializado.
 
 ### 📄 **Páginas e Funcionalidades**
 
@@ -165,7 +165,7 @@ Esta é a landing page oficial da **Coach Leo**, uma plataforma de coaching fitn
 - **Blog Integrado**: Conteúdo sobre fitness e nutrição
 - **App Mobile**: Aplicativo nativo para iOS e Android
 
-Esta landing page representa a porta de entrada para a transformação fitness dos clientes da Coach Leo, oferecendo uma experiência completa desde o primeiro contato até a ativação da assinatura.
+Esta landing page representa a porta de entrada para a transformação fitness dos clientes da Coach Travagli, oferecendo uma experiência completa desde o primeiro contato até a ativação da assinatura.
 
 ## How can I edit this code?
 

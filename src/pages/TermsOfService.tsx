@@ -16,7 +16,7 @@ export default function TermsOfService() {
             Termos de Serviço
           </h1>
           <p className="text-muted-foreground">
-            Última atualização: Janeiro de 2024
+            Última atualização: Agosto de 2025
           </p>
         </div>
 
@@ -25,8 +25,7 @@ export default function TermsOfService() {
           <section className="mb-8">
             <h2 className="text-2xl font-bold text-fitness-dark mb-4">1. Aceitação dos Termos</h2>
             <p className="text-muted-foreground mb-4">
-              Ao acessar e usar os serviços da Coach Travagli, você concorda em cumprir estes Termos de Serviço. 
-              Se você não concorda com qualquer parte destes termos, não deve usar nossos serviços.
+              Ao acessar ou utilizar os serviços oferecidos pela Coach Travagli, você declara que leu, entendeu e concorda integralmente com estes Termos de Serviço. Caso não concorde com os termos, você deve se abster de utilizar nossos serviços.
             </p>
           </section>
 
@@ -35,13 +34,22 @@ export default function TermsOfService() {
             <p className="text-muted-foreground mb-4">
               A Coach Travagli oferece serviços de coaching fitness online, incluindo:
             </p>
-            <ul className="list-disc pl-6 text-muted-foreground space-y-2">
+            <ul className="list-disc pl-6 text-muted-foreground space-y-2 mb-4">
               <li>Planos de treino personalizados</li>
-              <li>Orientação nutricional e planos de refeições</li>
+              <li>Orientação nutricional e planos de refeições (exclusivamente por profissional nutricionista registrado)</li>
               <li>Acompanhamento de progresso</li>
               <li>Suporte e consultoria online</li>
               <li>Acesso a conteúdo educacional e recursos</li>
             </ul>
+            <p className="text-muted-foreground mb-4">
+              As orientações nutricionais e os planos alimentares são elaborados exclusivamente por nutricionista habilitado e registrado no Conselho Regional de Nutricionistas (CRN), contratado especificamente para esta finalidade.
+            </p>
+            <p className="text-muted-foreground mb-4">
+              O Coach Travagli não realiza atendimentos nutricionais diretamente e não é responsável pela prescrição de dietas. O profissional de Educação Física atua dentro de sua competência legal, focando no desenvolvimento físico e orientação de treinos.
+            </p>
+            <p className="text-muted-foreground mb-4">
+              Os serviços são oferecidos exclusivamente online e podem incluir atualizações, modificações ou acréscimos a critério da Coach Travagli.
+            </p>
           </section>
 
           <section className="mb-8">
@@ -49,27 +57,30 @@ export default function TermsOfService() {
             <p className="text-muted-foreground mb-4">
               Você se compromete a:
             </p>
-            <ul className="list-disc pl-6 text-muted-foreground space-y-2">
+            <ul className="list-disc pl-6 text-muted-foreground space-y-2 mb-4">
               <li>Fornecer informações precisas e atualizadas</li>
               <li>Consultar um médico antes de iniciar qualquer programa de exercícios</li>
               <li>Usar os serviços de forma responsável e ética</li>
               <li>Não compartilhar seu acesso com terceiros</li>
               <li>Cumprir com todas as leis e regulamentos aplicáveis</li>
             </ul>
+            <p className="text-muted-foreground mb-4">
+              Você entende que é o único responsável por suas decisões relacionadas à saúde e bem-estar, mesmo quando baseadas nas orientações fornecidas pelos nossos serviços.
+            </p>
           </section>
 
           <section className="mb-8">
             <h2 className="text-2xl font-bold text-fitness-dark mb-4">4. Pagamentos e Cancelamentos</h2>
             <p className="text-muted-foreground mb-4">
               <strong>Pagamentos:</strong> Os pagamentos são processados no início de cada ciclo de cobrança. 
-              Aceitamos os principais cartões de crédito e métodos de pagamento online.
+              Aceitamos os principais cartões de crédito e métodos de pagamento online. As assinaturas são renovadas automaticamente no final de cada ciclo, salvo cancelamento prévio pelo usuário.
             </p>
             <p className="text-muted-foreground mb-4">
               <strong>Cancelamentos:</strong> Você pode cancelar sua assinatura a qualquer momento através da sua conta. 
               O cancelamento será efetivo no final do período de cobrança atual.
             </p>
             <p className="text-muted-foreground mb-4">
-              <strong>Reembolsos:</strong> Oferecemos garantia de 30 dias de devolução do dinheiro para novos clientes.
+              <strong>Reembolsos:</strong> Oferecemos garantia de 30 dias de devolução do dinheiro para novos clientes. A garantia de 30 dias é válida apenas para a primeira contratação do serviço por novos clientes.
             </p>
           </section>
 
@@ -80,6 +91,9 @@ export default function TermsOfService() {
               responsáveis por lesões ou problemas de saúde decorrentes do uso de nossos programas. 
               Sempre consulte um profissional de saúde antes de iniciar qualquer programa de exercícios.
             </p>
+            <p className="text-muted-foreground mb-4">
+              As informações fornecidas não substituem aconselhamento médico, diagnóstico ou tratamento profissional. A Coach Travagli não se responsabiliza por quaisquer danos decorrentes da má utilização dos serviços ou da falta de acompanhamento médico adequado.
+            </p>
           </section>
 
           <section className="mb-8">
@@ -88,6 +102,9 @@ export default function TermsOfService() {
               Todo o conteúdo fornecido pela Coach Travagli, incluindo planos de treino, materiais educacionais 
               e recursos, são de nossa propriedade e protegidos por direitos autorais. O uso é licenciado 
               apenas para uso pessoal e não comercial.
+            </p>
+            <p className="text-muted-foreground mb-4">
+              É proibida a reprodução, distribuição, modificação ou compartilhamento de qualquer conteúdo sem autorização expressa e por escrito da Coach Travagli.
             </p>
           </section>
 
@@ -98,6 +115,9 @@ export default function TermsOfService() {
               serão comunicadas com antecedência de 30 dias. O uso continuado dos serviços após as alterações 
               constitui aceitação dos novos termos.
             </p>
+            <p className="text-muted-foreground mb-4">
+              Recomendamos que o usuário revise periodicamente os Termos de Serviço para se manter informado sobre eventuais atualizações.
+            </p>
           </section>
 
           <section className="mb-8">
@@ -105,10 +125,13 @@ export default function TermsOfService() {
             <p className="text-muted-foreground mb-4">
               Para questões sobre estes termos, entre em contato:
             </p>
-            <p className="text-muted-foreground">
-              Email: suporte@coachtravagli.com<br />
+            <p className="text-muted-foreground mb-4">
+              Email: suporte@coachtravagli.com.br<br />
               Telefone: +55 (11) 99999-9999<br />
               Endereço: São Paulo, SP
+            </p>
+            <p className="text-muted-foreground mb-4">
+              Nosso horário de atendimento é de segunda a sexta, das 8h às 18h (horário de Brasília).
             </p>
           </section>
         </div>
