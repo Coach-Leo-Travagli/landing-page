@@ -57,20 +57,12 @@ export default function Pricing() {
                 </div>
               )}
               
-              {plan.isPromo && (
-                <div className="absolute -top-2 -right-2 z-10">
-                  <Badge className="bg-red-500 text-white border-0 px-2 py-1 text-xs font-bold animate-pulse">
-                    -{plan.discountPercentage}%
-                  </Badge>
-                </div>
-              )}
-              
               <Card className={`h-full transition-all duration-300 hover:scale-105 ${
                 animate ? 'scale-105' : ''
               } ${
                 plan.popular 
-                  ? 'shadow-fitness-hero border-primary border-2' 
-                  : 'shadow-fitness-card hover:shadow-lg border-0'
+                  ? 'shadow-fitness-hero border-primary border-2'
+                  : 'shadow-fitness-card hover:shadow-lg hover:border-fitness-secondary hover:border border-0'
               }`}>
                 <CardHeader className="text-center pb-4">
                   <CardTitle className="text-2xl font-bold text-fitness-dark mb-2">
