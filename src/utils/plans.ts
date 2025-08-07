@@ -13,7 +13,9 @@ export interface PlanConfig {
   name: string;
   shortName: string;
   price: number;
+  originalPrice: number;
   priceFormatted: string;
+  originalPriceFormatted: string;
   period: string;
   description: string;
   features: string[];
@@ -21,6 +23,9 @@ export interface PlanConfig {
   variant: 'outline' | 'hero' | 'cta' | 'default';
   priceId: string;
   stripePriceId: string; // For backend usage
+  isPromo: boolean;
+  promoLabel: string;
+  discountPercentage: number;
 }
 
 // Environment variable getters with fallbacks
@@ -42,8 +47,10 @@ export const PLANS: Record<PlanType, PlanConfig> = {
     id: 'basic',
     name: 'Plano Básico',
     shortName: 'Básico',
-    price: 129,
-    priceFormatted: 'R$ 129',
+    price: 97,
+    originalPrice: 129,
+    priceFormatted: 'R$ 97',
+    originalPriceFormatted: 'R$ 129',
     period: '/mês',
     description: 'Ideal para quem está começando a treinar com orientação profissional',
     features: [
@@ -57,13 +64,18 @@ export const PLANS: Record<PlanType, PlanConfig> = {
     variant: 'outline',
     priceId: getBasicPriceId(),
     stripePriceId: getBasicPriceId(),
+    isPromo: true,
+    promoLabel: 'Preço Especial de Lançamento',
+    discountPercentage: 25,
   },
   standard: {
     id: 'standard',
     name: 'Plano Padrão',
     shortName: 'Padrão',
-    price: 199,
-    priceFormatted: 'R$ 199',
+    price: 147,
+    originalPrice: 199,
+    priceFormatted: 'R$ 147',
+    originalPriceFormatted: 'R$ 199',
     period: '/mês',
     description: 'Para quem quer personalização completa e acompanhamento mais próximo',
     features: [
@@ -78,13 +90,18 @@ export const PLANS: Record<PlanType, PlanConfig> = {
     variant: 'hero',
     priceId: getStandardPriceId(),
     stripePriceId: getStandardPriceId(),
+    isPromo: true,
+    promoLabel: 'Oferta Primeiros Inscritos',
+    discountPercentage: 26,
   },
   vip: {
     id: 'vip',
     name: 'Plano VIP',
     shortName: 'VIP',
-    price: 399,
-    priceFormatted: 'R$ 399',
+    price: 297,
+    originalPrice: 399,
+    priceFormatted: 'R$ 297',
+    originalPriceFormatted: 'R$ 399',
     period: '/mês',
     description: 'Suporte premium com acompanhamento ainda mais próximo.',
     features: [
@@ -100,6 +117,9 @@ export const PLANS: Record<PlanType, PlanConfig> = {
     variant: 'cta',
     priceId: getVipPriceId(),
     stripePriceId: getVipPriceId(),
+    isPromo: true,
+    promoLabel: 'Desconto de Lançamento',
+    discountPercentage: 30,
   },
 };
 
@@ -126,13 +146,18 @@ export const getPlansForPricingComponent = () => {
   return getAllPlans().map(plan => ({
     name: plan.shortName,
     price: plan.priceFormatted,
+    originalPrice: plan.originalPriceFormatted,
     priceValue: plan.price,
+    originalPriceValue: plan.originalPrice,
     period: plan.period,
     description: plan.description,
     features: plan.features,
     popular: plan.popular,
     variant: plan.variant,
     planType: plan.id,
+    isPromo: plan.isPromo,
+    promoLabel: plan.promoLabel,
+    discountPercentage: plan.discountPercentage,
   }));
 };
 

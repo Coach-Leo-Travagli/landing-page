@@ -1,4 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { Check } from "lucide-react";
 import CheckoutButton from "@/components/CheckoutButton";
 import { getPlansForPricingComponent, type PlanType } from "@/utils/plans";
@@ -56,6 +57,14 @@ export default function Pricing() {
                 </div>
               )}
               
+              {plan.isPromo && (
+                <div className="absolute -top-2 -right-2 z-10">
+                  <Badge className="bg-red-500 text-white border-0 px-2 py-1 text-xs font-bold animate-pulse">
+                    -{plan.discountPercentage}%
+                  </Badge>
+                </div>
+              )}
+              
               <Card className={`h-full transition-all duration-300 hover:scale-105 ${
                 animate ? 'scale-105' : ''
               } ${
@@ -67,9 +76,32 @@ export default function Pricing() {
                   <CardTitle className="text-2xl font-bold text-fitness-dark mb-2">
                     {plan.name}
                   </CardTitle>
+                  
+                  {plan.isPromo && (
+                    <div className="mb-3">
+                      <Badge variant="secondary" className="bg-fitness-secondary/10 text-fitness-secondary border-fitness-secondary/20">
+                        {plan.promoLabel}
+                      </Badge>
+                    </div>
+                  )}
+                  
                   <div className="mb-4">
+                    {plan.isPromo && (
+                      <div className="mb-2">
+                        <span className="text-lg text-muted-foreground line-through">
+                          {plan.originalPrice}
+                        </span>
+                      </div>
+                    )}
                     <span className="text-5xl font-black text-primary">{plan.price}</span>
                     <span className="text-muted-foreground">{plan.period}</span>
+                    {plan.isPromo && (
+                      <div className="mt-2">
+                        <span className="text-sm text-success font-semibold">
+                          Economia de {plan.discountPercentage}%
+                        </span>
+                      </div>
+                    )}
                   </div>
                   <p className="text-muted-foreground">{plan.description}</p>
                 </CardHeader>
