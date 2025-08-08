@@ -2,7 +2,7 @@ import { buffer } from "micro";
 import Stripe from "stripe";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { prisma } from "../lib/prisma";
-import { sendWelcomeEmail, sendPaymentFailedEmail } from "../lib/email";
+import { sendWelcomeEmail, sendPaymentFailedEmail, sendRenewalEmail } from "../lib/email";
 
 export const config = { api: { bodyParser: false } };
 
@@ -161,6 +161,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
               console.log("👤 Existing user updated:", user.id);
             }
 
+            // Determine if this is the first successful invoice for this user
+            const previousPaidCount = await prisma.payment.count({
+              where: { userId: user.id, invoiceStatus: "paid" },
+            });
+            const billingReason = (invoice as Stripe.Invoice).billing_reason;
+            const isFirstPaidInvoice = billingReason === "subscription_create" || previousPaidCount === 0;
+
             // Create payment record linked to user
             await prisma.payment.create({
               data: {
@@ -177,13 +184,22 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         
             console.log("💾 User and Payment records saved:", event.id);
 
-            // Send welcome email
-            await sendWelcomeEmail({
-              customerName: customerName,
-              customerEmail: customerEmail,
-              companyName: "Coach Travagli",
-              companyLogoUrl: "https://example.com/logo.png", // TODO: Replace with actual logo URL
-            });
+            // Send transactional email based on whether this is the first month or a renewal
+            if (isFirstPaidInvoice) {
+              await sendWelcomeEmail({
+                customerName: customerName,
+                customerEmail: customerEmail,
+                companyName: "Coach Travagli",
+                companyLogoUrl: "https://example.com/logo.png", // TODO: Replace with actual logo URL
+              });
+            } else {
+              await sendRenewalEmail({
+                customerName: customerName,
+                customerEmail: customerEmail,
+                companyName: "Coach Travagli",
+                companyLogoUrl: "https://example.com/logo.png",
+              });
+            }
           } catch (dbError) {
             console.error("❌ Database error saving user/payment records:", dbError);
           }
