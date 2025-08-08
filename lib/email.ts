@@ -1,6 +1,7 @@
 import { Resend } from 'resend';
 import { readFileSync } from 'fs';
 import { join } from 'path';
+import { htmlToText } from 'html-to-text';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -33,23 +34,17 @@ export async function sendWelcomeEmail(data: EmailData): Promise<void> {
   try {
     const template = loadEmailTemplate('welcome');
     const html = replaceTemplateVariables(template, data);
+    const text = htmlToText(html) as string;
     
-    const emailData = {
+    await resend.emails.send({
       from: 'Coach Travagli <noreply@coachtravagli.com>',
-      to: [data.customerEmail],
+      to: data.customerEmail,
       subject: '🎉 Bem-vindo(a) à sua transformação fitness!',
       html,
-    };
+      text,
+    });
 
-    const result = await resend.emails.send(emailData);
-
-    console.log('📧 Resend response:', result);
-
-    if (result.error) {
-      console.error('❌ Resend API error:', result.error);
-    } else if (result.data) {
-      console.log('✅ Welcome email sent successfully:', result.data);
-    }
+    console.log('✅ Welcome email sent successfully');
   } catch (error) {
     console.error('❌ Error sending welcome email:', error);
   }
@@ -59,23 +54,38 @@ export async function sendPaymentFailedEmail(data: EmailData): Promise<void> {
   try {
     const template = loadEmailTemplate('payment_failed');
     const html = replaceTemplateVariables(template, data);
+    const text = htmlToText(html) as string;
     
-    const emailData = {
+    await resend.emails.send({
       from: 'Coach Travagli <noreply@coachtravagli.com>',
-      to: [data.customerEmail],
+      to: data.customerEmail,
       subject: '⚠️ Houve um problema com seu pagamento',
       html,
-    };
+      text,
+    });
 
-    const result = await resend.emails.send(emailData);
-    
-    if (result.error) {
-      console.error('❌ Resend API error:', result.error);
-    } else {
-      console.log('✅ Payment failed email sent successfully:', result.data);
-    }
+    console.log('✅ Payment failed email sent successfully');
   } catch (error) {
     console.error('❌ Error sending payment failed email:', error);
-    // Não lançar erro para não quebrar o webhook
+  }
+}
+
+export async function sendRenewalEmail(data: EmailData): Promise<void> {
+  try {
+    const template = loadEmailTemplate('renewal');
+    const html = replaceTemplateVariables(template, data);
+    const text = htmlToText(html) as string;
+
+    await resend.emails.send({
+      from: 'Coach Travagli <noreply@coachtravagli.com>',
+      to: data.customerEmail,
+      subject: '🔁 Assinatura renovada com sucesso',
+      html,
+      text,
+    });
+
+    console.log('✅ Renewal email sent successfully');
+  } catch (error) {
+    console.error('❌ Error sending renewal email:', error);
   }
 }
