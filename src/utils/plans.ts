@@ -174,17 +174,23 @@ export const getPlansForAPI = () => {
   );
 };
 
-// For Stripe payment page
+// For Stripe payment page with promotional data
 export const getPlansForPaymentPage = () => {
   return Object.fromEntries(
-    Object.entries(PLANS).map(([key, plan]) => [
-      key,
-      {
-        name: plan.name,
-        price: plan.price,
-        features: plan.features,
-      }
-    ])
+    Object.entries(PLANS).map(([key, plan]) => {
+      return [
+        key,
+        {
+          name: plan.name,
+          price: plan.price,
+          originalPrice: plan.originalPrice,
+          isPromo: plan.isPromo,
+          promoLabel: plan.promoLabel,
+          discountPercentage: plan.discountPercentage,
+          features: plan.features,
+        }
+      ];
+    })
   );
 };
 
