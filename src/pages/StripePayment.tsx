@@ -20,7 +20,15 @@ function PaymentForm({
   setupIntentId 
 }: { 
   clientSecret: string; 
-  planDetails: { name: string; price: number; features: string[] }; 
+  planDetails: { 
+    name: string; 
+    price: number; 
+    originalPrice: number;
+    isPromo: boolean;
+    promoLabel: string;
+    discountPercentage: number;
+    features: string[] 
+  }; 
   customerId: string;
   setupIntentId: string;
 }) {
@@ -258,6 +266,8 @@ function PaymentForm({
               <Loader2 className="w-5 h-5 animate-spin" />
               Processando...
             </div>
+          ) : planDetails?.isPromo ? (
+            `Assinar por R$ ${planDetails.price}/mês (${planDetails.discountPercentage}% OFF)`
           ) : (
             `Assinar por R$ ${planDetails?.price || 0}/mês`
           )}
@@ -273,7 +283,15 @@ export default function StripePayment() {
   const [clientSecret, setClientSecret] = useState<string>('');
   const [customerId, setCustomerId] = useState<string>('');
   const [setupIntentId, setSetupIntentId] = useState<string>('');
-  const [planDetails, setPlanDetails] = useState<{ name: string; price: number; features: string[] } | null>(null);
+  const [planDetails, setPlanDetails] = useState<{ 
+    name: string; 
+    price: number; 
+    originalPrice: number;
+    isPromo: boolean;
+    promoLabel: string;
+    discountPercentage: number;
+    features: string[] 
+  } | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   const planType = searchParams.get('plan') || 'standard';
@@ -386,16 +404,45 @@ export default function StripePayment() {
                 <CardHeader>
                   <div className="flex items-center justify-between">
                     <CardTitle className="text-xl">{planDetails?.name}</CardTitle>
-                    {getPlan(planType as PlanType)?.popular && (
-                      <Badge variant="secondary" className="bg-primary text-white">
-                        MAIS POPULAR
-                      </Badge>
-                    )}
+                    <div className="flex items-center gap-2">
+                      {getPlan(planType as PlanType)?.popular && (
+                        <Badge variant="secondary" className="bg-primary text-white">
+                          MAIS POPULAR
+                        </Badge>
+                      )}
+                      {planDetails?.isPromo && (
+                        <Badge className="bg-orange-500 text-white animate-promo-pulse">
+                          {planDetails.promoLabel}
+                        </Badge>
+                      )}
+                    </div>
                   </div>
-                  <div className="text-3xl font-bold text-primary">
-                    R$ {planDetails?.price}
-                    <span className="text-lg font-normal text-gray-300">/mês</span>
-                  </div>
+                  
+                  {/* Promotional Pricing */}
+                  {planDetails?.isPromo ? (
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-3">
+                        <span className="text-lg text-gray-400 line-through">
+                          De R$ {planDetails.originalPrice}
+                        </span>
+                        <span className="text-sm bg-red-500 text-white px-2 py-1 rounded-full">
+                          -{planDetails.discountPercentage}%
+                        </span>
+                      </div>
+                      <div className="text-4xl font-bold text-primary">
+                        por R$ {planDetails.price}
+                        <span className="text-lg font-normal text-gray-300">/mês</span>
+                      </div>
+                      <div className="text-sm text-green-400 font-medium">
+                        Economia de R$ {planDetails.originalPrice - planDetails.price}!
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="text-3xl font-bold text-primary">
+                      R$ {planDetails?.price}
+                      <span className="text-lg font-normal text-gray-300">/mês</span>
+                    </div>
+                  )}
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
@@ -406,6 +453,15 @@ export default function StripePayment() {
                         <span className="text-gray-300">{feature}</span>
                       </div>
                     ))}
+                    
+                    {/* Urgency Message */}
+                    {planDetails?.isPromo && (
+                      <div className="mt-6 p-4 bg-orange-500/20 border border-orange-500/30 rounded-lg">
+                        <p className="text-orange-300 text-sm font-medium text-center">
+                          ⏰ Aproveite, essa oferta é por tempo limitado!
+                        </p>
+                      </div>
+                    )}
                   </div>
                 </CardContent>
               </Card>
@@ -448,9 +504,9 @@ export default function StripePayment() {
                         },
                       }}
                     >
-                      <PaymentForm 
+                       <PaymentForm 
                         clientSecret={clientSecret} 
-                        planDetails={planDetails} 
+                        planDetails={planDetails!} 
                         customerId={customerId}
                         setupIntentId={setupIntentId}
                       />
