@@ -91,7 +91,7 @@ export const PLANS: Record<PlanType, PlanConfig> = {
     priceId: getStandardPriceId(),
     stripePriceId: getStandardPriceId(),
     isPromo: true,
-    promoLabel: 'Oferta Primeiros Inscritos',
+    promoLabel: 'Preço Especial de Lançamento',
     discountPercentage: 26,
   },
   vip: {
@@ -118,7 +118,7 @@ export const PLANS: Record<PlanType, PlanConfig> = {
     priceId: getVipPriceId(),
     stripePriceId: getVipPriceId(),
     isPromo: true,
-    promoLabel: 'Desconto de Lançamento',
+    promoLabel: 'Preço Especial de Lançamento',
     discountPercentage: 30,
   },
 };
