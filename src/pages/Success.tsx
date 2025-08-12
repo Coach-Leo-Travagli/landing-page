@@ -128,16 +128,16 @@ export default function Success() {
                     )}
                   </span>
                 </li>
-                <li className="flex items-start gap-3">
+                {/* <li className="flex items-start gap-3">
                   <CheckCircle className="w-4 h-4 text-success mt-0.5 flex-shrink-0" />
                   <span>
                     Você receberá suas credenciais de acesso em até 24 horas
                   </span>
-                </li>
+                </li> */}
                 <li className="flex items-start gap-3">
                   <CheckCircle className="w-4 h-4 text-success mt-0.5 flex-shrink-0" />
                   <span>
-                    Nossa equipe entrará em contato para o onboarding personalizado
+                    O Coach Travagli entrará em contato para o onboarding personalizado
                   </span>
                 </li>
                 <li className="flex items-start gap-3">

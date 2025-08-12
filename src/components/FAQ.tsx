@@ -36,7 +36,7 @@ const faqs = [
   {
     id: "nutrition-responsibility",
     question: "Quem é responsável pelos planos alimentares?",
-    answer: "Todos os planos alimentares oferecidos na plataforma são elaborados e assinados exclusivamente por nutricionistas devidamente registrados nos conselhos profissionais. O Coach Travagli atua apenas como treinador físico e não prescreve dietas ou orientações nutricionais sem a supervisão de um nutricionista."
+    answer: "Todos os planos alimentares oferecidos na plataforma são elaborados e assinados exclusivamente por nutricionistas devidamente registrados nos conselhos profissionais. O Team Travagli atua apenas como treinador físico e não prescreve dietas ou orientações nutricionais sem a supervisão de um nutricionista."
   },
   {
     id: "refund-policy",

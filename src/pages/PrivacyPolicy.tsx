@@ -110,7 +110,7 @@ export default function PrivacyPolicy() {
             <p className="text-muted-foreground mb-4">
               Email: {getSupportEmail()}<br />
               Telefone: {formatPhoneNumber()}<br />
-              Endereço: São Paulo, SP
+              Endereço: Bauru, SP
             </p>
             <p className="text-muted-foreground mb-4">
               Nosso horário de atendimento é de segunda a sexta, das 8h às 18h (horário de Brasília).

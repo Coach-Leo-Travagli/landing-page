@@ -1,14 +1,15 @@
 import { Card, CardContent } from "@/components/ui/card";
 import transformationImage from "@/assets/transformation.jpg";
+import resultadoHelder from "@/assets/resultado_helder.jpg";
 
 const testimonials = [
   {
-    name: "Ana Silva",
-    age: 28,
-    result: "Perdeu 16kg em 12 semanas",
-    quote: "Nunca pensei que poderia ficar assim! O plano personalizado fez toda a diferença. Meu personal entendeu minha rotina corrida e criou treinos que eu conseguia seguir.",
+    name: "Helder Traci",
+    age: 32,
+    result: "Perca de peso e ganho de massa muscular",
+    quote: "Com a ajuda do personal trainer, tive resultados incríveis que nunca tive antes. Eu recomendo a todos que querem perder peso e melhorar a qualidade de vida.",
     rating: 5,
-    image: transformationImage
+    image: resultadoHelder
   },
   {
     name: "Carlos Santos", 
@@ -50,7 +51,7 @@ export default function Testimonials() {
                   <img 
                     src={testimonial.image} 
                     alt={`Transformação de ${testimonial.name}`}
-                    className="w-full h-48 object-cover"
+                    className="w-full h-auto max-h-48 object-cover object-top"
                   />
                   <div className="absolute bottom-2 left-2 bg-primary text-white px-3 py-1 rounded-full text-xs font-bold">
                     {testimonial.result}

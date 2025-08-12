@@ -32,10 +32,10 @@ const CoachVideo = () => {
       <div className="container mx-auto px-6">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-fitness-dark mb-4">
-            Conheça o Coach Travagli
+            Conheça o Team Travagli
           </h2>
           <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-            Assista ao vídeo para conhecer melhor o Coach Travagli e entender como funciona nosso programa de transformação.
+            Assista ao vídeo para saber mais sobre como funciona nossa consultoria.
           </p>
         </div>
         
@@ -44,7 +44,7 @@ const CoachVideo = () => {
             <AspectRatio ratio={16 / 9}>
               <iframe
                 src="https://www.youtube.com/embed/dQw4w9WgXcQ?si=example"
-                title="Conheça o Coach Travagli"
+                title="Conheça o Team Travagli"
                 className="w-full h-full"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 referrerPolicy="strict-origin-when-cross-origin"

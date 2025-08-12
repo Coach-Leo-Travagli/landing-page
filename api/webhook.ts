@@ -189,14 +189,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
               await sendWelcomeEmail({
                 customerName: customerName,
                 customerEmail: customerEmail,
-                companyName: "Coach Travagli",
+                companyName: "Team Travagli",
                 companyLogoUrl: "https://example.com/logo.png", // TODO: Replace with actual logo URL
               });
             } else {
               await sendRenewalEmail({
                 customerName: customerName,
                 customerEmail: customerEmail,
-                companyName: "Coach Travagli",
+                companyName: "Team Travagli",
                 companyLogoUrl: "https://example.com/logo.png",
               });
             }
@@ -250,7 +250,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             await sendPaymentFailedEmail({
               customerName: customerName,
               customerEmail: customerEmail,
-              companyName: "Coach Travagli",
+              companyName: "Team Travagli",
               companyLogoUrl: "https://example.com/logo.png", // TODO: Replace with actual logo URL
             });
           } else {

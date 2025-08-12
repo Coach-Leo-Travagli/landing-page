@@ -32,14 +32,14 @@ export default function TermsOfService() {
           <section className="mb-8">
             <h2 className="text-2xl font-bold text-fitness-dark mb-4">1. Aceitação dos Termos</h2>
             <p className="text-muted-foreground mb-4">
-              Ao acessar ou utilizar os serviços oferecidos pela Coach Travagli, você declara que leu, entendeu e concorda integralmente com estes Termos de Serviço. Caso não concorde com os termos, você deve se abster de utilizar nossos serviços.
+              Ao acessar ou utilizar os serviços oferecidos pela Team Travagli, você declara que leu, entendeu e concorda integralmente com estes Termos de Serviço. Caso não concorde com os termos, você deve se abster de utilizar nossos serviços.
             </p>
           </section>
 
           <section className="mb-8">
             <h2 className="text-2xl font-bold text-fitness-dark mb-4">2. Descrição dos Serviços</h2>
             <p className="text-muted-foreground mb-4">
-              A Coach Travagli oferece serviços de coaching fitness online, incluindo:
+              A Team Travagli oferece serviços de coaching fitness online, incluindo:
             </p>
             <ul className="list-disc pl-6 text-muted-foreground space-y-2 mb-4">
               <li>Planos de treino personalizados</li>
@@ -52,10 +52,10 @@ export default function TermsOfService() {
               As orientações nutricionais e os planos alimentares são elaborados exclusivamente por nutricionista habilitado e registrado no Conselho Regional de Nutricionistas (CRN), contratado especificamente para esta finalidade.
             </p>
             <p className="text-muted-foreground mb-4">
-              O Coach Travagli não realiza atendimentos nutricionais diretamente e não é responsável pela prescrição de dietas. O profissional de Educação Física atua dentro de sua competência legal, focando no desenvolvimento físico e orientação de treinos.
+              O Team Travagli não realiza atendimentos nutricionais diretamente e não é responsável pela prescrição de dietas. O profissional de Educação Física atua dentro de sua competência legal, focando no desenvolvimento físico e orientação de treinos.
             </p>
             <p className="text-muted-foreground mb-4">
-              Os serviços são oferecidos exclusivamente online e podem incluir atualizações, modificações ou acréscimos a critério da Coach Travagli.
+              Os serviços são oferecidos exclusivamente online e podem incluir atualizações, modificações ou acréscimos a critério da Team Travagli.
             </p>
           </section>
 
@@ -99,19 +99,19 @@ export default function TermsOfService() {
               Sempre consulte um profissional de saúde antes de iniciar qualquer programa de exercícios.
             </p>
             <p className="text-muted-foreground mb-4">
-              As informações fornecidas não substituem aconselhamento médico, diagnóstico ou tratamento profissional. A Coach Travagli não se responsabiliza por quaisquer danos decorrentes da má utilização dos serviços ou da falta de acompanhamento médico adequado.
+              As informações fornecidas não substituem aconselhamento médico, diagnóstico ou tratamento profissional. A Team Travagli não se responsabiliza por quaisquer danos decorrentes da má utilização dos serviços ou da falta de acompanhamento médico adequado.
             </p>
           </section>
 
           <section className="mb-8">
             <h2 className="text-2xl font-bold text-fitness-dark mb-4">6. Propriedade Intelectual</h2>
             <p className="text-muted-foreground mb-4">
-              Todo o conteúdo fornecido pela Coach Travagli, incluindo planos de treino, materiais educacionais 
+              Todo o conteúdo fornecido pela Team Travagli, incluindo planos de treino, materiais educacionais 
               e recursos, são de nossa propriedade e protegidos por direitos autorais. O uso é licenciado 
               apenas para uso pessoal e não comercial.
             </p>
             <p className="text-muted-foreground mb-4">
-              É proibida a reprodução, distribuição, modificação ou compartilhamento de qualquer conteúdo sem autorização expressa e por escrito da Coach Travagli.
+              É proibida a reprodução, distribuição, modificação ou compartilhamento de qualquer conteúdo sem autorização expressa e por escrito da Team Travagli.
             </p>
           </section>
 
@@ -135,7 +135,7 @@ export default function TermsOfService() {
             <p className="text-muted-foreground mb-4">
               Email: {getSupportEmail()}<br />
               Telefone: {formatPhoneNumber()}<br />
-              Endereço: São Paulo, SP
+              Endereço: Bauru, SP
             </p>
             <p className="text-muted-foreground mb-4">
               Nosso horário de atendimento é de segunda a sexta, das 8h às 18h (horário de Brasília).
