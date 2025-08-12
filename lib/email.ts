@@ -37,7 +37,8 @@ export async function sendWelcomeEmail(data: EmailData): Promise<void> {
     const text = htmlToText(html) as string;
     
     await resend.emails.send({
-      from: 'Team Travagli <noreply@teamtravagli.com.br>',
+      // from: 'Team Travagli <noreply@teamtravagli.com.br>',
+      from: 'onboarding@resend.dev',
       to: data.customerEmail,
       subject: '🎉 Bem-vindo(a) à sua transformação fitness!',
       html,
@@ -57,7 +58,8 @@ export async function sendPaymentFailedEmail(data: EmailData): Promise<void> {
     const text = htmlToText(html) as string;
     
     await resend.emails.send({
-      from: 'Team Travagli <noreply@teamtravagli.com.br>',
+      // from: 'Team Travagli <noreply@teamtravagli.com.br>',
+      from: 'onboarding@resend.dev',
       to: data.customerEmail,
       subject: '⚠️ Houve um problema com seu pagamento',
       html,
@@ -77,7 +79,8 @@ export async function sendRenewalEmail(data: EmailData): Promise<void> {
     const text = htmlToText(html) as string;
 
     await resend.emails.send({
-      from: 'Team Travagli <noreply@teamtravagli.com.br>',
+      // from: 'Team Travagli <noreply@teamtravagli.com.br>',
+      from: 'onboarding@resend.dev',
       to: data.customerEmail,
       subject: '🔁 Assinatura renovada com sucesso',
       html,
