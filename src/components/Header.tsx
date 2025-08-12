@@ -61,12 +61,12 @@ export default function Header() {
             >
               FAQ
             </button>
-            <Link
+            {/* <Link
               to="/sobre-nos"
               className="text-muted-foreground hover:text-primary transition-colors"
             >
               Sobre
-            </Link>
+            </Link> */}
           </nav>
 
           {/* CTA Button */}
