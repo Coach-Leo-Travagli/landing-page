@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import HowItWorks from "@/components/HowItWorks";
 import CoachVideo from "@/components/CoachVideo";
@@ -47,6 +48,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background scroll-smooth">
+      <Header />
       <Hero />
       <div id="how-it-works">
         <HowItWorks />

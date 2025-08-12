@@ -9,6 +9,7 @@ import { Check, ArrowLeft, Loader2 } from 'lucide-react';
 import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { STRIPE_PRICE_IDS, getPlansForPaymentPage, getPlan, isValidPlanType, type PlanType } from '@/utils/plans';
+import logoTeamTravagli from "@/assets/logo_team_travagli.png";
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY || '');
 
@@ -388,9 +389,16 @@ export default function StripePayment() {
             </Link>
             
             <div className="text-center">
-              <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">
-                Finalizar Assinatura
-              </h1>
+              <div className="flex items-center justify-center gap-4 mb-4">
+                <img
+                  src={logoTeamTravagli}
+                  alt="Team Travagli"
+                  className="h-12 w-auto object-contain"
+                />
+                <h1 className="text-3xl md:text-4xl font-bold text-white">
+                  Finalizar Assinatura
+                </h1>
+              </div>
               <p className="text-gray-300 text-lg">
                 Complete seu pagamento de forma segura
               </p>

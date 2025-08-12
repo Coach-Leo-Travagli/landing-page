@@ -3,6 +3,7 @@ import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 import { getSupportEmail } from "@/utils/email";
 import { formatPhoneNumber } from "@/utils/phone";
+import logoTeamTravagli from "@/assets/logo_team_travagli.png";
 
 export default function PrivacyPolicy() {
   // Always scroll to top immediately on mount
@@ -19,9 +20,16 @@ export default function PrivacyPolicy() {
             <ArrowLeft className="w-4 h-4" />
             Voltar ao Início
           </Link>
-          <h1 className="text-4xl md:text-5xl font-black text-fitness-dark mb-4">
-            Política de Privacidade
-          </h1>
+          <div className="flex items-center gap-4 mb-4">
+            <img
+              src={logoTeamTravagli}
+              alt="Team Travagli"
+              className="h-12 w-auto object-contain"
+            />
+            <h1 className="text-4xl md:text-5xl font-black text-fitness-dark">
+              Política de Privacidade
+            </h1>
+          </div>
           <p className="text-muted-foreground">
             Última atualização: Agosto de 2025
           </p>
