@@ -84,8 +84,24 @@ export default function Footer() {
           <div>
             <h4 className="text-lg font-bold mb-6">Suporte</h4>
             <ul className="space-y-3 text-gray-300">
-              <li><Link to="/politica-de-privacidade" className="hover:text-primary transition-colors">Política de Privacidade</Link></li>
-              <li><Link to="/termos-de-servico" className="hover:text-primary transition-colors">Termos de Serviço</Link></li>
+              <li>
+                <Link
+                  to="/politica-de-privacidade"
+                  className="hover:text-primary transition-colors"
+                  onClick={() => sessionStorage.setItem('fromFooterNav', '1')}
+                >
+                  Política de Privacidade
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/termos-de-servico"
+                  className="hover:text-primary transition-colors"
+                  onClick={() => sessionStorage.setItem('fromFooterNav', '1')}
+                >
+                  Termos de Serviço
+                </Link>
+              </li>
               <li><a href="#faq#refund-policy" className="hover:text-primary transition-colors scroll-smooth">Política de Reembolso</a></li>
             </ul>
           </div>
@@ -130,8 +146,20 @@ export default function Footer() {
             © 2025 Coach Travagli. Todos os direitos reservados. Feito com ❤️ para sua jornada fitness.
           </p>
           <div className="flex space-x-6 mt-4 md:mt-0">
-            <Link to="/politica-de-privacidade" className="text-gray-400 hover:text-primary text-sm transition-colors">Privacidade</Link>
-            <Link to="/termos-de-servico" className="text-gray-400 hover:text-primary text-sm transition-colors">Termos</Link>
+            <Link
+              to="/politica-de-privacidade"
+              className="text-gray-400 hover:text-primary text-sm transition-colors"
+              onClick={() => sessionStorage.setItem('fromFooterNav', '1')}
+            >
+              Privacidade
+            </Link>
+            <Link
+              to="/termos-de-servico"
+              className="text-gray-400 hover:text-primary text-sm transition-colors"
+              onClick={() => sessionStorage.setItem('fromFooterNav', '1')}
+            >
+              Termos
+            </Link>
           </div>
         </div>
       </div>

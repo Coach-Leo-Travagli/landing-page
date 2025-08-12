@@ -5,6 +5,11 @@ import { formatPhoneNumber } from "@/utils/phone";
 import { getSupportEmail } from "@/utils/email";
 
 export default function TermsOfService() {
+  // Always scroll to top immediately on mount
+  if (typeof window !== 'undefined') {
+    window.scrollTo(0, 0);
+  }
+
   return (
     <div className="min-h-screen bg-background py-12">
       <div className="container mx-auto px-4 max-w-4xl">

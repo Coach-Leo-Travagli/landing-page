@@ -6,6 +6,7 @@ import Pricing from "@/components/Pricing";
 import Testimonials from "@/components/Testimonials";
 import FAQ from "@/components/FAQ";
 import Footer from "@/components/Footer";
+import { useLocation } from "react-router-dom";
 
 const Index = () => {
   useEffect(() => {
@@ -29,6 +30,20 @@ const Index = () => {
     
     return () => window.removeEventListener('hashchange', checkHashHasChanged);
   }, []);
+
+  // If returning from a footer legal link, jump to footer once
+  const location = useLocation();
+  useEffect(() => {
+    if (sessionStorage.getItem('fromFooterNav') === '1') {
+      sessionStorage.removeItem('fromFooterNav');
+      // scroll to footer container (no smooth)
+      const footerEl = document.querySelector('footer');
+      if (footerEl) {
+        const top = (footerEl as HTMLElement).offsetTop;
+        window.scrollTo(0, top);
+      }
+    }
+  }, [location.key]);
 
   return (
     <div className="min-h-screen bg-background scroll-smooth">
