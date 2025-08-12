@@ -190,14 +190,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
                 customerName: customerName,
                 customerEmail: customerEmail,
                 companyName: "Team Travagli",
-                companyLogoUrl: "https://example.com/logo.png", // TODO: Replace with actual logo URL
+                companyLogoUrl: "https://landing-pagee-one.vercel.app/assets/logo_team_travagli-DD5cahtn.png", // TODO: Replace with actual logo URL
               });
             } else {
               await sendRenewalEmail({
                 customerName: customerName,
                 customerEmail: customerEmail,
                 companyName: "Team Travagli",
-                companyLogoUrl: "https://example.com/logo.png",
+                companyLogoUrl: "https://landing-pagee-one.vercel.app/assets/logo_team_travagli-DD5cahtn.png",
               });
             }
           } catch (dbError) {
@@ -251,7 +251,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
               customerName: customerName,
               customerEmail: customerEmail,
               companyName: "Team Travagli",
-              companyLogoUrl: "https://example.com/logo.png", // TODO: Replace with actual logo URL
+              companyLogoUrl: "https://landing-pagee-one.vercel.app/assets/logo_team_travagli-DD5cahtn.png", // TODO: Replace with actual logo URL
             });
           } else {
             console.log("⚠️ User not found for failed payment:", stripeCustomerId);
