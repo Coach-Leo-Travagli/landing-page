@@ -130,7 +130,7 @@ Esta é a landing page oficial da **Coach Travagli**, uma plataforma de coaching
 ### 📱 **Suporte e Atendimento**
 
 #### **Canais de Contato**
-- **WhatsApp**: +55 (11) 99999-9999
+- **WhatsApp**: +55 11 99999-9999
 - **Email**: suporte@coachtravagli.com
 - **Horário**: Segunda a Sexta, 8h às 18h
 

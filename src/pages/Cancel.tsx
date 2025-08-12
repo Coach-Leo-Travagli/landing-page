@@ -1,13 +1,15 @@
 import { Link } from 'react-router-dom';
+import { buildWhatsAppLink, formatPhoneNumber } from '@/utils/phone';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { XCircle, Home, RefreshCw, MessageCircle } from 'lucide-react';
 import { toast } from 'sonner';
+import { getSupportEmail } from '@/utils/email';
 
 export default function Cancel() {
   const handleEmailCopy = async () => {
     try {
-      await navigator.clipboard.writeText('suporte@coachtravagli.com');
+      await navigator.clipboard.writeText(getSupportEmail());
       toast.success('Email copiado para a área de transferência!');
     } catch (err) {
       toast.error('Erro ao copiar email');
@@ -72,7 +74,7 @@ export default function Cancel() {
                 </Button>
                 
                 <Button asChild variant="outline" size="lg" className="flex-1">
-                  <a href="https://wa.me/5511999999999?text=Oi" target="_blank" rel="noopener noreferrer">
+                  <a href={buildWhatsAppLink('Oi')} target="_blank" rel="noopener noreferrer">
                     <MessageCircle className="w-4 h-4 mr-2" />
                     Falar com Suporte
                   </a>
@@ -96,11 +98,11 @@ export default function Cancel() {
                   onClick={handleEmailCopy}
                   className="text-primary hover:underline font-medium cursor-pointer"
                 >
-                  suporte@coachtravagli.com
+                  {getSupportEmail()}
                 </a>
               </p>
               <p className="text-xs text-muted-foreground mt-2">
-                WhatsApp: <a href="https://wa.me/5511999999999?text=Oi" className="text-primary hover:underline font-medium cursor-pointer" target="_blank" rel="noopener noreferrer">+55 (11) 99999-9999</a> • Atendimento: Seg-Sex 8h às 18h
+                WhatsApp: <a href={buildWhatsAppLink('Oi')} className="text-primary hover:underline font-medium cursor-pointer" target="_blank" rel="noopener noreferrer">{formatPhoneNumber()}</a> • Atendimento: Seg-Sex 8h às 18h
               </p>
             </div>
           </CardContent>

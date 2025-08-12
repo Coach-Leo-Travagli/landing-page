@@ -1,6 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
+import { formatPhoneNumber } from "@/utils/phone";
+import { getSupportEmail } from "@/utils/email";
 
 export default function TermsOfService() {
   return (
@@ -126,8 +128,8 @@ export default function TermsOfService() {
               Para questões sobre estes termos, entre em contato:
             </p>
             <p className="text-muted-foreground mb-4">
-              Email: suporte@coachtravagli.com.br<br />
-              Telefone: +55 (11) 99999-9999<br />
+              Email: {getSupportEmail()}<br />
+              Telefone: {formatPhoneNumber()}<br />
               Endereço: São Paulo, SP
             </p>
             <p className="text-muted-foreground mb-4">

@@ -1,6 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
+import { getSupportEmail } from "@/utils/email";
+import { formatPhoneNumber } from "@/utils/phone";
 
 export default function PrivacyPolicy() {
   return (
@@ -101,8 +103,8 @@ export default function PrivacyPolicy() {
               Para exercer seus direitos ou esclarecer dúvidas sobre esta política, entre em contato:
             </p>
             <p className="text-muted-foreground mb-4">
-              Email: suporte@coachtravagli.com<br />
-              Telefone: +55 (11) 99999-9999<br />
+              Email: {getSupportEmail()}<br />
+              Telefone: {formatPhoneNumber()}<br />
               Endereço: São Paulo, SP
             </p>
             <p className="text-muted-foreground mb-4">
