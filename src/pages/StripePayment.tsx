@@ -238,7 +238,7 @@ function PaymentForm({
               },
             },
             business: {
-              name: 'Coach Travagli'
+              name: 'Team Travagli'
             }
           }}
         />

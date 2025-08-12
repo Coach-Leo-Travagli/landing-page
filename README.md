@@ -4,11 +4,11 @@
 
 **URL**: https://lovable.dev/projects/1ed73914-6b8c-4b3e-843e-0569407417f2
 
-## Sobre a Landing Page - Coach Travagli
+## Sobre a Landing Page - Team Travagli
 
 ### 🎯 **Visão Geral**
 
-Esta é a landing page oficial da **Coach Travagli**, uma plataforma de coaching fitness que oferece transformação física e mental através de treinos personalizados, acompanhamento nutricional e suporte especializado.
+Esta é a landing page oficial da **Team Travagli**, uma plataforma de coaching fitness que oferece transformação física e mental através de treinos personalizados, acompanhamento nutricional e suporte especializado.
 
 ### 📄 **Páginas e Funcionalidades**
 
@@ -130,8 +130,8 @@ Esta é a landing page oficial da **Coach Travagli**, uma plataforma de coaching
 ### 📱 **Suporte e Atendimento**
 
 #### **Canais de Contato**
-- **WhatsApp**: +55 11 99999-9999
-- **Email**: suporte@coachtravagli.com
+- **WhatsApp**: +55 (11) 99999-9999
+- **Email**: suporte@teamtravagli.com.br
 - **Horário**: Segunda a Sexta, 8h às 18h
 
 #### **Tipos de Suporte**
@@ -165,7 +165,7 @@ Esta é a landing page oficial da **Coach Travagli**, uma plataforma de coaching
 - **Blog Integrado**: Conteúdo sobre fitness e nutrição
 - **App Mobile**: Aplicativo nativo para iOS e Android
 
-Esta landing page representa a porta de entrada para a transformação fitness dos clientes da Coach Travagli, oferecendo uma experiência completa desde o primeiro contato até a ativação da assinatura.
+Esta landing page representa a porta de entrada para a transformação fitness dos clientes da Team Travagli, oferecendo uma experiência completa desde o primeiro contato até a ativação da assinatura.
 
 ## How can I edit this code?
 

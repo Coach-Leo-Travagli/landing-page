@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { Copy, Check } from "lucide-react";
+import { getSupportEmail } from "@/utils/email";
+import { toast } from "sonner";
 
 const Email = () => {
   const [copiedTemplate, setCopiedTemplate] = useState<string | null>(null);
@@ -8,6 +10,20 @@ const Email = () => {
     navigator.clipboard.writeText(html);
     setCopiedTemplate(templateName);
     setTimeout(() => setCopiedTemplate(null), 2000);
+  };
+
+  const handlePreviewClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    const target = e.target as HTMLElement;
+    const anchor = target.closest('a[href^="mailto:"]') as HTMLAnchorElement | null;
+    if (anchor) {
+      e.preventDefault();
+      const email = getSupportEmail();
+      navigator.clipboard.writeText(email).then(() => {
+        toast.success("Email copiado para a área de transferência!");
+      }).catch(() => {
+        toast.error("Erro ao copiar email");
+      });
+    }
   };
 
   const welcomeEmailHTML = `<!DOCTYPE html>
@@ -246,6 +262,7 @@ const Email = () => {
                 </div>
                 <div 
                   className="h-96 overflow-y-auto"
+                  onClick={handlePreviewClick}
                   dangerouslySetInnerHTML={{ __html: welcomeEmailHTML }}
                 />
               </div>
@@ -287,6 +304,7 @@ const Email = () => {
                 </div>
                 <div 
                   className="h-96 overflow-y-auto"
+                  onClick={handlePreviewClick}
                   dangerouslySetInnerHTML={{ __html: paymentFailedEmailHTML }}
                 />
               </div>

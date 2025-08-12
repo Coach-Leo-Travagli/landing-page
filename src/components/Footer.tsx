@@ -19,7 +19,7 @@ export default function Footer() {
     <footer className="bg-fitness-dark text-white py-16">
       <div className="container mx-auto px-4">
         {/* CTA Section */}
-        <div className="text-center mb-16 py-12 bg-fitness-gradient rounded-2xl">
+        <div className="text-center mb-16 py-12 px-4 bg-fitness-gradient rounded-2xl">
           <h2 className="text-3xl md:text-4xl font-black mb-4">
             Pronto Para Começar Sua Transformação?
           </h2>
@@ -50,21 +50,21 @@ export default function Footer() {
         <div className="grid md:grid-cols-4 gap-8 mb-12">
           {/* Company Info */}
           <div>
-            <h3 className="text-2xl font-black mb-6 text-gradient">Coach Travagli</h3>
+            <h3 className="text-2xl font-black mb-6 text-gradient">Team Travagli</h3>
             <p className="text-gray-300 mb-6 leading-relaxed">
               Transformando vidas através de coaching personalizado de fitness e nutrição. 
               Sua jornada para um você mais saudável e forte começa aqui.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="w-10 h-10 bg-primary !rounded-full flex items-center justify-center hover:bg-primary-light transition-colors">
+              <a href="https://www.instagram.com/leo.cazerta/" target="_blank" className="w-10 h-10 bg-primary !rounded-full flex items-center justify-center hover:bg-primary-light transition-colors">
                 <Instagram className="w-5 h-5" />
               </a>
-              <a href="#" className="w-10 h-10 bg-primary !rounded-full flex items-center justify-center hover:bg-primary-light transition-colors">
+              {/* <a href="#" className="w-10 h-10 bg-primary !rounded-full flex items-center justify-center hover:bg-primary-light transition-colors">
                 <Facebook className="w-5 h-5" />
               </a>
               <a href="#" className="w-10 h-10 bg-primary !rounded-full flex items-center justify-center hover:bg-primary-light transition-colors">
                 <Youtube className="w-5 h-5" />
-              </a>
+              </a> */}
             </div>
           </div>
 
@@ -127,7 +127,7 @@ export default function Footer() {
               </div>
               <div className="flex items-center gap-3 max-w-full">
                 <MapPin className="w-5 h-5 text-primary flex-shrink-0" />
-                <span className="truncate text-sm sm:text-base">São Paulo, SP</span>
+                <span className="truncate text-sm sm:text-base">Bauru, SP</span>
               </div>
             </div>
             
@@ -143,7 +143,7 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="border-t border-gray-700 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-400 text-sm">
-            © 2025 Coach Travagli. Todos os direitos reservados. Feito com ❤️ para sua jornada fitness.
+            © 2025 Team Travagli. Todos os direitos reservados. Feito com ❤️ para sua jornada fitness.
           </p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <Link

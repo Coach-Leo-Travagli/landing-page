@@ -55,8 +55,8 @@ export const PLANS: Record<PlanType, PlanConfig> = {
     description: 'Ideal para quem está começando a treinar com orientação profissional',
     features: [
       'Planos de treino personalizados',
-      'Vídeos demonstrativos dos exercícios',
-      'Acompanhamento do progresso',
+      // 'Vídeos demonstrativos dos exercícios',
+      'Acompanhamento mensal de progresso',
       'Diretrizes básicas de nutrição',
       'Suporte por email'
     ],
@@ -82,9 +82,9 @@ export const PLANS: Record<PlanType, PlanConfig> = {
       'Tudo do plano Básico',
       'Plano de refeições individualizado',
       'Recomendações de suplementos',
-      'Check-ins semanais de progresso',
+      // 'Check-ins semanais de progresso',
       'Suporte por whatsapp prioritário',
-      'Acesso a receitas exclusivas'
+      // 'Acesso a receitas exclusivas'
     ],
     popular: true,
     variant: 'hero',
@@ -107,11 +107,11 @@ export const PLANS: Record<PlanType, PlanConfig> = {
     features: [
       'Tudo do plano Padrão',
       'Videochamadas 1-a-1 (2x/mês)',
-      'Suporte 24/7 do personal trainer',
+      // 'Suporte 24/7 do personal trainer',
       'Ajustes prioritários no plano',
       'Análise detalhada de composição corporal',
-      'Orientação para planejamento de refeições',
-      'Acesso à comunidade exclusiva'
+      // 'Orientação para planejamento de refeições',
+      // 'Acesso à comunidade exclusiva'
     ],
     popular: false,
     variant: 'cta',
