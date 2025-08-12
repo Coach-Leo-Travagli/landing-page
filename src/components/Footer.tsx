@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import { buildWhatsAppLink, formatPhoneNumber } from "@/utils/phone";
 import { getSupportEmail } from "@/utils/email";
+import logoTeamTravagli from "@/assets/logo_team_travagli.png";
 
 export default function Footer() {
   const handleEmailCopy = async () => {
@@ -50,7 +51,14 @@ export default function Footer() {
         <div className="grid md:grid-cols-4 gap-8 mb-12">
           {/* Company Info */}
           <div>
-            <h3 className="text-2xl font-black mb-6 text-gradient">Team Travagli</h3>
+            <div className="flex items-center gap-3 mb-6">
+              <img
+                src={logoTeamTravagli}
+                alt="Team Travagli"
+                className="h-8 w-auto object-contain"
+              />
+              <h3 className="text-2xl font-black text-gradient">Team Travagli</h3>
+            </div>
             <p className="text-gray-300 mb-6 leading-relaxed">
               Transformando vidas através de coaching personalizado de fitness e nutrição. 
               Sua jornada para um você mais saudável e forte começa aqui.

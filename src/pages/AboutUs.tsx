@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
+import logoTeamTravagli from "@/assets/logo_team_travagli.png";
 
 const teamMembers = [
   {
@@ -40,7 +41,14 @@ export default function AboutUs() {
             <ArrowLeft className="w-5 h-5" />
             Voltar ao Início
           </Link>
-          <h1 className="text-4xl md:text-5xl font-black mb-4">Sobre Nós</h1>
+          <div className="flex items-center gap-4 mb-4">
+            <img
+              src={logoTeamTravagli}
+              alt="Team Travagli"
+              className="h-16 w-auto object-contain"
+            />
+            <h1 className="text-4xl md:text-5xl font-black">Sobre Nós</h1>
+          </div>
           <p className="text-xl text-gray-300 max-w-3xl">
             Conheça a equipe por trás das milhares de transformações que mudaram vidas em todo o Brasil.
           </p>

@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
 import heroImage from "@/assets/hero-fitness-couple.jpg";
-import logoTeamTravagli from "@/assets/logo_team_travagli.png";
 
 export default function Hero() {
   return (
@@ -48,24 +47,17 @@ export default function Hero() {
 
           {/* Social Proof */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-8 text-sm opacity-80">
-            {/* <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2">
               <div className="flex -space-x-2">
                 <div className="w-8 h-8 rounded-full bg-primary border-2 border-white"></div>
                 <div className="w-8 h-8 rounded-full bg-fitness-secondary border-2 border-white"></div>
                 <div className="w-8 h-8 rounded-full bg-success border-2 border-white"></div>
               </div>
-              <span>5000+ transformações realizadas</span>
+              <span>1000+ transformações realizadas</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="text-fitness-secondary text-lg">⭐⭐⭐⭐⭐</span>
               <span>4.9/5 avaliação média</span>
-            </div> */}
-            <div className="mt-20 w-64 h-40 md:w-96 md:h-56 overflow-hidden rounded-lg">
-              <img
-                src={logoTeamTravagli}
-                alt="Team Travagli"
-                className="w-full h-full object-cover object-center"
-              />
             </div>
           </div>
         </div>

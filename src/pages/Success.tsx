@@ -6,6 +6,7 @@ import { CheckCircle, Home, Mail, Download, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { getSupportEmail } from '@/utils/email';
 import { buildWhatsAppLink, formatPhoneNumber } from '@/utils/phone';
+import logoTeamTravagli from "@/assets/logo_team_travagli.png";
 
 export default function Success() {
   const [searchParams] = useSearchParams();
@@ -94,6 +95,13 @@ export default function Success() {
       <div className="max-w-2xl w-full">
         <Card className="shadow-fitness-hero border-0">
           <CardHeader className="text-center pb-6">
+            <div className="flex justify-center mb-6">
+              <img
+                src={logoTeamTravagli}
+                alt="Team Travagli"
+                className="h-12 w-auto object-contain mb-4"
+              />
+            </div>
             <div className="flex justify-center mb-6">
               <div className="w-16 h-16 bg-success/10 rounded-full flex items-center justify-center">
                 <CheckCircle className="w-8 h-8 text-success" />
