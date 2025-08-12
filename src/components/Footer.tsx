@@ -2,11 +2,13 @@ import { Button } from "@/components/ui/button";
 import { Instagram, Facebook, Twitter, Youtube, Mail, Phone, MapPin } from "lucide-react";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
+import { buildWhatsAppLink, formatPhoneNumber } from "@/utils/phone";
+import { getSupportEmail } from "@/utils/email";
 
 export default function Footer() {
   const handleEmailCopy = async () => {
     try {
-      await navigator.clipboard.writeText('suporte@coachtravagli.com');
+      await navigator.clipboard.writeText(getSupportEmail());
       toast.success('Email copiado para a área de transferência!');
     } catch (err) {
       toast.error('Erro ao copiar email');
@@ -37,7 +39,7 @@ export default function Footer() {
               variant="outline-hero" 
               size="xl" 
               className="border-white text-white hover:bg-white hover:text-primary"
-              onClick={() => window.open('https://wa.me/5511999999999?text=Oi', '_blank')}
+              onClick={() => window.open(buildWhatsAppLink('Oi'), '_blank')}
             >
               Agendar Conversa
             </Button>
@@ -98,14 +100,14 @@ export default function Footer() {
                 title="Clique para copiar o email"
               >
                 <Mail className="w-5 h-5 text-primary flex-shrink-0" />
-                <span className="truncate text-sm sm:text-base">suporte@coachtravagli.com</span>
+                <span className="truncate text-sm sm:text-base">{getSupportEmail()}</span>
               </div>
               <div className="flex items-center gap-3 max-w-full cursor-pointer hover:text-primary transition-colors group"
-                onClick={() => window.open('https://wa.me/5511999999999?text=Oi', '_blank')}
+                onClick={() => window.open(buildWhatsAppLink('Oi'), '_blank')}
                 title="Entre em contato pelo whatsapp"
               >
                 <Phone className="w-5 h-5 text-primary flex-shrink-0" />
-                <span className="truncate text-sm sm:text-base">+55 (11) 99999-9999</span>
+                <span className="truncate text-sm sm:text-base">{formatPhoneNumber()}</span>
               </div>
               <div className="flex items-center gap-3 max-w-full">
                 <MapPin className="w-5 h-5 text-primary flex-shrink-0" />

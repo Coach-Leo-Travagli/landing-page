@@ -5,6 +5,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { useEffect, useState } from "react";
+import { buildWhatsAppLink } from "@/utils/phone";
 
 const faqs = [
   {
@@ -146,7 +147,7 @@ export default function FAQ() {
             Ainda tem dúvidas?
           </p>
           <a 
-            onClick={() => window.open('https://wa.me/5511999999999?text=Oi', '_blank')}
+            onClick={() => window.open(buildWhatsAppLink('Oi'), '_blank')}
             className="text-primary font-semibold hover:underline hover:cursor-pointer"
           >
             Entre em contato com nossa equipe de suporte
