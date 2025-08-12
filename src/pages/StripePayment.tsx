@@ -410,11 +410,11 @@ export default function StripePayment() {
                           MAIS POPULAR
                         </Badge>
                       )}
-                      {planDetails?.isPromo && (
+                      {/* {planDetails?.isPromo && (
                         <Badge className="bg-orange-500 text-white animate-promo-pulse">
                           {planDetails.promoLabel}
                         </Badge>
-                      )}
+                      )} */}
                     </div>
                   </div>
                   
@@ -423,14 +423,14 @@ export default function StripePayment() {
                     <div className="space-y-2">
                       <div className="flex items-center gap-3">
                         <span className="text-lg text-gray-400 line-through">
-                          De R$ {planDetails.originalPrice}
+                          R$ {planDetails.originalPrice}
                         </span>
-                        <span className="text-sm bg-red-500 text-white px-2 py-1 rounded-full">
+                        {/* <span className="text-sm bg-red-500 text-white px-2 py-1 rounded-full">
                           -{planDetails.discountPercentage}%
-                        </span>
+                        </span> */}
                       </div>
                       <div className="text-4xl font-bold text-primary">
-                        por R$ {planDetails.price}
+                        R$ {planDetails.price}
                         <span className="text-lg font-normal text-gray-300">/mês</span>
                       </div>
                       <div className="text-sm text-green-400 font-medium">

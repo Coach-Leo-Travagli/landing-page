@@ -125,7 +125,7 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="border-t border-gray-700 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-400 text-sm">
-            © 2024 Coach Travagli. Todos os direitos reservados. Feito com ❤️ para sua jornada fitness.
+            © 2025 Coach Travagli. Todos os direitos reservados. Feito com ❤️ para sua jornada fitness.
           </p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <Link to="/politica-de-privacidade" className="text-gray-400 hover:text-primary text-sm transition-colors">Privacidade</Link>
