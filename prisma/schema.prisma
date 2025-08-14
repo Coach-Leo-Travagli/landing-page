@@ -29,7 +29,8 @@ model User {
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt
 
-  payments Payment[]
+  payments      Payment[]
+  formResponses FormResponse[]
 
   @@map("users")
 }
@@ -41,6 +42,8 @@ model Admin {
   passwordHash String
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+
+  formTemplates FormTemplate[]
 
   @@map("admins")
 }
@@ -58,4 +61,125 @@ model Payment {
   user           User     @relation(fields: [userId], references: [id])
 
   @@map("payments")
-} 
+}
+
+// Enum para tipos de pergunta
+enum QuestionType {
+  TEXT
+  SINGLE_CHOICE
+  MULTIPLE_CHOICE
+  NUMBER
+  DATE
+  IMAGE
+}
+
+// Modelo para tipos de formulário (anamnese, progresso, nutrição, etc)
+model FormTemplate {
+  id          String   @id @default(cuid())
+  name        String   // Ex: "Anamnese Inicial", "Avaliação Mensal", "Questionário Nutricional"
+  description String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  createdBy   String   // Admin que criou
+  admin       Admin    @relation(fields: [createdBy], references: [id])
+
+  // Relacionamentos
+  questions     Question[]
+  formResponses FormResponse[]
+
+  @@map("form_templates")
+}
+
+// Modelo para perguntas do formulário
+model Question {
+  id             String       @id @default(cuid())
+  formTemplateId String
+  title          String       // Texto da pergunta
+  description    String?      // Descrição adicional ou instrução
+  type           QuestionType
+  isRequired     Boolean      @default(true)
+  order          Int          // Ordem da pergunta no formulário
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  // Relacionamentos
+  options      QuestionOption[]
+  answers      QuestionAnswer[]
+  template     FormTemplate @relation(fields: [formTemplateId], references: [id], onDelete: Cascade)
+
+  @@map("questions")
+  @@index([formTemplateId, order])
+}
+
+// Modelo para opções de perguntas de múltipla escolha
+model QuestionOption {
+  id         String   @id @default(cuid())
+  questionId String
+  text       String   // Texto da opção
+  value      String?  // Valor opcional (para casos onde texto ≠ valor)
+  order      Int      // Ordem da opção
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  // Relacionamentos
+  question        Question              @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  questionAnswers QuestionAnswerOption[]
+
+  @@map("question_options")
+  @@index([questionId, order])
+}
+
+// Modelo para respostas do formulário (uma por formulário respondido)
+model FormResponse {
+  id             String   @id @default(cuid())
+  formTemplateId String
+  userId         String
+  completedAt    DateTime @default(now())
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  // Relacionamentos
+  formTemplate    FormTemplate     @relation(fields: [formTemplateId], references: [id])
+  user            User             @relation(fields: [userId], references: [id])
+  questionAnswers QuestionAnswer[]
+
+  @@map("form_responses")
+  @@index([userId, formTemplateId, completedAt])
+}
+
+// Modelo para respostas individuais de cada pergunta
+model QuestionAnswer {
+  id             String   @id @default(cuid())
+  formResponseId String
+  questionId     String
+  textAnswer     String?  // Para TEXT, NUMBER, DATE, IMAGE (URL)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  // Relacionamentos
+  formResponse         FormResponse           @relation(fields: [formResponseId], references: [id], onDelete: Cascade)
+  question             Question               @relation(fields: [questionId], references: [id])
+  selectedOptions      QuestionAnswerOption[] // Para SINGLE_CHOICE e MULTIPLE_CHOICE
+
+  @@map("question_answers")
+  @@unique([formResponseId, questionId]) // Uma resposta por pergunta por formulário
+  @@index([formResponseId])
+  @@index([questionId])
+}
+
+// Tabela de ligação para respostas de múltipla escolha
+model QuestionAnswerOption {
+  id               String   @id @default(cuid())
+  questionAnswerId String
+  optionId         String
+  createdAt        DateTime @default(now())
+
+  // Relacionamentos
+  questionAnswer QuestionAnswer  @relation(fields: [questionAnswerId], references: [id], onDelete: Cascade)
+  option         QuestionOption  @relation(fields: [optionId], references: [id])
+
+  @@map("question_answer_options")
+  @@unique([questionAnswerId, optionId]) // Evita duplicatas
+  @@index([questionAnswerId])
+}
