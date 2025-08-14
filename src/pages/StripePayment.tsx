@@ -18,7 +18,10 @@ function PaymentForm({
   clientSecret, 
   planDetails, 
   customerId, 
-  setupIntentId 
+  setupIntentId,
+  onProsseguir,
+  showPaymentMethod,
+  isCheckingSubscription
 }: { 
   clientSecret: string; 
   planDetails: { 
@@ -32,6 +35,9 @@ function PaymentForm({
   }; 
   customerId: string;
   setupIntentId: string;
+  onProsseguir: (name: string, email: string) => void;
+  showPaymentMethod: boolean;
+  isCheckingSubscription: boolean;
 }) {
   const stripe = useStripe();
   const elements = useElements();
@@ -254,55 +260,79 @@ function PaymentForm({
         )}
       </div>
 
-      {/* Payment Method */}
+      {/* Prosseguir Button */}
       <div className="bg-white p-6 rounded-lg shadow-sm border">
-        <h3 className="text-lg font-medium text-gray-900 mb-4">Método de Pagamento</h3>
-        <PaymentElement 
-          options={{
-            layout: 'tabs',
-            fields: {
-              billingDetails: {
-                address: {
-                  country: 'never',
-                },
-              },
-            },
-            business: {
-              name: 'Team Travagli'
-            }
-          }}
-        />
-      </div>
-      
-      <div className="flex gap-3">
-        {/* <Button 
-          type="button"
-          variant="outline" 
-          disabled={isLoading}
-          onClick={handleCancel}
-          className="h-12 px-6"
-        >
-          Cancelar
-        </Button> */}
-        
         <Button 
-          type="submit" 
-          disabled={!stripe || isLoading}
-          className="flex-1 h-12 text-lg font-semibold"
+          type="button"
+          onClick={() => onProsseguir(name, email)}
+          disabled={isCheckingSubscription || !name.trim() || !email.trim()}
+          className="w-full h-12 text-lg font-semibold"
           size="lg"
         >
-          {isLoading ? (
+          {isCheckingSubscription ? (
             <div className="flex items-center gap-2">
               <Loader2 className="w-5 h-5 animate-spin" />
-              Processando...
+              Verificando...
             </div>
-          ) : planDetails?.isPromo ? (
-            `Assinar por R$ ${planDetails.price}/mês (${planDetails.discountPercentage}% OFF)`
           ) : (
-            `Assinar por R$ ${planDetails?.price || 0}/mês`
+            'Prosseguir'
           )}
         </Button>
       </div>
+
+      {/* Payment Method */}
+      {showPaymentMethod && (
+        <>
+          <div className="bg-white p-6 rounded-lg shadow-sm border">
+            <h3 className="text-lg font-medium text-gray-900 mb-4">Método de Pagamento</h3>
+            <PaymentElement 
+              options={{
+                layout: 'tabs',
+                fields: {
+                  billingDetails: {
+                    address: {
+                      country: 'never',
+                    },
+                  },
+                },
+                business: {
+                  name: 'Team Travagli'
+                }
+              }}
+            />
+          </div>
+          
+          <div className="flex gap-3">
+            {/* <Button 
+              type="button"
+              variant="outline" 
+              disabled={isLoading}
+              onClick={handleCancel}
+              className="h-12 px-6"
+            >
+              Cancelar
+            </Button> */}
+            
+            <Button 
+              type="submit" 
+              disabled={!stripe || isLoading}
+              className="flex-1 h-12 text-lg font-semibold"
+              size="lg"
+            >
+              {isLoading ? (
+                <div className="flex items-center gap-2">
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                  Processando...
+                </div>
+              ) : planDetails?.isPromo ? (
+                `Assinar por R$ ${planDetails.price}/mês (${planDetails.discountPercentage}% OFF)`
+              ) : (
+                `Assinar por R$ ${planDetails?.price || 0}/mês`
+              )}
+            </Button>
+          </div>
+        </>
+      )}
     </form>
   );
 }
@@ -324,6 +354,8 @@ export default function StripePayment() {
   } | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [hasExistingSubscription, setHasExistingSubscription] = useState(false);
+  const [showPaymentMethod, setShowPaymentMethod] = useState(false);
+  const [isCheckingSubscription, setIsCheckingSubscription] = useState(false);
 
   const planType = searchParams.get('plan') || 'standard';
 
@@ -359,53 +391,8 @@ export default function StripePayment() {
         const selectedPlan = plans[planType];
         setPlanDetails(selectedPlan);
 
-        // Create setup intent for payment form
-        const response = await fetch('/api/create-subscription-intent', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            planType,
-          }),
-        });
-
-        const data = await response.json();
-        
-        if (data.client_secret) {
-          setClientSecret(data.client_secret);
-          setCustomerId(data.customer_id);
-          setSetupIntentId(data.setup_intent_id);
-          
-          // Check if customer already has an active subscription
-          console.log('🔍 [StripePayment] Checking for existing subscriptions for customer:', data.customer_id);
-          
-          const checkResponse = await fetch('/api/check-existing-subscription', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              customer_id: data.customer_id,
-            }),
-          });
-
-          const checkData = await checkResponse.json();
-          console.log('🔍 [StripePayment] Existing subscription check response:', checkData);
-          
-          if (checkData.hasActiveSubscription) {
-            console.log('❌ [StripePayment] Customer has existing subscription, blocking access');
-            setHasExistingSubscription(true);
-            toast.error('Você já possui uma assinatura ativa. Não é possível criar uma nova assinatura.');
-            setTimeout(() => navigate('/cancel'), 3000);
-            return;
-          } else {
-            console.log('✅ [StripePayment] No existing subscriptions found, allowing access');
-          }
-        } else {
-          toast.error('Erro ao inicializar pagamento');
-          setTimeout(() => navigate('/cancel'), 2000);
-        }
+        // Don't create setup intent yet - wait for user to provide email
+        console.log('✅ [StripePayment] Page initialized, waiting for user data');
         
       } catch (error) {
         console.error('Error initializing page:', error);
@@ -418,6 +405,71 @@ export default function StripePayment() {
 
     initializePage();
   }, [planType, navigate, plans]); // Include all dependencies
+
+  // Function to handle "Prosseguir" button click
+  const handleProsseguir = async (name: string, email: string) => {
+    try {
+      setIsCheckingSubscription(true);
+      
+      console.log('🚀 [StripePayment] Checking for existing subscriptions with email:', { email, planType });
+      
+      // First, check if a customer with this email already exists and has active subscriptions
+      const checkResponse = await fetch('/api/check-existing-subscription', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: email,
+        }),
+      });
+
+      const checkData = await checkResponse.json();
+      console.log('🔍 [StripePayment] Existing subscription check response:', checkData);
+      
+      if (checkData.hasActiveSubscription) {
+        console.log('❌ [StripePayment] Customer has existing subscription, blocking access');
+        setHasExistingSubscription(true);
+        toast.error('Você já possui uma assinatura ativa. Não é possível criar uma nova assinatura.');
+        return;
+      }
+      
+      console.log('✅ [StripePayment] No existing subscriptions found, creating setup intent');
+      
+      // Create setup intent with user data
+      const response = await fetch('/api/create-subscription-intent', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          planType,
+          email,
+          name,
+        }),
+      });
+
+      const data = await response.json();
+      console.log('🔍 [StripePayment] Subscription intent response:', data);
+      
+      if (data.client_secret) {
+        setClientSecret(data.client_secret);
+        setCustomerId(data.customer_id);
+        setSetupIntentId(data.setup_intent_id);
+        setShowPaymentMethod(true);
+        console.log('✅ [StripePayment] Setup intent created, showing payment method');
+      } else {
+        toast.error('Erro ao inicializar pagamento');
+      }
+    } catch (error) {
+      console.error('💥 [StripePayment] Error in handleProsseguir:', error);
+      toast.error('Erro ao verificar dados');
+    } finally {
+      setIsCheckingSubscription(false);
+    }
+  };
+
+
 
   if (isLoading) {
     return (
@@ -607,6 +659,9 @@ export default function StripePayment() {
                         planDetails={planDetails!} 
                         customerId={customerId}
                         setupIntentId={setupIntentId}
+                        onProsseguir={handleProsseguir}
+                        showPaymentMethod={showPaymentMethod}
+                        isCheckingSubscription={isCheckingSubscription}
                       />
                     </Elements>
                   ) : (
