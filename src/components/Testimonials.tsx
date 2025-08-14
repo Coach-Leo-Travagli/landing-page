@@ -31,7 +31,7 @@ const testimonials = [
 
 export default function Testimonials() {
   return (
-    <section className="py-20 bg-testimonial-gradient">
+    <section className="py-20 bg-white">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-black mb-6 text-fitness-dark">
@@ -44,7 +44,7 @@ export default function Testimonials() {
 
         <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {testimonials.map((testimonial, index) => (
-            <Card key={index} className="shadow-fitness-card hover:shadow-lg transition-all duration-300 border-0 bg-white">
+            <Card key={index} className="shadow-fitness-card hover:shadow-lg transition-all duration-300 border-0 bg-testimonial-gradient">
               <CardContent className="p-8">
                 {/* Before/After Image */}
                 <div className="mb-6 relative overflow-hidden rounded-lg">

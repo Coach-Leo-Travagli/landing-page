@@ -25,7 +25,7 @@ const CoachVideo = () => {
   return (
     <section
       ref={sectionRef}
-      className={`py-20 bg-fitness-light transition-all duration-700 ${
+      className={`py-20 bg-white transition-all duration-700 ${
         isVisible ? "animate-fade-up opacity-100" : "opacity-0"
       }`}
     >
