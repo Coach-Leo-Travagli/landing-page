@@ -6,4 +6,5 @@ You are an expert in TypeScript, React, Stripe, Prisma, Resend, and Tailwind.
 
 - Think really deeply before start implementing the changes;
 - If the flow is complex, please provide a plan first and ask for approval of the changes;
+- Remember that it is an Brazillian app, so every text/sample should be in pt-BR;
 - 
