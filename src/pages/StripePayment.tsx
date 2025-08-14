@@ -17,11 +17,9 @@ const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY || '');
 function UserDataForm({ 
   onProsseguir,
   isCheckingSubscription,
-  hasExistingSubscription
 }: { 
   onProsseguir: (name: string, email: string) => void;
   isCheckingSubscription: boolean;
-  hasExistingSubscription: boolean;
 }) {
   const [name, setName] = useState('');
   const [nameError, setNameError] = useState('');
@@ -117,7 +115,7 @@ function UserDataForm({
         <Button 
           type="button"
           onClick={handleProsseguir}
-          disabled={isCheckingSubscription || hasExistingSubscription || !name.trim() || !email.trim()}
+          disabled={isCheckingSubscription || !name.trim() || !email.trim()}
           className="w-full h-12 text-lg font-semibold"
           size="lg"
         >
@@ -649,7 +647,6 @@ export default function StripePayment() {
                     <UserDataForm 
                       onProsseguir={handleProsseguir}
                       isCheckingSubscription={isCheckingSubscription}
-                      hasExistingSubscription={hasExistingSubscription}
                     />
                   ) : clientSecret ? (
                     <Elements 
