@@ -95,21 +95,19 @@ export default function Success() {
       <div className="max-w-2xl w-full">
         <Card className="shadow-fitness-hero border-0">
           <CardHeader className="text-center pb-6">
-            <div className="flex justify-center mb-6">
+            <div className="flex justify-center items-center mb-4">
               <img
                 src={logoTeamTravagli}
                 alt="Team Travagli"
-                className="h-12 w-auto object-contain mb-4"
+                className="h-12 w-auto object-contain"
               />
             </div>
-            <div className="flex justify-center mb-6">
-              <div className="w-16 h-16 bg-success/10 rounded-full flex items-center justify-center">
+            
+            <CardTitle className="flex justify-center items-center text-3xl font-black text-fitness-dark mb-4">
+              Pagamento Realizado com Sucesso!
+              <div className="w-16 h-16 bg-success/10 rounded-full flex items-center justify-center ml-4">
                 <CheckCircle className="w-8 h-8 text-success" />
               </div>
-            </div>
-            
-            <CardTitle className="text-3xl font-black text-fitness-dark mb-4">
-              Pagamento Realizado com Sucesso!
             </CardTitle>
             
             <p className="text-lg text-muted-foreground">

@@ -294,6 +294,7 @@ export default function StripePayment() {
     features: string[] 
   } | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [hasExistingSubscription, setHasExistingSubscription] = useState(true);
 
   const planType = searchParams.get('plan') || 'standard';
 
@@ -346,6 +347,26 @@ export default function StripePayment() {
           setClientSecret(data.client_secret);
           setCustomerId(data.customer_id);
           setSetupIntentId(data.setup_intent_id);
+          
+          // Check if customer already has an active subscription
+          const checkResponse = await fetch('/api/check-existing-subscription', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              customer_id: data.customer_id,
+            }),
+          });
+
+          const checkData = await checkResponse.json();
+          
+          if (checkData.hasActiveSubscription) {
+            setHasExistingSubscription(true);
+            toast.error('Você já possui uma assinatura ativa. Não é possível criar uma nova assinatura.');
+            setTimeout(() => navigate('/cancel'), 3000);
+            return;
+          }
         } else {
           toast.error('Erro ao inicializar pagamento');
           setTimeout(() => navigate('/cancel'), 2000);
@@ -404,6 +425,27 @@ export default function StripePayment() {
               </p>
             </div>
           </div>
+
+          {/* Existing Subscription Warning */}
+          {hasExistingSubscription && (
+            <div className="mb-8">
+              <div className="bg-red-50 border border-red-200 rounded-lg p-6 text-center">
+                <div className="text-red-600 text-2xl mb-2">⚠️</div>
+                <h3 className="text-lg font-semibold text-red-800 mb-2">
+                  Assinatura Ativa Detectada
+                </h3>
+                <p className="text-red-700 mb-4">
+                  Você já possui uma assinatura ativa. Não é possível criar uma nova assinatura.
+                </p>
+                <Button 
+                  onClick={() => navigate('/')}
+                  className="bg-red-600 hover:bg-red-700 text-white"
+                >
+                  Voltar para o Site
+                </Button>
+              </div>
+            </div>
+          )}
 
           <div className="grid lg:grid-cols-2 gap-8">
             {/* Plan Summary */}
