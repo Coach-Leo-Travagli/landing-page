@@ -77,24 +77,36 @@ export default function Pricing() {
                     </div>
                   )}
                   
-                  <div className="mb-4">
-                    {plan.isPromo && (
-                      <div className="mb-2">
-                        <span className="text-lg text-muted-foreground line-through">
-                          {plan.originalPrice}
-                        </span>
-                      </div>
-                    )}
-                    <span className="text-5xl font-black text-primary">{plan.price}</span>
-                    <span className="text-muted-foreground">{plan.period}</span>
-                    {plan.isPromo && (
-                      <div className="mt-2">
-                        <span className="text-sm text-success font-semibold">
-                          Economia de {plan.discountPercentage}%
-                        </span>
-                      </div>
-                    )}
-                  </div>
+                   <div className="mb-4">
+                     {plan.isPromo && (
+                       <div className="mb-2">
+                         <span className="text-lg text-muted-foreground line-through">
+                           {plan.originalPrice}
+                         </span>
+                       </div>
+                     )}
+                     <span className="text-5xl font-black text-primary">{plan.price}</span>
+                     <span className="text-muted-foreground">{plan.period}</span>
+                     {plan.isPromo && (
+                       <div className="mt-2">
+                         <span className="text-sm text-success font-semibold">
+                           Economia de {plan.discountPercentage}%
+                         </span>
+                       </div>
+                     )}
+                   </div>
+                   
+                   {plan.isPromo && (
+                     <div className="mb-4 p-3 bg-primary/5 border border-primary/20 rounded-lg">
+                       <div className="flex items-center gap-2 text-primary text-sm font-semibold">
+                         <span>🔒</span>
+                         <span>Trave esse valor promocional para sempre!</span>
+                       </div>
+                       <p className="text-xs text-muted-foreground mt-1">
+                         Assine agora e mantenha esse preço especial durante toda sua assinatura ativa
+                       </p>
+                     </div>
+                   )}
                   <p className="text-muted-foreground">{plan.description}</p>
                 </CardHeader>
                 

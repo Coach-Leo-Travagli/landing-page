@@ -9,6 +9,21 @@ import { buildWhatsAppLink } from "@/utils/phone";
 
 const faqs = [
   {
+    id: "promotional-pricing",
+    question: "O desconto promocional vale apenas no primeiro mês?",
+    answer: "Não! O valor promocional é travado para toda a duração da sua assinatura. Enquanto você mantiver o plano ativo, pagará sempre o mesmo valor promocional, sem aumentos."
+  },
+  {
+    id: "price-lock-policy",
+    question: "O que acontece se eu cancelar e reassinar depois?",
+    answer: "Se você cancelar, perderá o preço promocional atual. Ao reassinar, pagará o valor vigente no momento da nova contratação. Por isso, recomendamos manter a assinatura ativa para preservar seu desconto."
+  },
+  {
+    id: "price-increases",
+    question: "Os preços podem aumentar durante minha assinatura?",
+    answer: "Para assinantes ativos, mantemos o valor travado. Aumentos de preço se aplicam apenas a novos assinantes. Seu preço permanece o mesmo enquanto você mantiver a assinatura ativa."
+  },
+  {
     id: "results-timeline",
     question: "Em quanto tempo verei resultados?",
     answer: "Isso varia de pessoa para pessoa. Algumas mudanças sutis podem ser percebidas já nas primeiras semanas, mas resultados consistentes costumam aparecer após 8 a 12 semanas de dedicação ao plano."

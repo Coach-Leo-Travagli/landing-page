@@ -504,14 +504,27 @@ export default function StripePayment() {
                       </div>
                     ))}
                     
-                    {/* Urgency Message */}
-                    {planDetails?.isPromo && (
-                      <div className="mt-6 p-4 bg-orange-500/20 border border-orange-500/30 rounded-lg">
-                        <p className="text-orange-300 text-sm font-medium text-center">
-                          ⏰ Aproveite, essa oferta é por tempo limitado!
-                        </p>
-                      </div>
-                    )}
+                     {/* Price Lock Message */}
+                     {planDetails?.isPromo && (
+                       <div className="mt-6 p-4 bg-primary/20 border border-primary/30 rounded-lg">
+                         <div className="flex items-center gap-2 text-primary text-sm font-semibold mb-2">
+                           <span>🔒</span>
+                           <span>Garanta esse desconto para sempre!</span>
+                         </div>
+                         <p className="text-white/80 text-xs">
+                           Seu desconto será mantido mensalmente enquanto a assinatura estiver ativa
+                         </p>
+                       </div>
+                     )}
+                     
+                     {/* Urgency Message */}
+                     {planDetails?.isPromo && (
+                       <div className="mt-4 p-4 bg-orange-500/20 border border-orange-500/30 rounded-lg">
+                         <p className="text-orange-300 text-sm font-medium text-center">
+                           ⏰ Aproveite, essa oferta é por tempo limitado!
+                         </p>
+                       </div>
+                     )}
                   </div>
                 </CardContent>
               </Card>
