@@ -294,7 +294,7 @@ export default function StripePayment() {
     features: string[] 
   } | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [hasExistingSubscription, setHasExistingSubscription] = useState(true);
+  const [hasExistingSubscription, setHasExistingSubscription] = useState(false);
 
   const planType = searchParams.get('plan') || 'standard';
 
