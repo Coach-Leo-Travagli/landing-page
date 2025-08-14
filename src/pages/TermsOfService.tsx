@@ -84,20 +84,26 @@ export default function TermsOfService() {
             </p>
           </section>
 
-          <section className="mb-8">
-            <h2 className="text-2xl font-bold text-fitness-dark mb-4">4. Pagamentos e Cancelamentos</h2>
-            <p className="text-muted-foreground mb-4">
-              <strong>Pagamentos:</strong> Os pagamentos são processados no início de cada ciclo de cobrança. 
-              Aceitamos os principais cartões de crédito e métodos de pagamento online. As assinaturas são renovadas automaticamente no final de cada ciclo, salvo cancelamento prévio pelo usuário.
-            </p>
-            <p className="text-muted-foreground mb-4">
-              <strong>Cancelamentos:</strong> Você pode cancelar sua assinatura a qualquer momento através da sua conta. 
-              O cancelamento será efetivo no final do período de cobrança atual.
-            </p>
-            <p className="text-muted-foreground mb-4">
-              <strong>Reembolsos:</strong> Oferecemos garantia de 30 dias de devolução do dinheiro para novos clientes. A garantia de 30 dias é válida apenas para a primeira contratação do serviço por novos clientes.
-            </p>
-          </section>
+           <section className="mb-8">
+             <h2 className="text-2xl font-bold text-fitness-dark mb-4">4. Pagamentos e Cancelamentos</h2>
+             <p className="text-muted-foreground mb-4">
+               <strong>Pagamentos:</strong> Os pagamentos são processados no início de cada ciclo de cobrança. 
+               Aceitamos os principais cartões de crédito e métodos de pagamento online. As assinaturas são renovadas automaticamente no final de cada ciclo, salvo cancelamento prévio pelo usuário.
+             </p>
+             <p className="text-muted-foreground mb-4">
+               <strong>Preços Promocionais:</strong> Clientes que contratarem durante períodos promocionais manterão o valor especial durante toda a vigência da assinatura ativa. O cancelamento da assinatura resultará na perda do preço promocional. Nova contratação será pelo valor vigente no momento da reassinatura.
+             </p>
+             <p className="text-muted-foreground mb-4">
+               <strong>Política de Preços:</strong> Aumentos de preço não se aplicam a assinantes ativos. Novos preços valem apenas para novas contratações. Mudanças de plano podem resultar na aplicação dos preços atuais.
+             </p>
+             <p className="text-muted-foreground mb-4">
+               <strong>Cancelamentos:</strong> Você pode cancelar sua assinatura a qualquer momento através da sua conta. 
+               O cancelamento será efetivo no final do período de cobrança atual.
+             </p>
+             <p className="text-muted-foreground mb-4">
+               <strong>Reembolsos:</strong> Oferecemos garantia de 30 dias de devolução do dinheiro para novos clientes. A garantia de 30 dias é válida apenas para a primeira contratação do serviço por novos clientes.
+             </p>
+           </section>
 
           <section className="mb-8">
             <h2 className="text-2xl font-bold text-fitness-dark mb-4">5. Limitação de Responsabilidade</h2>
