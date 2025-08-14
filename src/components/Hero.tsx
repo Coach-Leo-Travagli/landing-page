@@ -46,7 +46,7 @@ export default function Hero() {
           </div>
 
           {/* Social Proof */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-8 text-sm opacity-80">
+          {/* <div className="flex flex-col sm:flex-row items-center justify-center gap-8 text-sm opacity-80">
             <div className="flex items-center gap-2">
               <div className="flex -space-x-2">
                 <div className="w-8 h-8 rounded-full bg-primary border-2 border-white"></div>
@@ -59,7 +59,7 @@ export default function Hero() {
               <span className="text-fitness-secondary text-lg">⭐⭐⭐⭐⭐</span>
               <span>4.9/5 avaliação média</span>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
 
