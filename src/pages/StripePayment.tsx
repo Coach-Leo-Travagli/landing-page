@@ -13,55 +13,27 @@ import logoTeamTravagli from "@/assets/logo_team_travagli.png";
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY || '');
 
-// Payment form component
-function PaymentForm({ 
-  clientSecret, 
-  planDetails, 
-  customerId, 
-  setupIntentId,
+// User data form component
+function UserDataForm({ 
   onProsseguir,
-  showPaymentMethod,
-  isCheckingSubscription
+  isCheckingSubscription,
+  hasExistingSubscription
 }: { 
-  clientSecret: string; 
-  planDetails: { 
-    name: string; 
-    price: number; 
-    originalPrice: number;
-    isPromo: boolean;
-    promoLabel: string;
-    discountPercentage: number;
-    features: string[] 
-  }; 
-  customerId: string;
-  setupIntentId: string;
   onProsseguir: (name: string, email: string) => void;
-  showPaymentMethod: boolean;
   isCheckingSubscription: boolean;
+  hasExistingSubscription: boolean;
 }) {
-  const stripe = useStripe();
-  const elements = useElements();
-  const [isLoading, setIsLoading] = useState(false);
   const [name, setName] = useState('');
   const [nameError, setNameError] = useState('');
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState('');
-  const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
-  const planType = searchParams.get('plan') || 'standard';
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
 
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-
-    if (!stripe || !elements) {
-      return;
-    }
-
+  const handleProsseguir = () => {
     // Validate name
     if (!name.trim()) {
       setNameError('Nome é obrigatório');
@@ -87,6 +59,120 @@ function PaymentForm({
     }
 
     setEmailError('');
+    onProsseguir(name, email);
+  };
+
+  return (
+    <div className="space-y-4 rounded-lg shadow-sm border overflow-hidden">
+      {/* Name Input */}
+      <div className="bg-white px-6 py-4">
+        <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+          Nome completo
+        </label>
+        <input
+          id="name"
+          type="text"
+          value={name}
+          onChange={(e) => {
+            setName(e.target.value);
+            if (nameError) setNameError('');
+          }}
+          placeholder="Seu nome completo"
+          className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent ${
+            nameError ? 'border-red-500' : 'border-gray-300'
+          }`}
+          disabled={isCheckingSubscription}
+        />
+        {nameError && (
+          <p className="mt-2 text-sm text-red-600">{nameError}</p>
+        )}
+      </div>
+
+      {/* Email Input */}
+      <div className="bg-white px-6">
+        <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+          Email para cobrança e confirmações
+        </label>
+        <input
+          id="email"
+          type="email"
+          value={email}
+          onChange={(e) => {
+            setEmail(e.target.value);
+            if (emailError) setEmailError('');
+          }}
+          placeholder="seu@email.com"
+          className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent ${
+            emailError ? 'border-red-500' : 'border-gray-300'
+          }`}
+          disabled={isCheckingSubscription}
+        />
+        {emailError && (
+          <p className="mt-2 text-sm text-red-600">{emailError}</p>
+        )}
+      </div>
+
+      {/* Prosseguir Button */}
+      <div className="bg-white px-6 py-4">
+        <Button 
+          type="button"
+          onClick={handleProsseguir}
+          disabled={isCheckingSubscription || hasExistingSubscription || !name.trim() || !email.trim()}
+          className="w-full h-12 text-lg font-semibold"
+          size="lg"
+        >
+          {isCheckingSubscription ? (
+            <div className="flex items-center gap-2">
+              <Loader2 className="w-5 h-5 animate-spin" />
+              Verificando...
+            </div>
+          ) : (
+            'Prosseguir'
+          )}
+        </Button>
+      </div>
+    </div>
+  );
+}
+
+// Payment form component
+function PaymentForm({ 
+  clientSecret, 
+  planDetails, 
+  customerId, 
+  setupIntentId,
+  name,
+  email
+}: { 
+  clientSecret: string; 
+  planDetails: { 
+    name: string; 
+    price: number; 
+    originalPrice: number;
+    isPromo: boolean;
+    promoLabel: string;
+    discountPercentage: number;
+    features: string[] 
+  }; 
+  customerId: string;
+  setupIntentId: string;
+  name: string;
+  email: string;
+}) {
+  const stripe = useStripe();
+  const elements = useElements();
+  const [isLoading, setIsLoading] = useState(false);
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const planType = searchParams.get('plan') || 'standard';
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+
+    if (!stripe || !elements) {
+      return;
+    }
+
     setIsLoading(true);
 
     try {
@@ -210,129 +296,47 @@ function PaymentForm({
     setIsLoading(false);
   };
 
-      return (
+  return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      {/* Name Input */}
+      {/* Payment Method */}
       <div className="bg-white p-6 rounded-lg shadow-sm border">
-        <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
-          Nome completo
-        </label>
-        <input
-          id="name"
-          type="text"
-          value={name}
-          onChange={(e) => {
-            setName(e.target.value);
-            if (nameError) setNameError('');
+        <h3 className="text-lg font-medium text-gray-900 mb-4">Método de Pagamento</h3>
+        <PaymentElement 
+          options={{
+            layout: 'tabs',
+            fields: {
+              billingDetails: {
+                address: {
+                  country: 'never',
+                },
+              },
+            },
+            business: {
+              name: 'Team Travagli'
+            }
           }}
-          placeholder="Seu nome completo"
-          className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent ${
-            nameError ? 'border-red-500' : 'border-gray-300'
-          }`}
-          disabled={isLoading}
         />
-        {nameError && (
-          <p className="mt-2 text-sm text-red-600">{nameError}</p>
-        )}
       </div>
-
-      {/* Email Input */}
-      <div className="bg-white p-6 rounded-lg shadow-sm border">
-        <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-          Email para cobrança e confirmações
-        </label>
-        <input
-          id="email"
-          type="email"
-          value={email}
-          onChange={(e) => {
-            setEmail(e.target.value);
-            if (emailError) setEmailError('');
-          }}
-          placeholder="seu@email.com"
-          className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent ${
-            emailError ? 'border-red-500' : 'border-gray-300'
-          }`}
-          disabled={isLoading}
-        />
-        {emailError && (
-          <p className="mt-2 text-sm text-red-600">{emailError}</p>
-        )}
-      </div>
-
-      {/* Prosseguir Button */}
-      <div className="bg-white p-6 rounded-lg shadow-sm border">
+      
+      <div className="flex gap-3">
         <Button 
-          type="button"
-          onClick={() => onProsseguir(name, email)}
-          disabled={isCheckingSubscription || !name.trim() || !email.trim()}
-          className="w-full h-12 text-lg font-semibold"
+          type="submit" 
+          disabled={!stripe || isLoading}
+          className="flex-1 h-12 text-lg font-semibold"
           size="lg"
         >
-          {isCheckingSubscription ? (
+          {isLoading ? (
             <div className="flex items-center gap-2">
               <Loader2 className="w-5 h-5 animate-spin" />
-              Verificando...
+              Processando...
             </div>
+          ) : planDetails?.isPromo ? (
+            `Assinar por R$ ${planDetails.price}/mês (${planDetails.discountPercentage}% OFF)`
           ) : (
-            'Prosseguir'
+            `Assinar por R$ ${planDetails?.price || 0}/mês`
           )}
         </Button>
       </div>
-
-      {/* Payment Method */}
-      {showPaymentMethod && (
-        <>
-          <div className="bg-white p-6 rounded-lg shadow-sm border">
-            <h3 className="text-lg font-medium text-gray-900 mb-4">Método de Pagamento</h3>
-            <PaymentElement 
-              options={{
-                layout: 'tabs',
-                fields: {
-                  billingDetails: {
-                    address: {
-                      country: 'never',
-                    },
-                  },
-                },
-                business: {
-                  name: 'Team Travagli'
-                }
-              }}
-            />
-          </div>
-          
-          <div className="flex gap-3">
-            {/* <Button 
-              type="button"
-              variant="outline" 
-              disabled={isLoading}
-              onClick={handleCancel}
-              className="h-12 px-6"
-            >
-              Cancelar
-            </Button> */}
-            
-            <Button 
-              type="submit" 
-              disabled={!stripe || isLoading}
-              className="flex-1 h-12 text-lg font-semibold"
-              size="lg"
-            >
-              {isLoading ? (
-                <div className="flex items-center gap-2">
-                  <Loader2 className="w-5 h-5 animate-spin" />
-                  Processando...
-                </div>
-              ) : planDetails?.isPromo ? (
-                `Assinar por R$ ${planDetails.price}/mês (${planDetails.discountPercentage}% OFF)`
-              ) : (
-                `Assinar por R$ ${planDetails?.price || 0}/mês`
-              )}
-            </Button>
-          </div>
-        </>
-      )}
     </form>
   );
 }
@@ -356,6 +360,8 @@ export default function StripePayment() {
   const [hasExistingSubscription, setHasExistingSubscription] = useState(false);
   const [showPaymentMethod, setShowPaymentMethod] = useState(false);
   const [isCheckingSubscription, setIsCheckingSubscription] = useState(false);
+  const [userName, setUserName] = useState('');
+  const [userEmail, setUserEmail] = useState('');
 
   const planType = searchParams.get('plan') || 'standard';
 
@@ -410,6 +416,8 @@ export default function StripePayment() {
   const handleProsseguir = async (name: string, email: string) => {
     try {
       setIsCheckingSubscription(true);
+      setUserName(name);
+      setUserEmail(email);
       
       console.log('🚀 [StripePayment] Checking for existing subscriptions with email:', { email, planType });
       
@@ -633,11 +641,17 @@ export default function StripePayment() {
               <Card className="bg-white border-0 shadow-xl">
                 <CardHeader>
                   <CardTitle className="text-2xl text-center text-gray-800">
-                    Dados de Pagamento
+                    {!showPaymentMethod ? 'Seus Dados' : 'Dados de Pagamento'}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  {clientSecret ? (
+                  {!showPaymentMethod ? (
+                    <UserDataForm 
+                      onProsseguir={handleProsseguir}
+                      isCheckingSubscription={isCheckingSubscription}
+                      hasExistingSubscription={hasExistingSubscription}
+                    />
+                  ) : clientSecret ? (
                     <Elements 
                       stripe={stripePromise} 
                       options={{
@@ -659,9 +673,8 @@ export default function StripePayment() {
                         planDetails={planDetails!} 
                         customerId={customerId}
                         setupIntentId={setupIntentId}
-                        onProsseguir={handleProsseguir}
-                        showPaymentMethod={showPaymentMethod}
-                        isCheckingSubscription={isCheckingSubscription}
+                        name={userName}
+                        email={userEmail}
                       />
                     </Elements>
                   ) : (

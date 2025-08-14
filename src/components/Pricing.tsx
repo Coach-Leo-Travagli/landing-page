@@ -95,18 +95,6 @@ export default function Pricing() {
                        </div>
                      )}
                    </div>
-                   
-                   {plan.isPromo && (
-                     <div className="mb-4 p-3 bg-primary/5 border border-primary/20 rounded-lg">
-                       <div className="flex items-center gap-2 text-primary text-sm font-semibold">
-                         <span>🔒</span>
-                         <span>Trave esse valor promocional para sempre!</span>
-                       </div>
-                       <p className="text-xs text-muted-foreground mt-1">
-                         Assine agora e mantenha esse preço especial durante toda sua assinatura ativa
-                       </p>
-                     </div>
-                   )}
                   <p className="text-muted-foreground">{plan.description}</p>
                 </CardHeader>
                 
@@ -134,6 +122,18 @@ export default function Pricing() {
         </div>
 
         <div className="text-center mt-12">
+          {plans.some(plan => plan.isPromo) && (
+            <div className="mb-4 p-3 bg-primary/5 border border-primary/20 rounded-lg w-fit mx-auto">
+              <div className="flex items-center gap-2 text-primary text-sm font-semibold">
+                <span>🔒</span>
+                <span>Trave esse valor promocional para sempre!</span>
+              </div>
+              <p className="text-xs text-muted-foreground mt-1">
+                Assine agora e mantenha esse preço especial enquanto sua assinatura estiver ativa
+              </p>
+            </div>
+          )}
+
           <p className="text-muted-foreground mb-4">
             Você pode cancelar sua assinatura a qualquer momento. 30 dias de garantia.
           </p>
