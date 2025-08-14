@@ -26,6 +26,20 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(400).json({ error: 'Setup Intent não foi confirmado' });
     }
 
+    // Check for existing active subscriptions for this customer
+    const existingSubscriptions = await stripe.subscriptions.list({
+      customer: customer_id,
+      status: 'active',
+      limit: 100,
+    });
+
+    if (existingSubscriptions.data.length > 0) {
+      return res.status(400).json({ 
+        error: 'Usuário já possui uma assinatura ativa',
+        details: 'Não é permitido ter mais de uma assinatura ativa simultaneamente'
+      });
+    }
+
     // Update customer with email and name if provided
     if (email || name) {
       const updateData: { email?: string; name?: string } = {};

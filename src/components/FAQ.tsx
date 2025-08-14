@@ -19,6 +19,11 @@ const faqs = [
     answer: "Não necessariamente. Podemos criar treinos que funcionam em casa com equipamentos básicos ou montar uma rotina completa para academia, dependendo da sua preferência e recursos disponíveis."
   },
   {
+    id: "refund-policy",
+    question: "E se eu não ficar satisfeito?",
+    answer: "Oferecemos uma garantia de 30 dias. Caso não esteja satisfeito com o serviço nesse período, devolvemos o valor pago sem burocracia."
+  },
+  {
     id: "dietary-restrictions",
     question: "E se eu tiver restrições alimentares?",
     answer: "Sem problema. O nutricionista parceiro leva em consideração alergias, intolerâncias e preferências alimentares, como dieta vegetariana, vegana, sem glúten, entre outras, para elaborar seu plano alimentar personalizado."
@@ -37,11 +42,6 @@ const faqs = [
     id: "nutrition-responsibility",
     question: "Quem é responsável pelos planos alimentares?",
     answer: "Todos os planos alimentares oferecidos na plataforma são elaborados e assinados exclusivamente por nutricionistas devidamente registrados nos conselhos profissionais. O Team Travagli atua apenas como treinador físico e não prescreve dietas ou orientações nutricionais sem a supervisão de um nutricionista."
-  },
-  {
-    id: "refund-policy",
-    question: "E se eu não ficar satisfeito?",
-    answer: "Oferecemos uma garantia de 30 dias. Caso não esteja satisfeito com o serviço nesse período, devolvemos o valor pago sem burocracia."
   },
   {
     id: "beginners-welcome",
