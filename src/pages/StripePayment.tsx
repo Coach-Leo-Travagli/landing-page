@@ -136,6 +136,16 @@ function PaymentForm({
       }
 
       // Step 4: Create the subscription
+      console.log('🚀 [StripePayment] Creating subscription with data:', {
+        setup_intent_id: setupIntent?.id,
+        customer_id: customerId,
+        price_id: STRIPE_PRICE_IDS[planType as PlanType],
+        plan_type: planType,
+        plan_name: planDetails.name,
+        email: email,
+        name: name,
+      });
+      
       const subscriptionResponse = await fetch('/api/create-subscription', {
         method: 'POST',
         headers: {
@@ -153,6 +163,10 @@ function PaymentForm({
       });
 
       const subscriptionData = await subscriptionResponse.json();
+      console.log('🔍 [StripePayment] Subscription creation response:', {
+        status: subscriptionResponse.status,
+        data: subscriptionData
+      });
 
       if (subscriptionResponse.ok) {
         // Redirect to success page with subscription info
@@ -165,10 +179,25 @@ function PaymentForm({
           window.location.href = successUrl;
         }
       } else {
-        toast.error(subscriptionData.error || 'Erro ao criar assinatura');
+        console.log('❌ [StripePayment] Subscription creation failed:', subscriptionData.error);
+        
+        if (subscriptionData.error === 'Usuário já possui uma assinatura ativa') {
+          console.log('❌ [StripePayment] User has existing subscription, redirecting to cancel');
+          toast.error('Você já possui uma assinatura ativa. Não é possível criar uma nova assinatura.');
+          // Redirect to cancel page after a delay
+          setTimeout(() => {
+            navigate('/cancel');
+          }, 3000);
+        } else {
+          console.log('❌ [StripePayment] Other error occurred:', subscriptionData.error);
+          toast.error(subscriptionData.error || 'Erro ao criar assinatura');
+        }
       }
     } catch (error) {
-      console.error('Error:', error);
+      console.error('💥 [StripePayment] Error processing subscription:', {
+        error: error instanceof Error ? error.message : 'Unknown error',
+        stack: error instanceof Error ? error.stack : undefined
+      });
       toast.error('Erro ao processar assinatura');
     }
 
@@ -349,6 +378,8 @@ export default function StripePayment() {
           setSetupIntentId(data.setup_intent_id);
           
           // Check if customer already has an active subscription
+          console.log('🔍 [StripePayment] Checking for existing subscriptions for customer:', data.customer_id);
+          
           const checkResponse = await fetch('/api/check-existing-subscription', {
             method: 'POST',
             headers: {
@@ -360,12 +391,16 @@ export default function StripePayment() {
           });
 
           const checkData = await checkResponse.json();
+          console.log('🔍 [StripePayment] Existing subscription check response:', checkData);
           
           if (checkData.hasActiveSubscription) {
+            console.log('❌ [StripePayment] Customer has existing subscription, blocking access');
             setHasExistingSubscription(true);
             toast.error('Você já possui uma assinatura ativa. Não é possível criar uma nova assinatura.');
             setTimeout(() => navigate('/cancel'), 3000);
             return;
+          } else {
+            console.log('✅ [StripePayment] No existing subscriptions found, allowing access');
           }
         } else {
           toast.error('Erro ao inicializar pagamento');
