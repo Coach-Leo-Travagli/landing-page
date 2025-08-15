@@ -42,13 +42,14 @@ function replaceCancellationVariables(template: string, data: CancellationEmailD
     .replace(/\{\{companyName\}\}/g, data.companyName)
     .replace(/\{\{companyLogoUrl\}\}/g, data.companyLogoUrl)
     .replace(/\{\{planName\}\}/g, data.planName)
-    .replace(/\{\{canceledAt\}\}/g, data.canceledAt.toLocaleDateString('pt-BR', {
+    .replace(/\{\{canceledAt\}\}/g, data.canceledAt.toLocaleString('pt-BR', {
+      timeZone: 'America/Sao_Paulo',
       day: '2-digit',
       month: '2-digit',
       year: 'numeric',
       hour: '2-digit',
       minute: '2-digit'
-    }));
+    })) + ' (Horário de Brasília)';
 }
 
 export async function sendWelcomeEmail(data: EmailData): Promise<void> {

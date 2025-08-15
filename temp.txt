@@ -1,0 +1,36 @@
+Proximos Passos Tecnicos:
+  - Alterar tudo no site quando tiver dominio/email/whatsapp DONE
+  - Verificar configuração e disparo de email quando tiver o dominio
+  - Criar nova aplicacao de dashboard (com login e logout) DONE
+  - Só mandar email de boas vindas quando for o primeiro pagamento, se for recorrencia do plano de assinatura, mandar email dizendo que foi renovado por mais 1 mes DONE
+  - "Assine agora e trave esse valor promocional pra sempre enquanto estiver ativo no plano." DONE
+  - Como controlar o schema.prisma em multiplos projetos? E as migrations? DONE
+  - Pedir pro chatgpt me ajudar com o adoptot (controle de cookies) DONE
+  - AdOpt -> -4x7Awb99-wz#ti
+  - Testar email usando dominio test do Resend DONE
+  - Subir o FAQ "E se eu não ficar satisfeito?" para 2 ou 3 posicao DONE
+  - Adicionar mais depoimentos
+  - Trocar o "Histórias de Clientes" para "Histórias de Alunos" DONE
+  - Não deixar fazer uma nova assinatura quando ja existir uma ativa DONE
+  
+  - Mudar reembolso de 30 dias para 7 dias
+  - Simular avanco de tempo na Stripe (avancar 1 mes e ver como processa a cobranca automatica)
+  - Simular um cancelamento na Stripe
+
+
+Proximos Passos Planejamento:
+  - Definir o que vai estar em cada plano
+  - Revisar textos do site (termos, faq, etc)
+  - Definir imagem de fundo do site (Hero section)
+  - Leo gravar video de apresentacao
+  - Pegar no minimo 3 depoimentos de alunos (com foto, nome e idade)
+    - Helder DONE
+    - ?
+    - ?
+  - Pegar logo com o Leo DONE
+  - Definir numero de telefone/whatsapp 
+  - Definir nome DONE Team Travagli
+  - Comprar o dominio
+  - Definir preco dos planos DONE
+  - Definir quem vai ser o Nutricionsta que vai passar as dietas
+    - Como vai ser isso? Vamos pagar para esse Nutricionista por aluno e por plano alimentar?
