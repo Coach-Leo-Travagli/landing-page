@@ -360,6 +360,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         }
         break;
 
+      case "customer.subscription.updated":
+        console.log("🔄 Assinatura atualizada:", event.data.object.id, JSON.stringify(event.data.object));
+        break;
+
       default:
         console.log(`ℹ️ Evento não tratado: ${event.type}`);
     }

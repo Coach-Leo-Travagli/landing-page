@@ -107,7 +107,7 @@ function UserDataForm({
           placeholder="seu@email.com"
           className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent ${
             emailError ? 'border-red-500' : 'border-gray-300'
-          } ${readOnly ? 'bg-gray-50 text-gray-700' : ''}`}
+          } ${readOnly ? 'bg-gray-50 text-gray-700' : ''} ${showProsseguirButton ? 'mb-4' : ''}`}
           disabled={isCheckingSubscription || readOnly}
           readOnly={readOnly}
         />
