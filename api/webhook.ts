@@ -54,10 +54,48 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
                 : null) ||
               null;
             
-            const planName = (lineItem as Stripe.InvoiceLineItem)?.metadata?.plan_name || "unknown";
-            const planType = (lineItem as Stripe.InvoiceLineItem)?.metadata?.plan_type || "unknown";
             const priceId = (lineItem as Stripe.InvoiceLineItem)?.pricing?.price_details?.price || "unknown";
             const productId = (lineItem as Stripe.InvoiceLineItem)?.pricing?.price_details?.product || "unknown";
+            
+            // Fetch current plan details from Stripe API using product and price IDs instead of relying on metadata
+            let planName = "unknown";
+            let planType = "unknown";
+            
+            try {
+              if (productId !== "unknown") {
+                const product = await stripe.products.retrieve(productId);
+                planName = product.name || "unknown";
+                
+                // Extract plan type from product metadata or name
+                if (product.metadata?.plan_type) {
+                  planType = product.metadata.plan_type;
+                } else {
+                  // Fallback: derive plan type from product name
+                  const productName = product.name.toLowerCase();
+                  if (productName.includes('básico') || productName.includes('basic')) {
+                    planType = 'basic';
+                  } else if (productName.includes('padrão') || productName.includes('standard')) {
+                    planType = 'standard';
+                  } else if (productName.includes('vip') || productName.includes('premium')) {
+                    planType = 'vip';
+                  }
+                }
+              }
+              
+              console.log("🔍 Detalhes do plano atual obtidos via Stripe API:", {
+                productId,
+                priceId,
+                planName,
+                planType,
+                amount: invoice.amount_paid / 100
+              });
+            } catch (stripeError) {
+              console.error("❌ Erro ao buscar detalhes do produto no Stripe:", stripeError);
+              // Fallback to metadata if Stripe API fails
+              planName = (lineItem as Stripe.InvoiceLineItem)?.metadata?.plan_name || "unknown";
+              planType = (lineItem as Stripe.InvoiceLineItem)?.metadata?.plan_type || "unknown";
+              console.log("🔄 Usando fallback para metadata:", { planName, planType });
+            }
             const amount = invoice.amount_paid;
             const currency = invoice.currency;
             const subscriptionStart = new Date((lineItem as Stripe.InvoiceLineItem)?.period?.start * 1000);
@@ -195,7 +233,47 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           const customerEmail = invoice.customer_email || "unknown";
           const customerName = invoice.customer_name || "unknown";
           const stripeCustomerId = invoice.customer as string;
-          const planName = (lineItem as Stripe.InvoiceLineItem)?.metadata?.plan_name || "unknown";
+          const priceId = (lineItem as Stripe.InvoiceLineItem)?.pricing?.price_details?.price || "unknown";
+          const productId = (lineItem as Stripe.InvoiceLineItem)?.pricing?.price_details?.product || "unknown";
+          
+          // Fetch current plan details from Stripe API using product and price IDs instead of relying on metadata
+          let planName = "unknown";
+          let planType = "unknown";
+          
+          try {
+            if (productId !== "unknown") {
+              const product = await stripe.products.retrieve(productId);
+              planName = product.name || "unknown";
+              
+              // Extract plan type from product metadata or name
+              if (product.metadata?.plan_type) {
+                planType = product.metadata.plan_type;
+              } else {
+                // Fallback: derive plan type from product name
+                const productName = product.name.toLowerCase();
+                if (productName.includes('básico') || productName.includes('basic')) {
+                  planType = 'basic';
+                } else if (productName.includes('padrão') || productName.includes('standard')) {
+                  planType = 'standard';
+                } else if (productName.includes('vip') || productName.includes('premium')) {
+                  planType = 'vip';
+                }
+              }
+            }
+            
+            console.log("🔍 Detalhes do plano atual obtidos via Stripe API (payment failed):", {
+              productId,
+              priceId,
+              planName,
+              planType
+            });
+          } catch (stripeError) {
+            console.error("❌ Erro ao buscar detalhes do produto no Stripe (payment failed):", stripeError);
+            // Fallback to metadata if Stripe API fails
+            planName = (lineItem as Stripe.InvoiceLineItem)?.metadata?.plan_name || "unknown";
+            planType = (lineItem as Stripe.InvoiceLineItem)?.metadata?.plan_type || "unknown";
+            console.log("🔄 Usando fallback para metadata (payment failed):", { planName, planType });
+          }
 
           // Find existing user by stripeCustomerId first, then by email
           let user = await prisma.user.findUnique({
