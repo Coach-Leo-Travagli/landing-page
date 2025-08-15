@@ -174,7 +174,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
               await sendRenewalEmail({
                 customerName: customerName,
                 customerEmail: customerEmail,
-                planName: planName,
+                planName: user.planName || planName,
                 companyName: "Team Travagli",
                 companyLogoUrl: "https://i.ibb.co/1frSgrgt/logo-team-travagli.png",
               });
