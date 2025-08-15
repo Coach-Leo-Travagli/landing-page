@@ -17,9 +17,13 @@ const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY || '');
 function UserDataForm({ 
   onProsseguir,
   isCheckingSubscription,
+  showProsseguirButton = true,
+  readOnly = false,
 }: { 
   onProsseguir: (name: string, email: string) => void;
   isCheckingSubscription: boolean;
+  showProsseguirButton?: boolean;
+  readOnly?: boolean;
 }) {
   const [name, setName] = useState('');
   const [nameError, setNameError] = useState('');
@@ -78,8 +82,9 @@ function UserDataForm({
           placeholder="Seu nome completo"
           className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent ${
             nameError ? 'border-red-500' : 'border-gray-300'
-          }`}
-          disabled={isCheckingSubscription}
+          } ${readOnly ? 'bg-gray-50 text-gray-700' : ''}`}
+          disabled={isCheckingSubscription || readOnly}
+          readOnly={readOnly}
         />
         {nameError && (
           <p className="mt-2 text-sm text-red-600">{nameError}</p>
@@ -102,8 +107,9 @@ function UserDataForm({
           placeholder="seu@email.com"
           className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent ${
             emailError ? 'border-red-500' : 'border-gray-300'
-          }`}
-          disabled={isCheckingSubscription}
+          } ${readOnly ? 'bg-gray-50 text-gray-700' : ''}`}
+          disabled={isCheckingSubscription || readOnly}
+          readOnly={readOnly}
         />
         {emailError && (
           <p className="mt-2 text-sm text-red-600">{emailError}</p>
@@ -111,24 +117,26 @@ function UserDataForm({
       </div>
 
       {/* Prosseguir Button */}
-      <div className="bg-white px-6 py-4">
-        <Button 
-          type="button"
-          onClick={handleProsseguir}
-          disabled={isCheckingSubscription || !name.trim() || !email.trim()}
-          className="w-full h-12 text-lg font-semibold"
-          size="lg"
-        >
-          {isCheckingSubscription ? (
-            <div className="flex items-center gap-2">
-              <Loader2 className="w-5 h-5 animate-spin" />
-              Verificando...
-            </div>
-          ) : (
-            'Prosseguir'
-          )}
-        </Button>
-      </div>
+      {showProsseguirButton && (
+        <div className="bg-white px-6 py-4">
+          <Button 
+            type="button"
+            onClick={handleProsseguir}
+            disabled={isCheckingSubscription || !name.trim() || !email.trim()}
+            className="w-full h-12 text-lg font-semibold"
+            size="lg"
+          >
+            {isCheckingSubscription ? (
+              <div className="flex items-center gap-2">
+                <Loader2 className="w-5 h-5 animate-spin" />
+                Verificando...
+              </div>
+            ) : (
+              'Prosseguir'
+            )}
+          </Button>
+        </div>
+      )}
     </div>
   );
 }
@@ -360,6 +368,7 @@ export default function StripePayment() {
   const [isCheckingSubscription, setIsCheckingSubscription] = useState(false);
   const [userName, setUserName] = useState('');
   const [userEmail, setUserEmail] = useState('');
+  const [showProsseguirButton, setShowProsseguirButton] = useState(true);
 
   const planType = searchParams.get('plan') || 'standard';
 
@@ -440,6 +449,8 @@ export default function StripePayment() {
         return;
       }
       
+      // Reset existing subscription state if no active subscription found
+      setHasExistingSubscription(false);
       console.log('✅ [StripePayment] No existing subscriptions found, creating setup intent');
       
       // Create setup intent with user data
@@ -463,6 +474,7 @@ export default function StripePayment() {
         setCustomerId(data.customer_id);
         setSetupIntentId(data.setup_intent_id);
         setShowPaymentMethod(true);
+        setShowProsseguirButton(false); // Hide the Prosseguir button
         console.log('✅ [StripePayment] Setup intent created, showing payment method');
       } else {
         toast.error('Erro ao inicializar pagamento');
@@ -643,43 +655,54 @@ export default function StripePayment() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  {!showPaymentMethod ? (
+                  <div className="space-y-6">
+                    {/* Always show user data form */}
                     <UserDataForm 
                       onProsseguir={handleProsseguir}
                       isCheckingSubscription={isCheckingSubscription}
+                      showProsseguirButton={showProsseguirButton}
+                      readOnly={showPaymentMethod}
                     />
-                  ) : clientSecret ? (
-                    <Elements 
-                      stripe={stripePromise} 
-                      options={{
-                        clientSecret,
-                        locale: 'pt-BR',
-                        appearance: {
-                          theme: 'stripe',
-                          variables: {
-                            colorPrimary: '#348df9',
-                            colorBackground: '#ffffff',
-                            colorText: '#374151',
-                            borderRadius: '8px',
-                          },
-                        },
-                      }}
-                    >
-                       <PaymentForm 
-                        clientSecret={clientSecret} 
-                        planDetails={planDetails!} 
-                        customerId={customerId}
-                        setupIntentId={setupIntentId}
-                        name={userName}
-                        email={userEmail}
-                      />
-                    </Elements>
-                  ) : (
-                    <div className="text-center py-8">
-                      <Loader2 className="w-6 h-6 animate-spin mx-auto mb-4" />
-                      <p className="text-gray-600">Carregando formulário de pagamento...</p>
-                    </div>
-                  )}
+                    
+                    {/* Show payment method when ready */}
+                    {showPaymentMethod && clientSecret && (
+                      <div className="border-t pt-6">
+                        <Elements 
+                          stripe={stripePromise} 
+                          options={{
+                            clientSecret,
+                            locale: 'pt-BR',
+                            appearance: {
+                              theme: 'stripe',
+                              variables: {
+                                colorPrimary: '#348df9',
+                                colorBackground: '#ffffff',
+                                colorText: '#374151',
+                                borderRadius: '8px',
+                              },
+                            },
+                          }}
+                        >
+                           <PaymentForm 
+                            clientSecret={clientSecret} 
+                            planDetails={planDetails!} 
+                            customerId={customerId}
+                            setupIntentId={setupIntentId}
+                            name={userName}
+                            email={userEmail}
+                          />
+                        </Elements>
+                      </div>
+                    )}
+                    
+                    {/* Loading state for payment form */}
+                    {showPaymentMethod && !clientSecret && (
+                      <div className="text-center py-8 border-t">
+                        <Loader2 className="w-6 h-6 animate-spin mx-auto mb-4" />
+                        <p className="text-gray-600">Carregando formulário de pagamento...</p>
+                      </div>
+                    )}
+                  </div>
                 </CardContent>
               </Card>
 
