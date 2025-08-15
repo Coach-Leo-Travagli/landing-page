@@ -1,4 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import Autoplay from "embla-carousel-autoplay";
+import { useRef } from "react";
 import transformationImage from "@/assets/transformation.jpg";
 import resultadoHelder from "@/assets/resultado_helder.jpg";
 
@@ -26,10 +29,86 @@ const testimonials = [
     quote: "Os check-ins semanais me mantiveram responsável e motivada. Ver meu progresso acompanhado profissionalmente fez uma diferença enorme para me manter comprometida.",
     rating: 5,
     image: transformationImage
+  },
+  {
+    name: "Rafael Silva",
+    age: 28,
+    result: "Perdeu 18kg em 5 meses",
+    quote: "Nunca imaginei que conseguiria emagrecer de forma tão saudável. O acompanhamento nutricional foi fundamental para manter a disciplina e ver resultados reais.",
+    rating: 5,
+    image: transformationImage
+  },
+  {
+    name: "Ana Paula",
+    age: 31,
+    result: "Transformação completa",
+    quote: "Além da mudança física, minha autoestima aumentou muito. O personal soube exatamente como me motivar nos momentos mais difíceis do processo.",
+    rating: 5,
+    image: transformationImage
+  },
+  {
+    name: "João Pedro",
+    age: 26,
+    result: "Definição muscular em 12 semanas",
+    quote: "O treino personalizado fez toda a diferença. Em pouco tempo já estava vendo a definição que sempre quis, seguindo um plano que funcionou perfeitamente pra mim.",
+    rating: 5,
+    image: transformationImage
+  },
+  {
+    name: "Fernanda Lima",
+    age: 29,
+    result: "Ganhou força e resistência",
+    quote: "Hoje consigo fazer exercícios que antes eram impossíveis. A evolução da minha força física mudou completamente minha relação com o exercício.",
+    rating: 5,
+    image: transformationImage
+  },
+  {
+    name: "Bruno Santos",
+    age: 35,
+    result: "Perdeu 25kg e ganhou saúde",
+    quote: "Não foi só uma mudança estética, foi uma mudança de vida completa. Minha pressão normalizou e me sinto 10 anos mais jovem.",
+    rating: 5,
+    image: transformationImage
+  },
+  {
+    name: "Juliana Oliveira",
+    age: 27,
+    result: "Corpo dos sonhos em 6 meses",
+    quote: "Sempre tive dificuldade para emagrecer, mas com o acompanhamento profissional consegui resultados que nunca havia alcançado antes.",
+    rating: 5,
+    image: transformationImage
+  },
+  {
+    name: "Diego Ferreira",
+    age: 30,
+    result: "Hipertrofia e definição",
+    quote: "O programa de hipertrofia superou todas as minhas expectativas. Ganhei massa magra e defini o corpo seguindo exatamente as orientações.",
+    rating: 5,
+    image: transformationImage
+  },
+  {
+    name: "Camila Rodrigues",
+    age: 24,
+    result: "Perdeu 12kg em 3 meses",
+    quote: "O que mais me impressionou foi a rapidez dos resultados mantendo a saúde. Emagreci sem passar fome e sem perder energia para o dia a dia.",
+    rating: 5,
+    image: transformationImage
+  },
+  {
+    name: "Lucas Martins",
+    age: 33,
+    result: "Transformação aos 30+",
+    quote: "Provei que idade não é desculpa. Aos 33 consegui o melhor shape da minha vida com dedicação e o acompanhamento certo.",
+    rating: 5,
+    image: transformationImage
   }
 ];
 
 export default function Testimonials() {
+  const plugin = useRef(
+    Autoplay({ delay: 3000, stopOnInteraction: true, stopOnMouseEnter: true })
+  );
+
   return (
     <section className="py-20 bg-white">
       <div className="container mx-auto px-4">
@@ -42,57 +121,53 @@ export default function Testimonials() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {testimonials.map((testimonial, index) => (
-            <Card key={index} className="shadow-fitness-card hover:shadow-lg transition-all duration-300 border-0 bg-testimonial-gradient">
-              <CardContent className="p-8">
-                {/* Before/After Image */}
-                <div className="mb-6 relative overflow-hidden rounded-lg">
-                  <img 
-                    src={testimonial.image} 
-                    alt={`Transformação de ${testimonial.name}`}
-                    className="w-full h-auto max-h-48 object-cover object-top"
-                  />
-                  <div className="absolute bottom-2 left-2 bg-primary text-white px-3 py-1 rounded-full text-xs font-bold">
-                    {testimonial.result}
-                  </div>
-                </div>
+        <div className="max-w-6xl mx-auto">
+          <Carousel
+            plugins={[plugin.current]}
+            className="w-full"
+            onMouseEnter={plugin.current.stop}
+            onMouseLeave={plugin.current.reset}
+            opts={{
+              align: "start",
+              loop: true,
+            }}
+          >
+            <CarouselContent className="-ml-4">
+              {testimonials.map((testimonial, index) => (
+                <CarouselItem key={index} className="pl-4 md:basis-1/2 lg:basis-1/3">
+                  <Card className="shadow-fitness-card hover:shadow-lg transition-all duration-300 border-0 bg-testimonial-gradient h-full">
+                    <CardContent className="p-8 flex flex-col h-full">
+                      {/* Before/After Image */}
+                      <div className="mb-6 relative overflow-hidden rounded-lg">
+                        <img 
+                          src={testimonial.image} 
+                          alt={`Transformação de ${testimonial.name}`}
+                          className="w-full h-auto max-h-48 object-cover object-top"
+                        />
+                        <div className="absolute bottom-2 left-2 bg-primary text-white px-3 py-1 rounded-full text-xs font-bold">
+                          {testimonial.result}
+                        </div>
+                      </div>
 
-                {/* Rating */}
-                {/* <div className="flex mb-4">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <span key={i} className="text-fitness-secondary text-lg">⭐</span>
-                  ))}
-                </div> */}
+                      {/* Quote */}
+                      <blockquote className="text-muted-foreground mb-6 italic leading-relaxed flex-1">
+                        "{testimonial.quote}"
+                      </blockquote>
 
-                {/* Quote */}
-                <blockquote className="text-muted-foreground mb-6 italic leading-relaxed">
-                  "{testimonial.quote}"
-                </blockquote>
-
-                {/* Author */}
-                <div className="border-t pt-4">
-                  <div className="font-bold text-fitness-dark">{testimonial.name}</div>
-                  <div className="text-sm text-muted-foreground">{testimonial.age} anos</div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-
-        {/* <div className="text-center mt-12">
-          <div className="inline-flex items-center gap-4 bg-white px-8 py-4 rounded-full shadow-fitness-card">
-            <div className="flex -space-x-2">
-              {[...Array(5)].map((_, i) => (
-                <div key={i} className="w-10 h-10 rounded-full bg-primary border-2 border-white"></div>
+                      {/* Author */}
+                      <div className="border-t pt-4 mt-auto">
+                        <div className="font-bold text-fitness-dark">{testimonial.name}</div>
+                        <div className="text-sm text-muted-foreground">{testimonial.age} anos</div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </CarouselItem>
               ))}
-            </div>
-            <div className="text-left">
-              <div className="font-bold text-fitness-dark">5.000+ Histórias de Sucesso</div>
-              <div className="text-sm text-muted-foreground">Perda média de 11kg em 12 semanas</div>
-            </div>
-          </div>
-        </div> */}
+            </CarouselContent>
+            <CarouselPrevious className="hidden md:flex" />
+            <CarouselNext className="hidden md:flex" />
+          </Carousel>
+        </div>
       </div>
     </section>
   );
