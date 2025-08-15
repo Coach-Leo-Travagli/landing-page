@@ -81,7 +81,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             const planType = (lineItem as Stripe.InvoiceLineItem)?.metadata?.plan_type || "unknown";
             const priceId = (lineItem as Stripe.InvoiceLineItem)?.pricing?.price_details?.price || "unknown";
             const productId = (lineItem as Stripe.InvoiceLineItem)?.pricing?.price_details?.product || "unknown";
-            const amount = invoice.amount_paid / 100; // Convert cents to reais
+            const amount = invoice.amount_paid;
             const currency = invoice.currency;
             const subscriptionStart = new Date((lineItem as Stripe.InvoiceLineItem)?.period?.start * 1000);
             const subscriptionEnd = new Date((lineItem as Stripe.InvoiceLineItem)?.period?.end * 1000);
@@ -173,7 +173,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
               data: {
                 id: event.id,
                 status: invoice.status || "unknown",
-                amount: invoice.amount_paid / 100, // Convert cents to reais
+                amount: invoice.amount_paid,
                 currency: invoice.currency,
                 invoiceUrl: invoice.hosted_invoice_url || "",
                 invoicePdf: invoice.invoice_pdf || "",
@@ -235,7 +235,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
               data: {
                 id: event.id,
                 status: invoice.status || "failed",
-                amount: invoice.amount_due / 100, // Convert cents to reais
+                amount: invoice.amount_due,
                 currency: invoice.currency,
                 invoiceUrl: invoice.hosted_invoice_url || "",
                 invoicePdf: invoice.invoice_pdf || "",
@@ -435,7 +435,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             previousPlanType,
             newPlanName,
             newPlanType,
-            newAmount: newAmount / 100, // Convert cents to reais
+            newAmount: newAmount,
             currency,
             priceId,
             productId,
