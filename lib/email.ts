@@ -12,6 +12,11 @@ interface EmailData {
   companyLogoUrl: string;
 }
 
+interface CancellationEmailData extends EmailData {
+  planName: string;
+  canceledAt: Date;
+}
+
 function loadEmailTemplate(templateName: string): string {
   try {
     const templatePath = join(process.cwd(), 'emails', `${templateName}.html`);
@@ -28,6 +33,22 @@ function replaceTemplateVariables(template: string, data: EmailData): string {
     .replace(/\{\{customerEmail\}\}/g, data.customerEmail)
     .replace(/\{\{companyName\}\}/g, data.companyName)
     .replace(/\{\{companyLogoUrl\}\}/g, data.companyLogoUrl);
+}
+
+function replaceCancellationVariables(template: string, data: CancellationEmailData): string {
+  return template
+    .replace(/\{\{customerName\}\}/g, data.customerName)
+    .replace(/\{\{customerEmail\}\}/g, data.customerEmail)
+    .replace(/\{\{companyName\}\}/g, data.companyName)
+    .replace(/\{\{companyLogoUrl\}\}/g, data.companyLogoUrl)
+    .replace(/\{\{planName\}\}/g, data.planName)
+    .replace(/\{\{canceledAt\}\}/g, data.canceledAt.toLocaleDateString('pt-BR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    }));
 }
 
 export async function sendWelcomeEmail(data: EmailData): Promise<void> {
@@ -90,5 +111,26 @@ export async function sendRenewalEmail(data: EmailData): Promise<void> {
     console.log('✅ Renewal email sent successfully');
   } catch (error) {
     console.error('❌ Error sending renewal email:', error);
+  }
+}
+
+export async function sendCancellationEmail(data: CancellationEmailData): Promise<void> {
+  try {
+    const template = loadEmailTemplate('cancellation');
+    const html = replaceCancellationVariables(template, data);
+    const text = htmlToText(html) as string;
+
+    await resend.emails.send({
+      // from: 'Team Travagli <noreply@teamtravagli.com.br>',
+      from: 'onboarding@resend.dev',
+      to: data.customerEmail,
+      subject: '😔 Assinatura cancelada - Sentiremos sua falta!',
+      html,
+      text,
+    });
+
+    console.log('✅ Cancellation email sent successfully');
+  } catch (error) {
+    console.error('❌ Error sending cancellation email:', error);
   }
 }

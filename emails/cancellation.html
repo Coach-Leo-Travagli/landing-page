@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assinatura Cancelada - {{companyName}}</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        
+        .email-container {
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+        
+        .logo {
+            max-width: 120px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 700;
+        }
+        
+        .content {
+            padding: 40px 30px;
+        }
+        
+        .content h2 {
+            color: #2c3e50;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        
+        .content p {
+            font-size: 16px;
+            margin-bottom: 20px;
+            color: #555;
+        }
+        
+        .cancellation-details {
+            background-color: #fff5f5;
+            border: 1px solid #fed7d7;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 25px 0;
+        }
+        
+        .cancellation-details h3 {
+            color: #e53e3e;
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .detail-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+        
+        .detail-label {
+            font-weight: 600;
+            color: #4a5568;
+        }
+        
+        .detail-value {
+            color: #2d3748;
+        }
+        
+        .feedback-section {
+            background-color: #f7fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 30px 0;
+            text-align: center;
+        }
+        
+        .feedback-section h3 {
+            color: #2d3748;
+            margin-bottom: 15px;
+        }
+        
+        .feedback-section p {
+            color: #4a5568;
+            margin-bottom: 20px;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #348df9, #1e40af);
+            color: white;
+            text-decoration: none;
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            margin: 10px 5px;
+            transition: transform 0.2s;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-1px);
+        }
+        
+        .cta-button.secondary {
+            background: linear-gradient(135deg, #6b7280, #4b5563);
+        }
+        
+        .benefits {
+            background-color: #f0f9ff;
+            border: 1px solid #bae6fd;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+        
+        .benefits h3 {
+            color: #0369a1;
+            margin-bottom: 15px;
+        }
+        
+        .benefits ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .benefits li {
+            margin-bottom: 10px;
+            padding-left: 25px;
+            position: relative;
+            color: #0f172a;
+        }
+        
+        .benefits li:before {
+            content: "💪";
+            position: absolute;
+            left: 0;
+        }
+        
+        .footer {
+            background-color: #1a202c;
+            color: #e2e8f0;
+            padding: 30px;
+            text-align: center;
+            font-size: 14px;
+        }
+        
+        .footer a {
+            color: #90cdf4;
+            text-decoration: none;
+        }
+        
+        .social-links {
+            margin: 20px 0;
+        }
+        
+        .social-links a {
+            margin: 0 10px;
+            font-size: 18px;
+        }
+        
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            
+            .header {
+                padding: 30px 20px;
+            }
+            
+            .content {
+                padding: 30px 20px;
+            }
+            
+            .header h1 {
+                font-size: 24px;
+            }
+            
+            .content h2 {
+                font-size: 20px;
+            }
+            
+            .cta-button {
+                display: block;
+                margin: 10px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="header">
+            <img src="{{companyLogoUrl}}" alt="{{companyName}} Logo" class="logo">
+            <h1>😔 Assinatura Cancelada</h1>
+        </div>
+        
+        <div class="content">
+            <h2>Olá, {{customerName}}!</h2>
+            
+            <p>Confirmamos o cancelamento da sua assinatura do <strong>{{companyName}}</strong>. Sentiremos muito a sua falta na nossa comunidade fitness!</p>
+            
+            <div class="cancellation-details">
+                <h3>📋 Detalhes do Cancelamento</h3>
+                <div class="detail-item">
+                    <span class="detail-label">Plano Cancelado:</span>
+                    <span class="detail-value">{{planName}}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Data do Cancelamento:</span>
+                    <span class="detail-value">{{canceledAt}}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Email:</span>
+                    <span class="detail-value">{{customerEmail}}</span>
+                </div>
+            </div>
+            
+            <p><strong>Importante:</strong> Seu acesso aos treinos e conteúdos premium permanecerá ativo até o final do período já pago. Você ainda pode aproveitar todos os benefícios até essa data!</p>
+            
+            <div class="benefits">
+                <h3>💡 O que você perdeu hoje:</h3>
+                <ul>
+                    <li>Treinos personalizados e atualizados semanalmente</li>
+                    <li>Acompanhamento nutricional especializado</li>
+                    <li>Suporte direto com nossos coaches</li>
+                    <li>Comunidade exclusiva de alunos motivados</li>
+                    <li>Progressão e metas acompanhadas</li>
+                </ul>
+            </div>
+            
+            <div class="feedback-section">
+                <h3>🤔 Nos ajude a melhorar!</h3>
+                <p>Sua opinião é muito importante para nós. Gostaria de nos contar o motivo do cancelamento?</p>
+                <a href="https://forms.gle/feedback" class="cta-button secondary">💬 Deixar Feedback</a>
+            </div>
+            
+            <p>Caso mude de ideia, você sempre pode <strong>reativar sua assinatura</strong> a qualquer momento. Estaremos aqui de braços abertos para recebê-lo(a) de volta na nossa jornada de transformação!</p>
+            
+            <div style="text-align: center; margin: 30px 0;">
+                <a href="https://landing-pagee-one.vercel.app/" class="cta-button">🏃‍♂️ Reativar Assinatura</a>
+                <a href="https://wa.me/5511999999999?text=Olá!%20Gostaria%20de%20conversar%20sobre%20minha%20assinatura" class="cta-button secondary">💬 Falar com Suporte</a>
+            </div>
+            
+            <p>Muito obrigado por ter feito parte da família <strong>{{companyName}}</strong>. Desejamos muito sucesso na sua jornada fitness e esperamos vê-lo(a) novamente em breve!</p>
+            
+            <p style="margin-top: 30px;"><strong>Um abraço,<br>Equipe {{companyName}} 💪</strong></p>
+        </div>
+        
+        <div class="footer">
+            <div class="social-links">
+                <a href="https://instagram.com/teamtravagli">📱 Instagram</a>
+                <a href="https://youtube.com/teamtravagli">🎥 YouTube</a>
+                <a href="https://whatsapp.com/teamtravagli">💬 WhatsApp</a>
+            </div>
+            
+            <p>© 2024 {{companyName}}. Transformando vidas através do fitness.</p>
+            <p>
+                <a href="https://landing-pagee-one.vercel.app/termos-de-servico">Termos de Serviço</a> |
+                <a href="https://landing-pagee-one.vercel.app/politica-de-privacidade">Política de Privacidade</a>
+            </p>
+            
+            <p style="font-size: 12px; color: #9ca3af; margin-top: 20px;">
+                Você recebeu este email porque cancelou sua assinatura em {{companyName}}.<br>
+                Se tiver dúvidas, entre em contato conosco.
+            </p>
+        </div>
+    </div>
+</body>
+</html>
