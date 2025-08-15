@@ -1,49 +1,249 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Renovação de Assinatura</title>
-  <style>
-    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; background: #f8f9fa; }
-    .container { background: #fff; border-radius: 10px; padding: 40px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-    .header { text-align: center; margin-bottom: 30px; }
-    .logo { max-width: 150px; height: auto; margin-bottom: 20px; }
-    .title { color: #2c3e50; font-size: 26px; font-weight: 800; margin-bottom: 10px; }
-    .subtitle { color: #7f8c8d; font-size: 16px; margin-bottom: 24px; }
-    .message { color: #555; font-size: 16px; margin-bottom: 16px; }
-    .highlight { background: #eef7ff; border-left: 4px solid #3498db; padding: 16px; border-radius: 8px; margin: 16px 0; }
-    .cta { display: inline-block; background: #3498db; color: #fff; padding: 12px 20px; border-radius: 6px; text-decoration: none; font-weight: 600; margin-top: 12px; }
-    .footer { text-align: center; margin-top: 32px; padding-top: 16px; border-top: 1px solid #ecf0f1; color: #7f8c8d; font-size: 14px; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assinatura Renovada - {{companyName}}</title>
+    <style>
+        /* Email Base Styles - Team Travagli */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        
+        .email-container {
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #10b981, #047857);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+        
+        .logo {
+            max-width: 120px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 700;
+            color: white;
+        }
+        
+        .header-icon {
+            display: block;
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+        
+        .content {
+            padding: 40px 30px;
+        }
+        
+        .content h2 {
+            color: #2c3e50;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        
+        .content p {
+            font-size: 16px;
+            margin-bottom: 20px;
+            color: #555;
+        }
+        
+        .benefits {
+            background-color: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+        
+        .benefits h3 {
+            color: #047857;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        
+        .benefits ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .benefits li {
+            margin-bottom: 10px;
+            padding-left: 25px;
+            position: relative;
+            color: #0f172a;
+        }
+        
+        .benefits li:before {
+            content: "🔁";
+            position: absolute;
+            left: 0;
+        }
+        
+        .cta-section {
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #10b981, #047857);
+            color: white !important;
+            text-decoration: none !important;
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            margin: 10px 5px;
+            transition: transform 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-1px);
+            color: white !important;
+            text-decoration: none !important;
+        }
+        
+        .cta-button:visited,
+        .cta-button:active,
+        .cta-button:focus {
+            color: white !important;
+            text-decoration: none !important;
+        }
+        
+        .cta-button.secondary {
+            background: linear-gradient(135deg, #6b7280, #4b5563);
+            color: white !important;
+        }
+        
+        .footer {
+            background-color: #1a202c;
+            color: #e2e8f0;
+            padding: 30px;
+            text-align: center;
+            font-size: 14px;
+        }
+        
+        .footer a {
+            color: #90cdf4;
+            text-decoration: none;
+        }
+        
+        .footer a:hover {
+            color: #bfdbfe;
+            text-decoration: underline;
+        }
+        
+        .social-links {
+            margin: 20px 0;
+        }
+        
+        .social-links a {
+            margin: 0 10px;
+            font-size: 18px;
+            color: #90cdf4;
+        }
+        
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            
+            .header {
+                padding: 30px 20px;
+            }
+            
+            .content {
+                padding: 30px 20px;
+            }
+            
+            .header h1 {
+                font-size: 24px;
+            }
+            
+            .content h2 {
+                font-size: 20px;
+            }
+            
+            .cta-button {
+                display: block;
+                margin: 10px 0;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <div class="header">
-      <img src="{{companyLogoUrl}}" alt="{{companyName}}" class="logo" />
-      <h1 class="title">🔁 Assinatura renovada com sucesso</h1>
-      <p class="subtitle">Sua jornada fitness continua com a {{companyName}}</p>
+    <div class="email-container">
+        <div class="header">
+            <img src="{{companyLogoUrl}}" alt="{{companyName}} Logo" class="logo">
+            <h1>
+                <span class="header-icon">🔁</span>
+                Assinatura Renovada
+            </h1>
+        </div>
+        
+        <div class="content">
+            <h2>Olá, {{customerName}}!</h2>
+            
+            <p>Boas notícias! Sua assinatura foi <strong>renovada com sucesso</strong>. Você continua com acesso completo ao seu acompanhamento personalizado, treinos e orientações nutricionais.</p>
+
+            <div class="benefits">
+                <h3>🚀 O que você pode fazer agora:</h3>
+                <ul>
+                    <li>Continuar seus treinos personalizados</li>
+                    <li>Manter contato com o coach para ajustes no plano</li>
+                    <li>Acompanhar sua evolução mês a mês</li>
+                    <li>Aproveitar todos os benefícios da sua jornada fitness</li>
+                </ul>
+            </div>
+
+            <p>Estamos muito felizes em continuar fazendo parte da sua jornada de transformação. Prepare-se para mais resultados incríveis!</p>
+
+            <div class="cta-section">
+                <a href="https://landing-pagee-one.vercel.app/login" class="cta-button">🏃‍♂️ Acessar Plataforma</a>
+                <a href="https://wa.me/5511999999999?text=Olá!%20Minha%20assinatura%20foi%20renovada" class="cta-button secondary">💬 Falar com Suporte</a>
+            </div>
+            
+            <p style="margin-top: 30px;"><strong>Obrigado por continuar conosco,<br>Equipe {{companyName}} 💪</strong></p>
+        </div>
+        
+        <div class="footer">
+            <div class="social-links">
+                <a href="https://instagram.com/teamtravagli">📱 Instagram</a>
+                <a href="https://youtube.com/teamtravagli">🎥 YouTube</a>
+                <a href="https://whatsapp.com/teamtravagli">💬 WhatsApp</a>
+            </div>
+            
+            <p>© 2024 {{companyName}}. Transformando vidas através do fitness.</p>
+            <p>
+                <a href="https://landing-pagee-one.vercel.app/termos-de-servico">Termos de Serviço</a> |
+                <a href="https://landing-pagee-one.vercel.app/politica-de-privacidade">Política de Privacidade</a>
+            </p>
+            
+            <p style="font-size: 12px; color: #9ca3af; margin-top: 20px;">
+                Você recebeu este email porque sua assinatura foi renovada em {{companyName}}.<br>
+                Se tiver dúvidas, entre em contato conosco.
+            </p>
+        </div>
     </div>
-
-    <p class="message">Olá {{customerName}},</p>
-    <p class="message">Boas notícias! Sua assinatura foi <strong>renovada com sucesso</strong>. Você continua com acesso completo ao seu acompanhamento personalizado, treinos e orientações nutricionais.</p>
-
-    <div class="highlight">
-      <strong>O que você pode fazer agora?</strong>
-      <ul>
-        <li>Continuar seus treinos personalizados</li>
-        <li>Manter contato com o coach para ajustes no plano</li>
-        <li>Acompanhar sua evolução mês a mês</li>
-      </ul>
-    </div>
-
-    <!-- <a href="https://teamtravagli.com.br" class="cta">Acessar Plataforma</a> -->
-
-    <div class="footer">
-      <p>Precisa de ajuda? Fale com a nossa equipe:</p>
-      <p><a href="mailto:suporte@teamtravagli.com.br">suporte@teamtravagli.com.br</a> • <a href="https://wa.me/5514997021278" target="_blank">WhatsApp</a></p>
-      <p>&copy; 2025 {{companyName}}. Todos os direitos reservados.</p>
-    </div>
-  </div>
 </body>
 </html>

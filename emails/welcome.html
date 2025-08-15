@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bem-vindo(a) à Team Travagli</title>
+    <title>Bem-vindo(a) - {{companyName}}</title>
     <style>
+        /* Email Base Styles - Team Travagli */
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             line-height: 1.6;
             color: #333;
             max-width: 600px;
@@ -14,125 +15,240 @@
             padding: 20px;
             background-color: #f8f9fa;
         }
-        .container {
+        
+        .email-container {
             background-color: #ffffff;
-            border-radius: 10px;
-            padding: 40px;
+            border-radius: 12px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
         }
+        
         .header {
+            background: linear-gradient(135deg, #10b981, #047857);
+            color: white;
+            padding: 40px 30px;
             text-align: center;
-            margin-bottom: 30px;
         }
+        
         .logo {
-            max-width: 150px;
+            max-width: 120px;
             height: auto;
             margin-bottom: 20px;
         }
-        .title {
-            color: #2c3e50;
+        
+        .header h1 {
+            margin: 0;
             font-size: 28px;
-            font-weight: bold;
+            font-weight: 700;
+            color: white;
+        }
+        
+        .header-icon {
+            display: block;
+            font-size: 48px;
             margin-bottom: 10px;
         }
-        .subtitle {
-            color: #7f8c8d;
-            font-size: 16px;
-            margin-bottom: 30px;
-        }
+        
         .content {
-            margin-bottom: 30px;
+            padding: 40px 30px;
         }
-        .greeting {
-            font-size: 18px;
-            margin-bottom: 20px;
+        
+        .content h2 {
             color: #2c3e50;
+            font-size: 24px;
+            margin-bottom: 20px;
         }
-        .message {
+        
+        .content p {
             font-size: 16px;
             margin-bottom: 20px;
             color: #555;
         }
-        .highlight {
-            background-color: #e8f5e8;
-            padding: 20px;
+        
+        .benefits {
+            background-color: #f0fdf4;
+            border: 1px solid #bbf7d0;
             border-radius: 8px;
-            border-left: 4px solid #27ae60;
-            margin: 20px 0;
+            padding: 25px;
+            margin: 25px 0;
         }
+        
+        .benefits h3 {
+            color: #047857;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        
+        .benefits ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .benefits li {
+            margin-bottom: 10px;
+            padding-left: 25px;
+            position: relative;
+            color: #0f172a;
+        }
+        
+        .benefits li:before {
+            content: "🚀";
+            position: absolute;
+            left: 0;
+        }
+        
+        .cta-section {
+            text-align: center;
+            margin: 30px 0;
+        }
+        
         .cta-button {
             display: inline-block;
-            background-color: #27ae60;
-            color: #fff;
-            padding: 15px 30px;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-            margin: 20px 0;
-            text-align: center;
+            background: linear-gradient(135deg, #10b981, #047857);
+            color: white !important;
+            text-decoration: none !important;
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            margin: 10px 5px;
+            transition: transform 0.2s;
+            border: none;
+            cursor: pointer;
         }
+        
+        .cta-button:hover {
+            transform: translateY(-1px);
+            color: white !important;
+            text-decoration: none !important;
+        }
+        
+        .cta-button:visited,
+        .cta-button:active,
+        .cta-button:focus {
+            color: white !important;
+            text-decoration: none !important;
+        }
+        
+        .cta-button.secondary {
+            background: linear-gradient(135deg, #6b7280, #4b5563);
+            color: white !important;
+        }
+        
         .footer {
+            background-color: #1a202c;
+            color: #e2e8f0;
+            padding: 30px;
             text-align: center;
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid #ecf0f1;
-            color: #7f8c8d;
             font-size: 14px;
         }
+        
+        .footer a {
+            color: #90cdf4;
+            text-decoration: none;
+        }
+        
+        .footer a:hover {
+            color: #bfdbfe;
+            text-decoration: underline;
+        }
+        
         .social-links {
             margin: 20px 0;
         }
+        
         .social-links a {
-            color: #27ae60;
-            text-decoration: none;
             margin: 0 10px;
+            font-size: 18px;
+            color: #90cdf4;
+        }
+        
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            
+            .header {
+                padding: 30px 20px;
+            }
+            
+            .content {
+                padding: 30px 20px;
+            }
+            
+            .header h1 {
+                font-size: 24px;
+            }
+            
+            .content h2 {
+                font-size: 20px;
+            }
+            
+            .cta-button {
+                display: block;
+                margin: 10px 0;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="email-container">
         <div class="header">
-            <img src="{{companyLogoUrl}}" alt="{{companyName}}" class="logo">
-            <h1 class="title">🎉 Bem-vindo(a) à sua transformação fitness!</h1>
-            <p class="subtitle">Sua jornada para uma vida mais saudável começa agora</p>
+            <img src="{{companyLogoUrl}}" alt="{{companyName}} Logo" class="logo">
+            <h1>
+                <span class="header-icon">🎉</span>
+                Bem-vindo(a) à sua transformação!
+            </h1>
         </div>
-
+        
         <div class="content">
-            <p class="greeting">Olá {{customerName}},</p>
+            <h2>Olá, {{customerName}}!</h2>
             
-            <p class="message">
+            <p>
                 Parabéns! Você acaba de dar o primeiro passo para transformar sua vida através do fitness. 
                 Sua assinatura na <strong>{{companyName}}</strong> foi ativada com sucesso!
             </p>
 
-            <div class="highlight">
-                <h3>🚀 O que acontece agora?</h3>
+            <div class="benefits">
+                <h3>🚀 O que acontece agora:</h3>
                 <ul>
-                    <!-- <li>Você receberá suas credenciais de acesso em até 24 horas</li> -->
                     <li>O Coach Travagli entrará em contato para o onboarding personalizado</li>
                     <li>Você terá acesso a treinos exclusivos e acompanhamento nutricional</li>
                     <li>Sua cobrança mensal será automática na data de hoje de cada mês</li>
+                    <li>Você fará parte da nossa comunidade exclusiva de transformação</li>
                 </ul>
             </div>
 
-            <p class="message">
+            <p>
                 Estamos muito animados para fazer parte da sua jornada de transformação. 
                 Prepare-se para resultados incríveis!
             </p>
 
-            <!-- <a href="https://teamtravagli.com.br" class="cta-button">
-                Acessar Plataforma
-            </a> -->
-        </div>
-
-        <div class="footer">
-            <p>Se você tiver alguma dúvida, não hesite em nos contatar:</p>
-            <div class="social-links">
-                <a href="mailto:suporte@teamtravagli.com.br">suporte@teamtravagli.com.br</a>
-                <a href="https://wa.me/5514997021278" target="_blank">WhatsApp</a>
+            <div class="cta-section">
+                <a href="https://landing-pagee-one.vercel.app/login" class="cta-button">🏃‍♂️ Acessar Plataforma</a>
+                <a href="https://wa.me/5511999999999?text=Olá!%20Acabei%20de%20me%20inscrever%20na%20Team%20Travagli" class="cta-button secondary">💬 Falar com Suporte</a>
             </div>
-            <p>Atendimento: Segunda a Sexta, 8h às 18h</p>
-            <p>&copy; 2025 {{companyName}}. Todos os direitos reservados.</p>
+            
+            <p style="margin-top: 30px;"><strong>Bem-vindo(a) à família,<br>Equipe {{companyName}} 💪</strong></p>
+        </div>
+        
+        <div class="footer">
+            <div class="social-links">
+                <a href="https://instagram.com/teamtravagli">📱 Instagram</a>
+                <a href="https://youtube.com/teamtravagli">🎥 YouTube</a>
+                <a href="https://whatsapp.com/teamtravagli">💬 WhatsApp</a>
+            </div>
+            
+            <p>© 2024 {{companyName}}. Transformando vidas através do fitness.</p>
+            <p>
+                <a href="https://landing-pagee-one.vercel.app/termos-de-servico">Termos de Serviço</a> |
+                <a href="https://landing-pagee-one.vercel.app/politica-de-privacidade">Política de Privacidade</a>
+            </p>
+            
+            <p style="font-size: 12px; color: #9ca3af; margin-top: 20px;">
+                Você recebeu este email porque se inscreveu em {{companyName}}.<br>
+                Se tiver dúvidas, entre em contato conosco: Segunda a Sexta, 8h às 18h.
+            </p>
         </div>
     </div>
 </body>

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Assinatura Cancelada - {{companyName}}</title>
     <style>
+        /* Email Base Styles - Team Travagli */
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             line-height: 1.6;
@@ -39,6 +40,13 @@
             margin: 0;
             font-size: 28px;
             font-weight: 700;
+            color: white;
+        }
+        
+        .header-icon {
+            display: block;
+            font-size: 48px;
+            margin-bottom: 10px;
         }
         
         .content {
@@ -113,25 +121,42 @@
             margin-bottom: 20px;
         }
         
+        .cta-section {
+            text-align: center;
+            margin: 30px 0;
+        }
+        
         .cta-button {
             display: inline-block;
             background: linear-gradient(135deg, #348df9, #1e40af);
-            color: white;
-            text-decoration: none;
+            color: white !important;
+            text-decoration: none !important;
             padding: 14px 28px;
             border-radius: 8px;
             font-weight: 600;
             font-size: 16px;
             margin: 10px 5px;
             transition: transform 0.2s;
+            border: none;
+            cursor: pointer;
         }
         
         .cta-button:hover {
             transform: translateY(-1px);
+            color: white !important;
+            text-decoration: none !important;
+        }
+        
+        .cta-button:visited,
+        .cta-button:active,
+        .cta-button:focus {
+            color: white !important;
+            text-decoration: none !important;
         }
         
         .cta-button.secondary {
             background: linear-gradient(135deg, #6b7280, #4b5563);
+            color: white !important;
         }
         
         .benefits {
@@ -219,7 +244,10 @@
     <div class="email-container">
         <div class="header">
             <img src="{{companyLogoUrl}}" alt="{{companyName}} Logo" class="logo">
-            <h1>😔 Assinatura Cancelada</h1>
+            <h1>
+                <span class="header-icon">😔</span>
+                Assinatura Cancelada
+            </h1>
         </div>
         
         <div class="content">
@@ -264,7 +292,7 @@
             
             <p>Caso mude de ideia, você sempre pode <strong>reativar sua assinatura</strong> a qualquer momento. Estaremos aqui de braços abertos para recebê-lo(a) de volta na nossa jornada de transformação!</p>
             
-            <div style="text-align: center; margin: 30px 0;">
+            <div class="cta-section">
                 <a href="https://landing-pagee-one.vercel.app/" class="cta-button">🏃‍♂️ Reativar Assinatura</a>
                 <a href="https://wa.me/5511999999999?text=Olá!%20Gostaria%20de%20conversar%20sobre%20minha%20assinatura" class="cta-button secondary">💬 Falar com Suporte</a>
             </div>

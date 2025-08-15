@@ -1,0 +1,21 @@
+<!-- Plan Comparison Component -->
+<!-- Usage: {{> plan-comparison changeType="upgrade|downgrade" previousPlan=prevPlan newPlan=newPlan }} -->
+<div class="change-details">
+    {{#showPrevious}}
+    <div class="plan-box previous">
+        <div class="plan-name">Plano Anterior</div>
+        <div class="plan-name">{{previousPlan.name}}</div>
+        <div class="plan-price">R$ {{previousPlan.amount}}</div>
+    </div>
+    
+    <div class="arrow {{changeType}}">
+        →
+    </div>
+    {{/showPrevious}}
+    
+    <div class="plan-box new {{changeType}}">
+        <div class="plan-name">{{#showPrevious}}Novo Plano{{/showPrevious}}{{^showPrevious}}Plano Atual{{/showPrevious}}</div>
+        <div class="plan-name">{{newPlan.name}}</div>
+        <div class="plan-price">R$ {{newPlan.amount}}</div>
+    </div>
+</div>

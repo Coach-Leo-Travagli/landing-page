@@ -1,0 +1,14 @@
+<!-- Info Box Component -->
+<!-- Usage: {{> info-box type="primary|success|warning|danger|neutral" title="Título" content="conteúdo" }} -->
+<div class="info-box {{type}}">
+    <h3>{{title}}</h3>
+    {{#detailItems}}
+    <div class="detail-item">
+        <span class="detail-label">{{label}}:</span>
+        <span class="detail-value">{{value}}</span>
+    </div>
+    {{/detailItems}}
+    {{#content}}
+    {{{content}}}
+    {{/content}}
+</div>

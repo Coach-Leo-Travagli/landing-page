@@ -1,0 +1,10 @@
+<!-- Benefits Section Component -->
+<!-- Usage: {{> benefits-section type="primary|success" title="Título" benefits=benefitsArray }} -->
+<div class="benefits {{type}}">
+    <h3>{{title}}</h3>
+    <ul>
+        {{#benefits}}
+        <li>{{.}}</li>
+        {{/benefits}}
+    </ul>
+</div>
