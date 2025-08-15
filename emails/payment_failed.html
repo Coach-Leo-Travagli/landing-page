@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Problema com Pagamento - Team Travagli</title>
+    <title>Problema com Pagamento - {{companyName}}</title>
     <style>
+        /* Email Base Styles - Team Travagli */
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             line-height: 1.6;
             color: #333;
             max-width: 600px;
@@ -14,134 +15,214 @@
             padding: 20px;
             background-color: #f8f9fa;
         }
-        .container {
+        
+        .email-container {
             background-color: #ffffff;
-            border-radius: 10px;
-            padding: 40px;
+            border-radius: 12px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
         }
+        
         .header {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            padding: 40px 30px;
             text-align: center;
-            margin-bottom: 30px;
         }
+        
         .logo {
-            max-width: 150px;
+            max-width: 120px;
             height: auto;
             margin-bottom: 20px;
         }
-        .title {
-            color: #e74c3c;
+        
+        .header h1 {
+            margin: 0;
             font-size: 28px;
-            font-weight: bold;
+            font-weight: 700;
+            color: white;
+        }
+        
+        .header-icon {
+            display: block;
+            font-size: 48px;
             margin-bottom: 10px;
         }
-        .subtitle {
-            color: #7f8c8d;
-            font-size: 16px;
-            margin-bottom: 30px;
-        }
+        
         .content {
-            margin-bottom: 30px;
+            padding: 40px 30px;
         }
-        .greeting {
-            font-size: 18px;
-            margin-bottom: 20px;
+        
+        .content h2 {
             color: #2c3e50;
+            font-size: 24px;
+            margin-bottom: 20px;
         }
-        .message {
+        
+        .content p {
             font-size: 16px;
             margin-bottom: 20px;
             color: #555;
         }
-        .alert {
-            background-color: #fdf2f2;
-            padding: 20px;
+        
+        .info-box {
             border-radius: 8px;
-            border-left: 4px solid #e74c3c;
-            margin: 20px 0;
+            padding: 25px;
+            margin: 25px 0;
         }
-        .alert h3 {
-            color: #e74c3c;
+        
+        .info-box.warning {
+            background-color: #fefbef;
+            border: 1px solid #fed7aa;
+        }
+        
+        .info-box.neutral {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .info-box h3 {
             margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 18px;
         }
-        .steps {
-            background-color: #f8f9fa;
-            padding: 20px;
-            border-radius: 8px;
-            margin: 20px 0;
+        
+        .info-box.warning h3 {
+            color: #d97706;
         }
-        .steps h3 {
-            color: #2c3e50;
-            margin-top: 0;
+        
+        .info-box.neutral h3 {
+            color: #2d3748;
         }
-        .steps ul {
+        
+        .info-box ul,
+        .info-box ol {
             margin: 0;
             padding-left: 20px;
         }
-        .steps li {
+        
+        .info-box li {
             margin-bottom: 10px;
         }
+        
+        .cta-section {
+            text-align: center;
+            margin: 30px 0;
+        }
+        
         .cta-button {
             display: inline-block;
-            background-color: #e74c3c;
-            color: white;
-            padding: 15px 30px;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-            margin: 20px 0;
-            text-align: center;
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white !important;
+            text-decoration: none !important;
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            margin: 10px 5px;
+            transition: transform 0.2s;
+            border: none;
+            cursor: pointer;
         }
-        .secondary-button {
-            display: inline-block;
-            background-color: #3498db;
-            color: white;
-            padding: 15px 30px;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-            margin: 20px 10px 20px 0;
-            text-align: center;
+        
+        .cta-button:hover {
+            transform: translateY(-1px);
+            color: white !important;
+            text-decoration: none !important;
         }
+        
+        .cta-button:visited,
+        .cta-button:active,
+        .cta-button:focus {
+            color: white !important;
+            text-decoration: none !important;
+        }
+        
+        .cta-button.secondary {
+            background: linear-gradient(135deg, #348df9, #1e40af);
+            color: white !important;
+        }
+        
         .footer {
+            background-color: #1a202c;
+            color: #e2e8f0;
+            padding: 30px;
             text-align: center;
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid #ecf0f1;
-            color: #7f8c8d;
             font-size: 14px;
         }
+        
+        .footer a {
+            color: #90cdf4;
+            text-decoration: none;
+        }
+        
+        .footer a:hover {
+            color: #bfdbfe;
+            text-decoration: underline;
+        }
+        
         .social-links {
             margin: 20px 0;
         }
+        
         .social-links a {
-            color: #3498db;
-            text-decoration: none;
             margin: 0 10px;
+            font-size: 18px;
+            color: #90cdf4;
         }
+        
         .urgent {
-            color: #e74c3c;
+            color: #ef4444;
             font-weight: bold;
+        }
+        
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            
+            .header {
+                padding: 30px 20px;
+            }
+            
+            .content {
+                padding: 30px 20px;
+            }
+            
+            .header h1 {
+                font-size: 24px;
+            }
+            
+            .content h2 {
+                font-size: 20px;
+            }
+            
+            .cta-button {
+                display: block;
+                margin: 10px 0;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="email-container">
         <div class="header">
-            <img src="{{companyLogoUrl}}" alt="{{companyName}}" class="logo">
-            <h1 class="title">⚠️ Houve um problema com seu pagamento</h1>
-            <p class="subtitle">Não se preocupe, vamos resolver isso juntos!</p>
+            <img src="{{companyLogoUrl}}" alt="{{companyName}} Logo" class="logo">
+            <h1>
+                <span class="header-icon">⚠️</span>
+                Problema com Pagamento
+            </h1>
         </div>
-
+        
         <div class="content">
-            <p class="greeting">Olá {{customerName}},</p>
+            <h2>Olá, {{customerName}}!</h2>
             
-            <p class="message">
+            <p>
                 Identificamos um problema com o processamento do seu pagamento na <strong>{{companyName}}</strong>. 
                 Não se preocupe, isso é mais comum do que você imagina e pode ser resolvido rapidamente!
             </p>
 
-            <div class="alert">
+            <div class="info-box warning">
                 <h3>🚨 O que aconteceu?</h3>
                 <p>
                     Seu pagamento não foi processado com sucesso. Isso pode ter acontecido por alguns motivos:
@@ -154,7 +235,7 @@
                 </ul>
             </div>
 
-            <div class="steps">
+            <div class="info-box neutral">
                 <h3>🔧 Como resolver:</h3>
                 <ol>
                     <li><strong>Verifique seus dados bancários</strong> - Confirme se as informações do cartão estão corretas</li>
@@ -164,27 +245,36 @@
                 </ol>
             </div>
 
-            <p class="message">
+            <p>
                 <span class="urgent">Importante:</span> Sua assinatura será ativada assim que o pagamento for processado com sucesso. 
                 Não perca tempo - quanto antes resolvermos, mais rápido você começará sua transformação!
             </p>
 
-            <a href="https://teamtravagli.com.br/#pricing" class="cta-button">
-                Tentar Novamente
-            </a>
-            <a href="https://wa.me/5514997021278?text=Oi, preciso de ajuda com meu pagamento" class="secondary-button" target="_blank">
-                Falar com Suporte
-            </a>
-        </div>
-
-        <div class="footer">
-            <p>Nossa equipe está disponível para ajudar:</p>
-            <div class="social-links">
-                <a href="mailto:suporte@teamtravagli.com.br">suporte@teamtravagli.com.br</a>
-                <a href="https://wa.me/5514997021278" target="_blank">WhatsApp</a>
+            <div class="cta-section">
+                <a href="https://landing-pagee-one.vercel.app/#pricing" class="cta-button">💳 Tentar Novamente</a>
+                <a href="https://wa.me/5511999999999?text=Oi,%20preciso%20de%20ajuda%20com%20meu%20pagamento" class="cta-button secondary">💬 Falar com Suporte</a>
             </div>
-            <p>Atendimento: Segunda a Sexta, 8h às 18h</p>
-            <p>&copy; 2025 {{companyName}}. Todos os direitos reservados.</p>
+            
+            <p style="margin-top: 30px;"><strong>Estamos aqui para ajudar,<br>Equipe {{companyName}} 💪</strong></p>
+        </div>
+        
+        <div class="footer">
+            <div class="social-links">
+                <a href="https://instagram.com/teamtravagli">📱 Instagram</a>
+                <a href="https://youtube.com/teamtravagli">🎥 YouTube</a>
+                <a href="https://whatsapp.com/teamtravagli">💬 WhatsApp</a>
+            </div>
+            
+            <p>© 2024 {{companyName}}. Transformando vidas através do fitness.</p>
+            <p>
+                <a href="https://landing-pagee-one.vercel.app/termos-de-servico">Termos de Serviço</a> |
+                <a href="https://landing-pagee-one.vercel.app/politica-de-privacidade">Política de Privacidade</a>
+            </p>
+            
+            <p style="font-size: 12px; color: #9ca3af; margin-top: 20px;">
+                Você recebeu este email porque houve um problema com seu pagamento em {{companyName}}.<br>
+                Nossa equipe está disponível para ajudar: Segunda a Sexta, 8h às 18h.
+            </p>
         </div>
     </div>
 </body>

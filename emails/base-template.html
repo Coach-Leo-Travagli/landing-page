@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{emailTitle}} - {{companyName}}</title>
+    <style>
+        /* Inline styles para compatibilidade com clientes de email */
+        {{emailStyles}}
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <!-- HEADER SECTION -->
+        <div class="header {{headerType}}">
+            <img src="{{companyLogoUrl}}" alt="{{companyName}} Logo" class="logo">
+            <h1>
+                {{#headerIcon}}<span class="header-icon">{{headerIcon}}</span>{{/headerIcon}}
+                {{emailTitle}}
+            </h1>
+        </div>
+        
+        <!-- CONTENT SECTION -->
+        <div class="content">
+            <h2>Olá, {{customerName}}!</h2>
+            
+            {{mainContent}}
+            
+            <!-- CTA SECTION -->
+            {{#ctaSection}}
+            <div class="cta-section">
+                {{ctaButtons}}
+            </div>
+            {{/ctaSection}}
+            
+            {{closingMessage}}
+            
+            <p style="margin-top: 30px;"><strong>{{signatureText}}<br>Equipe {{companyName}} 💪</strong></p>
+        </div>
+        
+        <!-- FOOTER SECTION -->
+        <div class="footer">
+            <div class="social-links">
+                <a href="https://instagram.com/teamtravagli">📱 Instagram</a>
+                <a href="https://youtube.com/teamtravagli">🎥 YouTube</a>
+                <a href="https://whatsapp.com/teamtravagli">💬 WhatsApp</a>
+            </div>
+            
+            <p>© 2024 {{companyName}}. Transformando vidas através do fitness.</p>
+            <p>
+                <a href="https://landing-pagee-one.vercel.app/termos-de-servico">Termos de Serviço</a> |
+                <a href="https://landing-pagee-one.vercel.app/politica-de-privacidade">Política de Privacidade</a>
+            </p>
+            
+            <p class="footer-legal">
+                {{footerMessage}}<br>
+                Se tiver dúvidas, entre em contato conosco.
+            </p>
+        </div>
+    </div>
+</body>
+</html>
