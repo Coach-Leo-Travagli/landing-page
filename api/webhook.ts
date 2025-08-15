@@ -371,22 +371,55 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           const subscriptionId = subscription.id;
           const updatedAt = new Date(subscription.created * 1000);
           
-          // Extract plan details from the first subscription item
+          // Extract plan details from the first subscription item (NEW PLAN)
           const subscriptionItem = subscription.items.data[0];
-          const plan = subscriptionItem?.plan;
           const price = subscriptionItem?.price;
           
-          // Extract pricing information
-          const newAmount = plan?.amount || price?.unit_amount || 0;
+          // Extract pricing information from the NEW plan
+          const newAmount = price?.unit_amount || 0;
           const currency = subscription.currency || "brl";
-          const priceId = plan?.id || price?.id || "unknown";
-          const productId = typeof (plan?.product) === "string" ? plan.product : 
-                           typeof (price?.product) === "string" ? price.product : "unknown";
+          const priceId = price?.id || "unknown";
+          const productId = typeof (price?.product) === "string" ? price.product : "unknown";
           
-          // Extract metadata (most reliable source for plan details)
+          // Get customer email from metadata (current subscription info)
           const customerEmail = subscription.metadata?.customer_email || "unknown";
-          const planName = subscription.metadata?.plan_name || "unknown";
-          const planType = subscription.metadata?.plan_type || "unknown";
+          
+          // Fetch NEW plan details from Stripe API using product and price IDs
+          let newPlanName = "unknown";
+          let newPlanType = "unknown";
+          
+          try {
+            if (productId !== "unknown") {
+              const product = await stripe.products.retrieve(productId);
+              newPlanName = product.name || "unknown";
+              
+              // Extract plan type from product metadata or name
+              if (product.metadata?.plan_type) {
+                newPlanType = product.metadata.plan_type;
+              } else {
+                // Fallback: derive plan type from product name
+                const productName = product.name.toLowerCase();
+                if (productName.includes('básico') || productName.includes('basic')) {
+                  newPlanType = 'basic';
+                } else if (productName.includes('padrão') || productName.includes('standard')) {
+                  newPlanType = 'standard';
+                } else if (productName.includes('vip') || productName.includes('premium')) {
+                  newPlanType = 'vip';
+                }
+              }
+            }
+            
+            console.log("🔍 Detalhes do NOVO plano obtidos via Stripe API:", {
+              productId,
+              priceId,
+              newPlanName,
+              newPlanType,
+              newAmount: newAmount / 100
+            });
+          } catch (stripeError) {
+            console.error("❌ Erro ao buscar detalhes do produto no Stripe:", stripeError);
+            // Continue with unknown values if Stripe API fails
+          }
           
           // Extract billing period
           const currentPeriodStart = new Date(subscriptionItem?.current_period_start * 1000);
@@ -396,8 +429,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             stripeCustomerId,
             subscriptionId,
             customerEmail,
-            planName,
-            planType,
+            newPlanName,
+            newPlanType,
             newAmount: newAmount / 100, // Convert cents to reais
             currency,
             priceId,
@@ -426,7 +459,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             const previousPlanName = user.planName || "unknown";
             
             // Determine if this is an upgrade, downgrade, or same price change
-            const amountInReais = newAmount / 100;
+            const amountInReais = newAmount;
             const previousAmountInReais = previousAmount;
             
             console.log("🔍 Debug valores:", {
@@ -447,7 +480,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
               userId: user.id,
               email: user.email,
               previousPlan: previousPlanName,
-              newPlan: planName,
+              newPlan: newPlanName,
               previousAmount: previousAmountInReais,
               newAmount: amountInReais,
               changeType
@@ -458,8 +491,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
               where: { id: user.id },
               data: {
                 subscriptionId,
-                planName,
-                planType,
+                planName: newPlanName,
+                planType: newPlanType,
                 priceId,
                 productId,
                 currency,
@@ -501,7 +534,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
               customerName: user.name,
               customerEmail: user.email,
               previousPlan: previousPlanName,
-              newPlan: planName,
+              newPlan: newPlanName,
               previousAmount: previousAmountInReais,
               newAmount: amountInReais,
               changeType: changeType,
@@ -512,7 +545,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
             console.log(`✅ Atualização de assinatura processada com sucesso (${changeType}):`, {
               userEmail: user.email,
-              change: `${previousPlanName} → ${planName}`,
+              change: `${previousPlanName} → ${newPlanName}`,
               priceChange: `R$ ${previousAmountInReais} → R$ ${amountInReais}`
             });
           } else {
