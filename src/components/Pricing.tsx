@@ -135,7 +135,7 @@ export default function Pricing() {
           )}
 
           <p className="text-muted-foreground mb-4">
-            Você pode cancelar sua assinatura a qualquer momento. 30 dias de garantia.
+            Você pode cancelar sua assinatura a qualquer momento. 7 dias de garantia.
           </p>
         </div>
       </div>
