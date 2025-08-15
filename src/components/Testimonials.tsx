@@ -1,7 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
-import Autoplay from "embla-carousel-autoplay";
-import { useRef } from "react";
+import React, { useRef, useEffect, useCallback } from "react";
+import type { CarouselApi } from "@/components/ui/carousel";
 import transformationImage from "@/assets/transformation.jpg";
 import resultadoHelder from "@/assets/resultado_helder.jpg";
 
@@ -105,9 +105,48 @@ const testimonials = [
 ];
 
 export default function Testimonials() {
-  const plugin = useRef(
-    Autoplay({ delay: 3000, stopOnInteraction: true, stopOnMouseEnter: true })
-  );
+  const [api, setApi] = React.useState<CarouselApi>();
+  const [isPlaying, setIsPlaying] = React.useState(true);
+  const intervalRef = useRef<NodeJS.Timeout>();
+
+  const startAutoplay = useCallback(() => {
+    if (!api || !isPlaying) return;
+    
+    intervalRef.current = setInterval(() => {
+      if (api.canScrollNext()) {
+        api.scrollNext();
+      } else {
+        api.scrollTo(0);
+      }
+    }, 3000);
+  }, [api, isPlaying]);
+
+  const stopAutoplay = useCallback(() => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!api) return;
+
+    if (isPlaying) {
+      startAutoplay();
+    } else {
+      stopAutoplay();
+    }
+
+    return () => stopAutoplay();
+  }, [api, isPlaying, startAutoplay, stopAutoplay]);
+
+  const handleMouseEnter = () => {
+    setIsPlaying(false);
+    stopAutoplay();
+  };
+
+  const handleMouseLeave = () => {
+    setIsPlaying(true);
+  };
 
   return (
     <section className="py-20 bg-white">
@@ -123,10 +162,10 @@ export default function Testimonials() {
 
         <div className="max-w-6xl mx-auto">
           <Carousel
-            plugins={[plugin.current]}
+            setApi={setApi}
             className="w-full"
-            onMouseEnter={plugin.current.stop}
-            onMouseLeave={plugin.current.reset}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
             opts={{
               align: "start",
               loop: true,
