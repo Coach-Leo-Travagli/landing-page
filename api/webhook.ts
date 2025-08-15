@@ -333,10 +333,52 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           const canceledAt = subscription.canceled_at ? new Date(subscription.canceled_at * 1000) : new Date();
           const endedAt = subscription.ended_at ? new Date(subscription.ended_at * 1000) : new Date();
           
-          // Extract metadata if available
+          // Extract customer email from metadata (this is usually reliable)
           const customerEmail = subscription.metadata?.customer_email || "unknown";
-          const planName = subscription.metadata?.plan_name || "unknown";
-          const planType = subscription.metadata?.plan_type || "unknown";
+          
+          // Extract current plan details from subscription items instead of relying on metadata
+          let planName = "unknown";
+          let planType = "unknown";
+          
+          try {
+            // Get the first subscription item (current active plan)
+            const subscriptionItem = subscription.items.data[0];
+            const price = subscriptionItem?.price;
+            const productId = typeof (price?.product) === "string" ? price.product : "unknown";
+            
+            if (productId !== "unknown") {
+              const product = await stripe.products.retrieve(productId);
+              planName = product.name || "unknown";
+              
+              // Extract plan type from product metadata or name
+              if (product.metadata?.plan_type) {
+                planType = product.metadata.plan_type;
+              } else {
+                // Fallback: derive plan type from product name
+                const productName = product.name.toLowerCase();
+                if (productName.includes('básico') || productName.includes('basic')) {
+                  planType = 'basic';
+                } else if (productName.includes('padrão') || productName.includes('standard')) {
+                  planType = 'standard';
+                } else if (productName.includes('vip') || productName.includes('premium')) {
+                  planType = 'vip';
+                }
+              }
+            }
+            
+            console.log("🔍 Detalhes do plano atual obtidos via Stripe API (cancelamento):", {
+              productId,
+              priceId: price?.id,
+              planName,
+              planType
+            });
+          } catch (stripeError) {
+            console.error("❌ Erro ao buscar detalhes do produto no Stripe (cancelamento):", stripeError);
+            // Fallback to metadata if Stripe API fails
+            planName = subscription.metadata?.plan_name || "unknown";
+            planType = subscription.metadata?.plan_type || "unknown";
+            console.log("🔄 Usando fallback para metadata (cancelamento):", { planName, planType });
+          }
           
           console.log("🔍 Dados do cancelamento:", {
             stripeCustomerId,
