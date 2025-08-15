@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assinatura Atualizada - {{companyName}}</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        
+        .email-container {
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #348df9, #1e40af);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+        
+        .header.upgrade {
+            background: linear-gradient(135deg, #10b981, #047857);
+        }
+        
+        .header.downgrade {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+        
+        .logo {
+            max-width: 120px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 700;
+        }
+        
+        .content {
+            padding: 40px 30px;
+        }
+        
+        .content h2 {
+            color: #2c3e50;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        
+        .content p {
+            font-size: 16px;
+            margin-bottom: 20px;
+            color: #555;
+        }
+        
+        .change-summary {
+            background-color: #f8f9ff;
+            border: 1px solid #e0e7ff;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+        
+        .change-summary.upgrade {
+            background-color: #f0fdf4;
+            border-color: #bbf7d0;
+        }
+        
+        .change-summary.downgrade {
+            background-color: #fefbef;
+            border-color: #fed7aa;
+        }
+        
+        .change-summary h3 {
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+        
+        .change-summary.upgrade h3 {
+            color: #047857;
+        }
+        
+        .change-summary.downgrade h3 {
+            color: #d97706;
+        }
+        
+        .change-summary h3 {
+            color: #1e40af;
+        }
+        
+        .change-details {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 20px;
+            align-items: center;
+            margin: 20px 0;
+        }
+        
+        .plan-box {
+            background-color: #fff;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .plan-box.previous {
+            border-color: #d1d5db;
+            opacity: 0.7;
+        }
+        
+        .plan-box.new {
+            border-color: #348df9;
+            background-color: #f0f9ff;
+        }
+        
+        .plan-box.new.upgrade {
+            border-color: #10b981;
+            background-color: #f0fdf4;
+        }
+        
+        .plan-box.new.downgrade {
+            border-color: #f59e0b;
+            background-color: #fefbef;
+        }
+        
+        .plan-name {
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 8px;
+            color: #374151;
+        }
+        
+        .plan-price {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1f2937;
+        }
+        
+        .arrow {
+            font-size: 24px;
+            color: #6b7280;
+        }
+        
+        .arrow.upgrade {
+            color: #10b981;
+        }
+        
+        .arrow.downgrade {
+            color: #f59e0b;
+        }
+        
+        .billing-info {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 25px 0;
+        }
+        
+        .billing-info h4 {
+            color: #2d3748;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+        
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        .info-label {
+            color: #4a5568;
+        }
+        
+        .info-value {
+            font-weight: 600;
+            color: #2d3748;
+        }
+        
+        .benefits-section {
+            background-color: #f0f9ff;
+            border: 1px solid #bae6fd;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+        
+        .benefits-section.upgrade {
+            background-color: #f0fdf4;
+            border-color: #bbf7d0;
+        }
+        
+        .benefits-section h3 {
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        
+        .benefits-section.upgrade h3 {
+            color: #047857;
+        }
+        
+        .benefits-section h3 {
+            color: #0369a1;
+        }
+        
+        .benefits-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .benefits-list li {
+            margin-bottom: 10px;
+            padding-left: 25px;
+            position: relative;
+            color: #0f172a;
+        }
+        
+        .benefits-list.upgrade li:before {
+            content: "✨";
+            position: absolute;
+            left: 0;
+        }
+        
+        .benefits-list li:before {
+            content: "🔄";
+            position: absolute;
+            left: 0;
+        }
+        
+        .cta-section {
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #348df9, #1e40af);
+            color: white;
+            text-decoration: none;
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            margin: 10px 5px;
+            transition: transform 0.2s;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-1px);
+        }
+        
+        .cta-button.secondary {
+            background: linear-gradient(135deg, #6b7280, #4b5563);
+        }
+        
+        .footer {
+            background-color: #1a202c;
+            color: #e2e8f0;
+            padding: 30px;
+            text-align: center;
+            font-size: 14px;
+        }
+        
+        .footer a {
+            color: #90cdf4;
+            text-decoration: none;
+        }
+        
+        .social-links {
+            margin: 20px 0;
+        }
+        
+        .social-links a {
+            margin: 0 10px;
+            font-size: 18px;
+        }
+        
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            
+            .header {
+                padding: 30px 20px;
+            }
+            
+            .content {
+                padding: 30px 20px;
+            }
+            
+            .header h1 {
+                font-size: 24px;
+            }
+            
+            .content h2 {
+                font-size: 20px;
+            }
+            
+            .change-details {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .arrow {
+                transform: rotate(90deg);
+            }
+            
+            .cta-button {
+                display: block;
+                margin: 10px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="header {{changeType}}">
+            <img src="{{companyLogoUrl}}" alt="{{companyName}} Logo" class="logo">
+            <h1>
+                <span style="display: block; font-size: 48px; margin-bottom: 10px;">🔄</span>
+                Assinatura Atualizada
+            </h1>
+        </div>
+        
+        <div class="content">
+            <h2>Olá, {{customerName}}!</h2>
+            
+            <p>Sua assinatura do <strong>{{companyName}}</strong> foi atualizada com sucesso! As mudanças já estão ativas na sua conta.</p>
+            
+            <div class="change-summary {{changeType}}">
+                <h3>🔄 Detalhes da Atualização</h3>
+                
+                <div class="change-details">
+                    <div class="plan-box previous">
+                        <div class="plan-name">Plano Anterior</div>
+                        <div class="plan-name">{{previousPlan}}</div>
+                        <div class="plan-price">R$ {{previousAmount}}</div>
+                    </div>
+                    
+                    <div class="arrow {{changeType}}">
+                        →
+                    </div>
+                    
+                    <div class="plan-box new {{changeType}}">
+                        <div class="plan-name">Novo Plano</div>
+                        <div class="plan-name">{{newPlan}}</div>
+                        <div class="plan-price">R$ {{newAmount}}</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="billing-info">
+                <h4>📅 Informações de Cobrança</h4>
+                <div class="info-item">
+                    <span class="info-label">Data de Efetivação:</span>
+                    <span class="info-value">{{effectiveDate}}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Próxima Cobrança:</span>
+                    <span class="info-value">R$ {{newAmount}}/mês</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Email da Conta:</span>
+                    <span class="info-value">{{customerEmail}}</span>
+                </div>
+            </div>
+            
+            <div class="benefits-section">
+                <h3>🔄 Seus Benefícios Atuais</h3>
+                <ul class="benefits-list">
+                    <li>Treinos personalizados atualizados mensalmente</li>
+                    <li>Plano alimentar adequado aos seus objetivos</li>
+                    <li>Suporte via comunidade exclusiva</li>
+                    <li>Acompanhamento de progresso</li>
+                    <li>Acesso ao app móvel</li>
+                </ul>
+            </div>
+            
+            <div class="cta-section">
+                <a href="https://landing-pagee-one.vercel.app/login" class="cta-button">🏃‍♂️ Acessar Minha Conta</a>
+                <a href="https://wa.me/5511999999999?text=Olá!%20Tenho%20dúvidas%20sobre%20minha%20assinatura" class="cta-button secondary">💬 Falar com Suporte</a>
+            </div>
+            
+            <p>Continuamos comprometidos em ajudar você a alcançar seus objetivos fitness. Se precisar de qualquer ajuda, estamos aqui para você!</p>
+            
+            <p style="margin-top: 30px;"><strong>Obrigado por confiar em nós,<br>Equipe {{companyName}} 💪</strong></p>
+        </div>
+        
+        <div class="footer">
+            <div class="social-links">
+                <a href="https://instagram.com/teamtravagli">📱 Instagram</a>
+                <a href="https://youtube.com/teamtravagli">🎥 YouTube</a>
+                <a href="https://whatsapp.com/teamtravagli">💬 WhatsApp</a>
+            </div>
+            
+            <p>© 2024 {{companyName}}. Transformando vidas através do fitness.</p>
+            <p>
+                <a href="https://landing-pagee-one.vercel.app/termos-de-servico">Termos de Serviço</a> |
+                <a href="https://landing-pagee-one.vercel.app/politica-de-privacidade">Política de Privacidade</a>
+            </p>
+            
+            <p style="font-size: 12px; color: #9ca3af; margin-top: 20px;">
+                Você recebeu este email porque sua assinatura foi atualizada em {{companyName}}.<br>
+                Se tiver dúvidas, entre em contato conosco.
+            </p>
+        </div>
+    </div>
+</body>
+</html>
