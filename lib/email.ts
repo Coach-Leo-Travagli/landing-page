@@ -71,7 +71,7 @@ function replaceCancellationVariables(template: string, data: CancellationEmailD
 }
 
 function replaceSubscriptionChangeVariables(template: string, data: SubscriptionChangeEmailData): string {
-  return template
+  let html = template
     .replace(/\{\{customerName\}\}/g, data.customerName)
     .replace(/\{\{customerEmail\}\}/g, data.customerEmail)
     .replace(/\{\{companyName\}\}/g, data.companyName)
@@ -89,6 +89,12 @@ function replaceSubscriptionChangeVariables(template: string, data: Subscription
       hour: '2-digit',
       minute: '2-digit'
     })) + ' (Horário de Brasília)';
+
+  if (data.benefits) {
+    html = html.replace(/\{\{benefits\}\}/g, data.benefits);
+  }
+
+  return html;
 }
 
 export async function sendWelcomeEmail(data: EmailData): Promise<void> {
