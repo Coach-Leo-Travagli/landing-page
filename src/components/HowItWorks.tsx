@@ -10,16 +10,20 @@ const steps = [
   },
   {
     number: "02", 
-    title: "Plano Personalizado",
+    title: "Plano Individualizado",
     // description: "Receba um plano exclusivo de treino e nutrição, desenvolvido de forma individual para atender suas necessidades e rotina.",
-    description: "Com base na avaliação, criamos um plano exclusivo de treino e nutrição, ajustado ao seu nível atual e metas desejadas.",
+    description: (
+      <>
+        Com base na avaliação, criamos um plano exclusivo de treino e nutrição (consulte os <a href="#pricing" className="text-primary hover:underline">planos disponíveis</a>), ajustado ao seu nível atual e metas desejadas.
+      </>
+    ),
     icon: "📋"
   },
   {
     number: "03",
-    title: "Acompanhamento Semanal", 
+    title: "Acompanhamento Personalizado", 
     // description: "Acompanhe seu progresso com revisões semanais e suporte direto do personal trainer para ajustes no plano sempre que necessário.",
-    description: "Você terá acompanhamento semanal para avaliar o progresso e fazer ajustes necessários, além de suporte direto para tirar dúvidas ao longo do processo.",
+    description: "Você terá acompanhamento personalizado para avaliar o progresso e fazer ajustes necessários, além de suporte direto para tirar dúvidas ao longo do processo.",
     icon: "📈"
   }
 ];

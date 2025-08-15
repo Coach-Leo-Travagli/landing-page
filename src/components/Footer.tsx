@@ -57,7 +57,7 @@ export default function Footer() {
                 alt="Team Travagli"
                 className="h-8 w-auto object-contain"
               />
-              <h3 className="text-2xl font-black text-gradient">Team Travagli</h3>
+              {/* <h3 className="text-2xl font-black text-gradient">Team Travagli</h3> */}
             </div>
             <p className="text-gray-300 mb-6 leading-relaxed">
               Transformando vidas através de coaching personalizado de fitness e nutrição. 
@@ -82,7 +82,7 @@ export default function Footer() {
             <ul className="space-y-3 text-gray-300">
               <li><a href="#how-it-works" className="hover:text-primary transition-colors scroll-smooth">Como Funciona</a></li>
               <li><a href="#pricing" className="hover:text-primary transition-colors scroll-smooth">Preços</a></li>
-              <li><a href="#testimonials" className="hover:text-primary transition-colors scroll-smooth">Histórias de Sucesso</a></li>
+              <li><a href="#testimonials" className="hover:text-primary transition-colors scroll-smooth">Histórias de Alunos</a></li>
               <li><a href="#faq" className="hover:text-primary transition-colors scroll-smooth">FAQ</a></li>
               {/* <li><Link to="/sobre-nos" className="hover:text-primary transition-colors">Sobre Nós</Link></li> */}
             </ul>
