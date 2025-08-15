@@ -103,7 +103,7 @@ export default function PrivacyPolicy() {
           <section className="mb-8">
             <h2 className="text-2xl font-bold text-fitness-dark mb-4">6. Dados Sensíveis e Responsabilidade Profissional</h2>
             <p className="text-muted-foreground mb-4">
-              Os planos de treino são desenvolvidos por profissionais de educação física, enquanto os planos alimentares e nutricionais são elaborados exclusivamente por nutricionistas devidamente registrados.
+              Os planos de treino são desenvolvidos pelo Coach Travagli (profissional de educação física), enquanto os planos alimentares e nutricionais são elaborados exclusivamente por nutricionistas devidamente registrados.
             </p>
             <p className="text-muted-foreground">
               Garantimos que qualquer informação sensível fornecida por você será compartilhada apenas com profissionais autorizados, conforme exigido pela legislação aplicável.

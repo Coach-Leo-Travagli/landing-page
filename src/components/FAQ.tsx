@@ -15,13 +15,18 @@ const faqs = [
   },
   {
     id: "price-lock-policy",
-    question: "O que acontece se eu cancelar e reassinar depois?",
-    answer: "Se você cancelar, perderá o preço promocional atual. Ao reassinar, pagará o valor vigente no momento da nova contratação. Por isso, recomendamos manter a assinatura ativa para preservar seu desconto."
+    question: "O que acontece se eu tiver desconto promocional e cancelar e reassinar depois?",
+    answer: "Se você cancelar, perderá o desconto promocional. Ao reassinar, pagará o valor vigente no momento da nova contratação. Por isso, recomendamos manter a assinatura ativa para preservar o desconto."
   },
   {
     id: "price-increases",
     question: "Os preços podem aumentar durante minha assinatura?",
     answer: "Para assinantes ativos, mantemos o valor travado. Aumentos de preço se aplicam apenas a novos assinantes. Seu preço permanece o mesmo enquanto você mantiver a assinatura ativa."
+  },
+  {
+    id: "refund-policy",
+    question: "E se eu não ficar satisfeito?",
+    answer: "Oferecemos uma garantia de 30 dias. Caso não esteja satisfeito com o serviço nesse período, devolvemos o valor pago sem burocracia."
   },
   {
     id: "results-timeline",
@@ -32,11 +37,6 @@ const faqs = [
     id: "gym-equipment",
     question: "Preciso de equipamentos de academia?",
     answer: "Não necessariamente. Podemos criar treinos que funcionam em casa com equipamentos básicos ou montar uma rotina completa para academia, dependendo da sua preferência e recursos disponíveis."
-  },
-  {
-    id: "refund-policy",
-    question: "E se eu não ficar satisfeito?",
-    answer: "Oferecemos uma garantia de 30 dias. Caso não esteja satisfeito com o serviço nesse período, devolvemos o valor pago sem burocracia."
   },
   {
     id: "dietary-restrictions",
@@ -51,12 +51,12 @@ const faqs = [
   {
     id: "plan-changes",
     question: "Posso trocar de plano se necessário?",
-    answer: "Sim, você pode mudar para outro plano a qualquer momento, seja para obter mais suporte ou simplificar o acompanhamento."
+    answer: "Sim, você pode mudar para outro plano a qualquer momento, seja para obter mais suporte ou simplificar o acompanhamento. Basta entrar em contato com a nossa equipe."
   },
   {
     id: "nutrition-responsibility",
     question: "Quem é responsável pelos planos alimentares?",
-    answer: "Todos os planos alimentares oferecidos na plataforma são elaborados e assinados exclusivamente por nutricionistas devidamente registrados nos conselhos profissionais. O Team Travagli atua apenas como treinador físico e não prescreve dietas ou orientações nutricionais sem a supervisão de um nutricionista."
+    answer: "Todos os planos alimentares oferecidos na plataforma são elaborados e assinados exclusivamente por nutricionistas devidamente registrados nos conselhos profissionais. O Coach Travagli atua apenas como treinador físico e não prescreve dietas ou orientações nutricionais sem a supervisão de um nutricionista."
   },
   {
     id: "beginners-welcome",
@@ -123,7 +123,7 @@ export default function FAQ() {
             Perguntas Frequentes
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Tudo que você precisa saber sobre nosso programa de coaching fitness
+            Tudo que você precisa saber sobre nosso programa de treino e nutrição
           </p>
         </div>
 

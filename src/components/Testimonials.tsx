@@ -7,7 +7,7 @@ const testimonials = [
     name: "Helder Traci",
     age: 32,
     result: "Perca de peso e ganho de massa muscular",
-    quote: "Com a ajuda do personal trainer, tive resultados incríveis que nunca tive antes. Eu recomendo a todos que querem perder peso e melhorar a qualidade de vida.",
+    quote: "Com a ajuda do personal trainer, conquistei resultados incríveis que nunca tive antes. Eu recomendo a todos que querem perder peso e melhorar a qualidade de vida.",
     rating: 5,
     image: resultadoHelder
   },

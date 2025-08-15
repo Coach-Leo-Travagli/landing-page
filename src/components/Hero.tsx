@@ -23,7 +23,7 @@ export default function Hero() {
           </h1>
           
           <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto leading-relaxed opacity-90">
-            Acompanhamento individualizado para você treinar com segurança, se alimentar melhor e ver progresso de verdade.
+            Acompanhamento individualizado para você treinar bem, se alimentar melhor e ver resultados de verdade.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
