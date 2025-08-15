@@ -2,7 +2,7 @@ import { buffer } from "micro";
 import Stripe from "stripe";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { prisma } from "../lib/prisma";
-import { sendWelcomeEmail, sendPaymentFailedEmail, sendRenewalEmail } from "../lib/email";
+import { sendWelcomeEmail, sendPaymentFailedEmail, sendRenewalEmail, sendCancellationEmail } from "../lib/email";
 
 export const config = { api: { bodyParser: false } };
 
@@ -265,24 +265,99 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       case "customer.subscription.deleted":
         console.log("🛑 Assinatura cancelada:", event.data.object.id, JSON.stringify(event.data.object));
         
-        // // Save payment event to database
-        // try {
-        //   const subscription = event.data.object as Stripe.Subscription;
-        //   await prisma.payment.create({
-        //     data: {
-        //       id: event.id,
-        //       customerEmail: 'subscription_deleted', // No email in subscription object
-        //       customerName: 'subscription_deleted', // No name in subscription object
-        //       priceId: subscription.items.data[0]?.price.id || 'unknown',
-        //       status: subscription.status || 'unknown',
-        //       subscriptionId: subscription.id,
-        //     },
-        //   });
-        //   console.log("💾 Payment event saved to database (customer.subscription.deleted):", event.id);
-        // } catch (dbError) {
-        //   console.error("❌ Database error saving payment event:", dbError);
-        //   // Don't break the webhook - continue processing
-        // }
+        try {
+          const subscription = event.data.object as Stripe.Subscription;
+          
+          // Extract customer and subscription data
+          const stripeCustomerId = subscription.customer as string;
+          const subscriptionId = subscription.id;
+          const canceledAt = subscription.canceled_at ? new Date(subscription.canceled_at * 1000) : new Date();
+          const endedAt = subscription.ended_at ? new Date(subscription.ended_at * 1000) : new Date();
+          
+          // Extract metadata if available
+          const customerEmail = subscription.metadata?.customer_email || "unknown";
+          const planName = subscription.metadata?.plan_name || "unknown";
+          const planType = subscription.metadata?.plan_type || "unknown";
+          
+          console.log("🔍 Dados do cancelamento:", {
+            stripeCustomerId,
+            subscriptionId,
+            customerEmail,
+            planName,
+            planType,
+            canceledAt: canceledAt.toISOString(),
+            endedAt: endedAt.toISOString()
+          });
+
+          // Find existing user by stripeCustomerId first, then by email
+          let user = await prisma.user.findUnique({
+            where: { stripeCustomerId },
+          });
+
+          if (!user && customerEmail !== "unknown") {
+            // If not found by stripeCustomerId, check by email
+            user = await prisma.user.findUnique({
+              where: { email: customerEmail },
+            });
+          }
+
+          if (user) {
+            // Update user to reflect subscription cancellation
+            const updatedUser = await prisma.user.update({
+              where: { id: user.id },
+              data: {
+                subscriptionId: null, // Clear subscription ID
+                subscriptionEnd: endedAt, // Set end date
+                invoiceStatus: "canceled", // Mark as canceled
+                updatedAt: new Date(),
+              },
+            });
+
+            console.log("👤 Usuário atualizado após cancelamento:", {
+              userId: updatedUser.id,
+              email: updatedUser.email,
+              name: updatedUser.name,
+              subscriptionEnd: updatedUser.subscriptionEnd?.toISOString()
+            });
+
+            // Create payment record for subscription cancellation tracking
+            await prisma.payment.create({
+              data: {
+                id: `${event.id}_cancellation`, // Unique ID for cancellation event
+                status: "canceled",
+                amount: 0, // No amount for cancellation
+                currency: subscription.currency || "brl",
+                invoiceUrl: "", // No invoice for cancellation
+                invoicePdf: "", // No PDF for cancellation
+                invoiceStatus: "canceled",
+                userId: user.id,
+              },
+            });
+
+            console.log("💾 Registro de cancelamento salvo no banco:", event.id);
+
+            // Send cancellation confirmation email
+            await sendCancellationEmail({
+              customerName: user.name,
+              customerEmail: user.email,
+              planName: planName,
+              canceledAt: canceledAt,
+              companyName: "Team Travagli",
+              companyLogoUrl: "https://landing-pagee-one.vercel.app/assets/logo_team_travagli-DD5cahtn.png",
+            });
+
+            console.log("✅ Cancelamento processado com sucesso para usuário:", user.email);
+          } else {
+            console.log("⚠️ Usuário não encontrado para cancelamento:", {
+              stripeCustomerId,
+              customerEmail,
+              subscriptionId
+            });
+          }
+        } catch (dbError) {
+          console.error("❌ Erro no banco ao processar cancelamento:", dbError);
+          // Don't break the webhook - continue processing
+        }
         break;
 
       default:
