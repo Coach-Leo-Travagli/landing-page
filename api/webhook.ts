@@ -3,27 +3,8 @@ import Stripe from "stripe";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { prisma } from "../lib/prisma";
 import { sendWelcomeEmail, sendPaymentFailedEmail, sendRenewalEmail, sendCancellationEmail, sendSubscriptionChangeEmail } from "../lib/email";
-import { PLANS } from "./plans-config";
 
 export const config = { api: { bodyParser: false } };
-
-// Helper function to get plan details from priceId
-function getPlanDetailsByPriceId(priceId: string): { planName: string; planType: string } {
-  for (const [planType, planConfig] of Object.entries(PLANS)) {
-    if (planConfig.priceId === priceId) {
-      return {
-        planName: planConfig.name,
-        planType: planType
-      };
-    }
-  }
-  
-  // Fallback: return unknown if no match found
-  return {
-    planName: "unknown",
-    planType: "unknown"
-  };
-}
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== "POST") {
@@ -100,7 +81,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             const planType = (lineItem as Stripe.InvoiceLineItem)?.metadata?.plan_type || "unknown";
             const priceId = (lineItem as Stripe.InvoiceLineItem)?.pricing?.price_details?.price || "unknown";
             const productId = (lineItem as Stripe.InvoiceLineItem)?.pricing?.price_details?.product || "unknown";
-            const amount = invoice.amount_paid;
+            const amount = invoice.amount_paid / 100; // Convert cents to reais
             const currency = invoice.currency;
             const subscriptionStart = new Date((lineItem as Stripe.InvoiceLineItem)?.period?.start * 1000);
             const subscriptionEnd = new Date((lineItem as Stripe.InvoiceLineItem)?.period?.end * 1000);
@@ -192,7 +173,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
               data: {
                 id: event.id,
                 status: invoice.status || "unknown",
-                amount: invoice.amount_paid,
+                amount: invoice.amount_paid / 100, // Convert cents to reais
                 currency: invoice.currency,
                 invoiceUrl: invoice.hosted_invoice_url || "",
                 invoicePdf: invoice.invoice_pdf || "",
@@ -254,7 +235,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
               data: {
                 id: event.id,
                 status: invoice.status || "failed",
-                amount: invoice.amount_due,
+                amount: invoice.amount_due / 100, // Convert cents to reais
                 currency: invoice.currency,
                 invoiceUrl: invoice.hosted_invoice_url || "",
                 invoicePdf: invoice.invoice_pdf || "",
@@ -402,13 +383,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           const productId = typeof (plan?.product) === "string" ? plan.product : 
                            typeof (price?.product) === "string" ? price.product : "unknown";
           
-          // Extract metadata and plan details
+          // Extract metadata (most reliable source for plan details)
           const customerEmail = subscription.metadata?.customer_email || "unknown";
-          
-          // Get plan name and type from priceId mapping (more reliable than metadata)
-          const planDetails = getPlanDetailsByPriceId(priceId);
-          const planName = planDetails.planName;
-          const planType = planDetails.planType;
+          const planName = subscription.metadata?.plan_name || "unknown";
+          const planType = subscription.metadata?.plan_type || "unknown";
           
           // Extract billing period
           const currentPeriodStart = new Date(subscriptionItem?.current_period_start * 1000);
@@ -427,7 +405,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             currentPeriodStart: currentPeriodStart.toISOString(),
             currentPeriodEnd: currentPeriodEnd.toISOString(),
             updatedAt: updatedAt.toISOString(),
-            planDetailsMapping: `priceId "${priceId}" -> planName "${planName}", planType "${planType}"`
+            rawAmountFromStripe: newAmount // Debug: show raw amount from Stripe
           });
 
           // Find existing user by stripeCustomerId first, then by email
@@ -450,6 +428,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             // Determine if this is an upgrade, downgrade, or same price change
             const amountInReais = newAmount / 100;
             const previousAmountInReais = previousAmount;
+            
+            console.log("🔍 Debug valores:", {
+              newAmountRaw: newAmount,
+              newAmountInReais: amountInReais,
+              previousAmountFromDB: previousAmount,
+              previousAmountInReais: previousAmountInReais
+            });
             
             let changeType = "modification";
             if (amountInReais > previousAmountInReais) {
