@@ -2,7 +2,7 @@ import { buffer } from "micro";
 import Stripe from "stripe";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { prisma } from "../lib/prisma";
-import { sendWelcomeEmail, sendPaymentFailedEmail, sendRenewalEmail, sendCancellationEmail } from "../lib/email";
+import { sendWelcomeEmail, sendPaymentFailedEmail, sendRenewalEmail, sendCancellationEmail, sendSubscriptionChangeEmail } from "../lib/email";
 
 export const config = { api: { bodyParser: false } };
 
@@ -362,6 +362,162 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
       case "customer.subscription.updated":
         console.log("🔄 Assinatura atualizada:", event.data.object.id, JSON.stringify(event.data.object));
+        
+        try {
+          const subscription = event.data.object as Stripe.Subscription;
+          
+          // Extract subscription and customer data
+          const stripeCustomerId = subscription.customer as string;
+          const subscriptionId = subscription.id;
+          const updatedAt = new Date(subscription.created * 1000);
+          
+          // Extract plan details from the first subscription item
+          const subscriptionItem = subscription.items.data[0];
+          const plan = subscriptionItem?.plan;
+          const price = subscriptionItem?.price;
+          
+          // Extract metadata
+          const customerEmail = subscription.metadata?.customer_email || "unknown";
+          const planName = subscription.metadata?.plan_name || "unknown";
+          const planType = subscription.metadata?.plan_type || "unknown";
+          
+          // Extract pricing information
+          const newAmount = plan?.amount || price?.unit_amount || 0;
+          const currency = subscription.currency || "brl";
+          const priceId = plan?.id || price?.id || "unknown";
+          const productId = typeof (plan?.product) === "string" ? plan.product : 
+                           typeof (price?.product) === "string" ? price.product : "unknown";
+          
+          // Extract billing period
+          const currentPeriodStart = new Date(subscriptionItem?.current_period_start * 1000);
+          const currentPeriodEnd = new Date(subscriptionItem?.current_period_end * 1000);
+          
+          console.log("🔍 Dados da atualização de assinatura:", {
+            stripeCustomerId,
+            subscriptionId,
+            customerEmail,
+            planName,
+            planType,
+            newAmount: newAmount / 100, // Convert cents to reais
+            currency,
+            priceId,
+            productId,
+            currentPeriodStart: currentPeriodStart.toISOString(),
+            currentPeriodEnd: currentPeriodEnd.toISOString(),
+            updatedAt: updatedAt.toISOString()
+          });
+
+          // Find existing user by stripeCustomerId first, then by email
+          let user = await prisma.user.findUnique({
+            where: { stripeCustomerId },
+          });
+
+          if (!user && customerEmail !== "unknown") {
+            // If not found by stripeCustomerId, check by email
+            user = await prisma.user.findUnique({
+              where: { email: customerEmail },
+            });
+          }
+
+          if (user) {
+            // Get previous plan details for comparison
+            const previousAmount = user.amount || 0;
+            const previousPlanName = user.planName || "unknown";
+            
+            // Determine if this is an upgrade, downgrade, or same price change
+            const amountInReais = newAmount / 100;
+            const previousAmountInReais = previousAmount / 100;
+            
+            let changeType = "modification";
+            if (amountInReais > previousAmountInReais) {
+              changeType = "upgrade";
+            } else if (amountInReais < previousAmountInReais) {
+              changeType = "downgrade";
+            }
+
+            console.log("📊 Análise da mudança de plano:", {
+              userId: user.id,
+              email: user.email,
+              previousPlan: previousPlanName,
+              newPlan: planName,
+              previousAmount: previousAmountInReais,
+              newAmount: amountInReais,
+              changeType
+            });
+
+            // Update user with new subscription details
+            const updatedUser = await prisma.user.update({
+              where: { id: user.id },
+              data: {
+                subscriptionId,
+                planName,
+                planType,
+                priceId,
+                productId,
+                currency,
+                amount: amountInReais,
+                subscriptionStart: currentPeriodStart,
+                subscriptionEnd: currentPeriodEnd,
+                invoiceStatus: subscription.status || "active",
+                updatedAt: new Date(),
+              },
+            });
+
+            console.log("👤 Usuário atualizado após mudança de plano:", {
+              userId: updatedUser.id,
+              email: updatedUser.email,
+              name: updatedUser.name,
+              newPlan: updatedUser.planName,
+              newAmount: updatedUser.amount,
+              subscriptionEnd: updatedUser.subscriptionEnd?.toISOString()
+            });
+
+            // Create payment record for subscription change tracking
+            await prisma.payment.create({
+              data: {
+                id: `${event.id}_update`, // Unique ID for update event
+                status: "completed",
+                amount: amountInReais,
+                currency: currency,
+                invoiceUrl: "", // Will be updated when invoice webhook arrives
+                invoicePdf: "", // Will be updated when invoice webhook arrives
+                invoiceStatus: subscription.status || "active",
+                userId: user.id,
+              },
+            });
+
+            console.log("💾 Registro de atualização de assinatura salvo:", event.id);
+
+            // Send subscription change notification email
+            await sendSubscriptionChangeEmail({
+              customerName: user.name,
+              customerEmail: user.email,
+              previousPlan: previousPlanName,
+              newPlan: planName,
+              previousAmount: previousAmountInReais,
+              newAmount: amountInReais,
+              changeType: changeType,
+              effectiveDate: currentPeriodStart,
+              companyName: "Team Travagli",
+              companyLogoUrl: "https://landing-pagee-one.vercel.app/assets/logo_team_travagli-DD5cahtn.png",
+            });
+
+            console.log(`✅ Atualização de assinatura processada com sucesso (${changeType}):`, {
+              userEmail: user.email,
+              change: `${previousPlanName} → ${planName}`,
+              priceChange: `R$ ${previousAmountInReais} → R$ ${amountInReais}`
+            });
+          } else {
+            console.log("⚠️ Usuário não encontrado para atualização de assinatura:", {
+              stripeCustomerId,
+              customerEmail,
+              subscriptionId
+            });
+          }
+        } catch (dbError) {
+          console.error("❌ Erro no banco ao processar atualização de assinatura:", dbError);
+          // Don't break the webhook - continue processing
+        }
         break;
 
       default:
