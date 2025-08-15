@@ -35,29 +35,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   try {
     switch (event.type) {
-      case "checkout.session.completed":
-        console.log("✅ Checkout concluído:", event.data.object.id, JSON.stringify(event.data.object));
-        
-        // // Save payment event to database
-        // try {
-        //   const session = event.data.object as Stripe.Checkout.Session;
-        //   await prisma.payment.create({
-        //     data: {
-        //       id: event.id,
-        //       customerEmail: session.customer_details?.email || 'unknown',
-        //       customerName: session.customer_details?.name || 'unknown',
-        //       priceId: session.line_items?.data[0]?.price?.id || 'unknown',
-        //       status: session.payment_status || 'unknown',
-        //       subscriptionId: session.subscription as string || null,
-        //     },
-        //   });
-        //   console.log("💾 Payment event saved to database (checkout.session.completed):", event.id);
-        // } catch (dbError) {
-        //   console.error("❌ Database error saving payment event:", dbError);
-        //   // Don't break the webhook - continue processing
-        // }
-        break;
-
         case "invoice.payment_succeeded":
           console.log("💰 Pagamento de assinatura OK:", event.data.object.id, JSON.stringify(event.data.object));
         
@@ -189,6 +166,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
               await sendWelcomeEmail({
                 customerName: customerName,
                 customerEmail: customerEmail,
+                planName: planName,
                 companyName: "Team Travagli",
                 companyLogoUrl: "https://landing-pagee-one.vercel.app/assets/logo_team_travagli-DD5cahtn.png", // TODO: Replace with actual logo URL
               });
@@ -196,6 +174,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
               await sendRenewalEmail({
                 customerName: customerName,
                 customerEmail: customerEmail,
+                planName: planName,
                 companyName: "Team Travagli",
                 companyLogoUrl: "https://landing-pagee-one.vercel.app/assets/logo_team_travagli-DD5cahtn.png",
               });
@@ -216,6 +195,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           const customerEmail = invoice.customer_email || "unknown";
           const customerName = invoice.customer_name || "unknown";
           const stripeCustomerId = invoice.customer as string;
+          const planName = (lineItem as Stripe.InvoiceLineItem)?.metadata?.plan_name || "unknown";
 
           // Find existing user by stripeCustomerId first, then by email
           let user = await prisma.user.findUnique({
@@ -245,17 +225,18 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             });
 
             console.log("💾 Failed payment record saved:", event.id);
-
-            // Send payment failed email
-            await sendPaymentFailedEmail({
-              customerName: customerName,
-              customerEmail: customerEmail,
-              companyName: "Team Travagli",
-              companyLogoUrl: "https://landing-pagee-one.vercel.app/assets/logo_team_travagli-DD5cahtn.png", // TODO: Replace with actual logo URL
-            });
           } else {
             console.log("⚠️ User not found for failed payment:", stripeCustomerId);
           }
+
+          // Send payment failed email
+          await sendPaymentFailedEmail({
+            customerName: customerName,
+            customerEmail: customerEmail,
+            planName: planName,
+            companyName: "Team Travagli",
+            companyLogoUrl: "https://landing-pagee-one.vercel.app/assets/logo_team_travagli-DD5cahtn.png", // TODO: Replace with actual logo URL
+          });
         } catch (dbError) {
           console.error("❌ Database error saving failed payment:", dbError);
           // Don't break the webhook - continue processing
@@ -536,6 +517,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             await sendSubscriptionChangeEmail({
               customerName: user.name,
               customerEmail: user.email,
+              planName: newPlanName,
               previousPlan: previousPlanName,
               newPlan: newPlanName,
               previousAmount: previousAmountInReais,
