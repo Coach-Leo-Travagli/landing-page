@@ -520,8 +520,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             await prisma.payment.create({
               data: {
                 id: `${event.id}_update`, // Unique ID for update event
-                status: "completed",
-                amount: newAmount,
+                status: "changed",
+                amount: 0, // No amount for change for now, maybe in the future we can add the difference between the previous and new amount
                 currency: currency,
                 invoiceUrl: "", // Will be updated when invoice webhook arrives
                 invoicePdf: "", // Will be updated when invoice webhook arrives
