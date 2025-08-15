@@ -101,7 +101,7 @@ export default function TermsOfService() {
                O cancelamento será efetivo no final do período de cobrança atual.
              </p>
              <p className="text-muted-foreground mb-4">
-               <strong>Reembolsos:</strong> Oferecemos garantia de 30 dias de devolução do dinheiro para novos clientes. A garantia de 30 dias é válida apenas para a primeira contratação do serviço por novos clientes.
+               <strong>Reembolsos:</strong> Oferecemos garantia de 7 dias de devolução do dinheiro para novos clientes. A garantia de 7 dias é válida apenas para a primeira contratação do serviço por novos clientes.
              </p>
            </section>
 
@@ -133,7 +133,7 @@ export default function TermsOfService() {
             <h2 className="text-2xl font-bold text-fitness-dark mb-4">7. Alterações nos Termos</h2>
             <p className="text-muted-foreground mb-4">
               Reservamos o direito de modificar estes termos a qualquer momento. Alterações significativas 
-              serão comunicadas com antecedência de 30 dias. O uso continuado dos serviços após as alterações 
+              serão comunicadas com antecedência de 7 dias. O uso continuado dos serviços após as alterações 
               constitui aceitação dos novos termos.
             </p>
             <p className="text-muted-foreground mb-4">
