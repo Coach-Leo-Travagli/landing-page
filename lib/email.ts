@@ -8,8 +8,10 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 interface EmailData {
   customerName: string;
   customerEmail: string;
+  planName: string;
   companyName: string;
   companyLogoUrl: string;
+  benefits?: string;
 }
 
 interface CancellationEmailData extends EmailData {
@@ -37,11 +39,18 @@ function loadEmailTemplate(templateName: string): string {
 }
 
 function replaceTemplateVariables(template: string, data: EmailData): string {
-  return template
+  let html = template
     .replace(/\{\{customerName\}\}/g, data.customerName)
     .replace(/\{\{customerEmail\}\}/g, data.customerEmail)
     .replace(/\{\{companyName\}\}/g, data.companyName)
+    .replace(/\{\{planName\}\}/g, data.planName)
     .replace(/\{\{companyLogoUrl\}\}/g, data.companyLogoUrl);
+
+  if (data.benefits) {
+    html = html.replace(/\{\{benefits\}\}/g, data.benefits);
+  }
+
+  return html;
 }
 
 function replaceCancellationVariables(template: string, data: CancellationEmailData): string {
@@ -84,8 +93,29 @@ function replaceSubscriptionChangeVariables(template: string, data: Subscription
 
 export async function sendWelcomeEmail(data: EmailData): Promise<void> {
   try {
+    let benefits = `
+      <li>Iremos te chamar no Whatsapp para darmos início ao seu processo de transformação</li>
+      <li>Você irá preencher um formulário para que possamos conhecer você melhor</li>
+      <li>Você receberá um treino personalizado em alguns dias para você começar a treinar</li>
+      <li>Iremos disponibilizar também um PDF com algumas diretrizes básicas de nutrição para você começar a se alimentar melhor</li>
+      <li>Sua cobrança mensal será automática na data de hoje de cada mês</li>
+    `;
+
+    if (data.planName === 'Plano Padrão' || data.planName === 'Plano VIP') {
+      benefits = `
+        <li>O Coach Travagli entrará em contato para o onboarding personalizado</li>
+        <li>Você irá preencher um formulário para que possamos conhecer você melhor</li>
+        <li>Você receberá um treino e dieta personalizados em alguns dias para você começar a treinar</li>
+        <li>Iremos disponibilizar também um PDF com algumas diretrizes básicas de nutrição para você começar a se alimentar melhor</li>
+        <li>Sua cobrança mensal será automática na data de hoje de cada mês</li>
+      `;
+    }
+    
     const template = loadEmailTemplate('welcome');
-    const html = replaceTemplateVariables(template, data);
+    const html = replaceTemplateVariables(template, {
+      ...data,
+      benefits,
+    });
     const text = htmlToText(html) as string;
     
     await resend.emails.send({
@@ -168,8 +198,26 @@ export async function sendCancellationEmail(data: CancellationEmailData): Promis
 
 export async function sendSubscriptionChangeEmail(data: SubscriptionChangeEmailData): Promise<void> {
   try {
+    let benefits = `
+      <li>Treinos personalizados atualizados mensalmente</li>
+      <li>Suporte via email</li>
+      <li>Acompanhamento mensal de progresso</li>
+    `;
+
+    if (data.planName === 'Plano Padrão' || data.planName === 'Plano VIP') {
+      benefits = `
+        <li>Treinos personalizados atualizados quando necessário</li>
+        <li>Plano alimentar adequado aos seus objetivos</li>
+        <li>Suporte via whatsapp</li>
+        <li>Acompanhamento semanal de progresso</li>
+      `;
+    }
+
     const template = loadEmailTemplate('subscription_change');
-    const html = replaceSubscriptionChangeVariables(template, data);
+    const html = replaceSubscriptionChangeVariables(template, {
+      ...data,
+      benefits,
+    });
     const text = htmlToText(html) as string;
 
     // Dynamic subject based on change type

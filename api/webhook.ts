@@ -168,7 +168,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
                 customerEmail: customerEmail,
                 planName: planName,
                 companyName: "Team Travagli",
-                companyLogoUrl: "https://landing-pagee-one.vercel.app/assets/logo_team_travagli-DD5cahtn.png", // TODO: Replace with actual logo URL
+                companyLogoUrl: "https://ibb.co/DD9qJ9JH",
               });
             } else {
               await sendRenewalEmail({
@@ -176,7 +176,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
                 customerEmail: customerEmail,
                 planName: planName,
                 companyName: "Team Travagli",
-                companyLogoUrl: "https://landing-pagee-one.vercel.app/assets/logo_team_travagli-DD5cahtn.png",
+                companyLogoUrl: "https://ibb.co/DD9qJ9JH",
               });
             }
           } catch (dbError) {
@@ -235,7 +235,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             customerEmail: customerEmail,
             planName: planName,
             companyName: "Team Travagli",
-            companyLogoUrl: "https://landing-pagee-one.vercel.app/assets/logo_team_travagli-DD5cahtn.png", // TODO: Replace with actual logo URL
+            companyLogoUrl: "https://ibb.co/DD9qJ9JH",
           });
         } catch (dbError) {
           console.error("❌ Database error saving failed payment:", dbError);
@@ -324,7 +324,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
               planName: planName,
               canceledAt: canceledAt,
               companyName: "Team Travagli",
-              companyLogoUrl: "https://landing-pagee-one.vercel.app/assets/logo_team_travagli-DD5cahtn.png",
+              companyLogoUrl: "https://ibb.co/DD9qJ9JH",
             });
 
             console.log("✅ Cancelamento processado com sucesso para usuário:", user.email);
@@ -525,7 +525,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
               changeType: changeType,
               effectiveDate: currentPeriodStart,
               companyName: "Team Travagli",
-              companyLogoUrl: "https://landing-pagee-one.vercel.app/assets/logo_team_travagli-DD5cahtn.png",
+              companyLogoUrl: "https://ibb.co/DD9qJ9JH",
             });
 
             console.log(`✅ Atualização de assinatura processada com sucesso (${changeType}):`, {
