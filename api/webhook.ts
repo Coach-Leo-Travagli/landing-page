@@ -463,7 +463,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             
             // Determine if this is an upgrade, downgrade, or same price change
             const amountInReais = newAmount / 100;
-            const previousAmountInReais = previousAmount;
+            const previousAmountInReais = previousAmount / 100;
             
             console.log("🔍 Debug valores:", {
               newAmountRaw: newAmount,
@@ -521,7 +521,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
               data: {
                 id: `${event.id}_update`, // Unique ID for update event
                 status: "completed",
-                amount: amountInReais,
+                amount: newAmount,
                 currency: currency,
                 invoiceUrl: "", // Will be updated when invoice webhook arrives
                 invoicePdf: "", // Will be updated when invoice webhook arrives
