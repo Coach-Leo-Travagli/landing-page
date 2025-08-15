@@ -383,6 +383,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           
           // Get customer email from metadata (current subscription info)
           const customerEmail = subscription.metadata?.customer_email || "unknown";
+          const previousPlanName = subscription.metadata?.plan_name || "unknown";
+          const previousPlanType = subscription.metadata?.plan_type || "unknown";
           
           // Fetch NEW plan details from Stripe API using product and price IDs
           let newPlanName = "unknown";
@@ -429,6 +431,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             stripeCustomerId,
             subscriptionId,
             customerEmail,
+            previousPlanName,
+            previousPlanType,
             newPlanName,
             newPlanType,
             newAmount: newAmount / 100, // Convert cents to reais
@@ -456,10 +460,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           if (user) {
             // Get previous plan details for comparison
             const previousAmount = user.amount || 0;
-            const previousPlanName = user.planName || "unknown";
             
             // Determine if this is an upgrade, downgrade, or same price change
-            const amountInReais = newAmount;
+            const amountInReais = newAmount / 100;
             const previousAmountInReais = previousAmount;
             
             console.log("🔍 Debug valores:", {
@@ -496,7 +499,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
                 priceId,
                 productId,
                 currency,
-                amount: amountInReais,
+                amount: newAmount,
                 subscriptionStart: currentPeriodStart,
                 subscriptionEnd: currentPeriodEnd,
                 invoiceStatus: subscription.status || "active",
