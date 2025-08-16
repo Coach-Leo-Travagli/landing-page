@@ -224,4 +224,45 @@ All colors MUST be HSL.
   .animate-promo-pulse {
     animation: promo-pulse 2s ease-in-out infinite;
   }
+
+  /* Marquee animation for testimonials */
+  @keyframes marquee {
+    0% {
+      transform: translateX(-50vw);
+    }
+    100% {
+      transform: translateX(calc(-50vw - 50%));
+    }
+  }
+
+  /* Utility for pausing animation */
+  .animation-paused {
+    animation-play-state: paused !important;
+  }
+
+  /* Responsive marquee speeds - velocidades muito mais rápidas */
+  .marquee-responsive {
+    animation: marquee 40s linear infinite; /* Desktop - velocidade boa */
+  }
+
+  @media (max-width: 1024px) {
+    .marquee-responsive {
+      /* animation: marquee 35s linear infinite; Tablet */
+      animation: marquee 40s linear infinite;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .marquee-responsive {
+      /* animation: marquee 25s linear infinite; Mobile */
+      animation: marquee 40s linear infinite;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .marquee-responsive {
+      /* animation: marquee 20s linear infinite; Mobile pequeno */
+      animation: marquee 40s linear infinite;
+    }
+  }
 }

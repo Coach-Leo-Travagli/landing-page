@@ -1,7 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
-import React, { useRef, useEffect, useCallback } from "react";
-import type { CarouselApi } from "@/components/ui/carousel";
+import React from "react";
 import transformationImage from "@/assets/transformation.jpg";
 import resultadoHelder from "@/assets/resultado_helder.jpg";
 
@@ -105,53 +103,21 @@ const testimonials = [
 ];
 
 export default function Testimonials() {
-  const [api, setApi] = React.useState<CarouselApi>();
-  const [isPlaying, setIsPlaying] = React.useState(true);
-  const intervalRef = useRef<NodeJS.Timeout>();
-
-  const startAutoplay = useCallback(() => {
-    if (!api || !isPlaying) return;
-    
-    intervalRef.current = setInterval(() => {
-      if (api.canScrollNext()) {
-        api.scrollNext();
-      } else {
-        api.scrollTo(0);
-      }
-    }, 3000);
-  }, [api, isPlaying]);
-
-  const stopAutoplay = useCallback(() => {
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (!api) return;
-
-    if (isPlaying) {
-      startAutoplay();
-    } else {
-      stopAutoplay();
-    }
-
-    return () => stopAutoplay();
-  }, [api, isPlaying, startAutoplay, stopAutoplay]);
+  const [isPaused, setIsPaused] = React.useState(false);
 
   const handleMouseEnter = () => {
-    setIsPlaying(false);
-    stopAutoplay();
+    setIsPaused(true);
   };
 
   const handleMouseLeave = () => {
-    setIsPlaying(true);
+    setIsPaused(false);
   };
 
   return (
     <section className="py-20 bg-white">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
+      {/* Header centralizado com container */}
+      <div className="container mx-auto px-4 mb-16">
+        <div className="text-center">
           <h2 className="text-4xl md:text-5xl font-black mb-6 text-fitness-dark">
             Histórias de Alunos
           </h2>
@@ -159,54 +125,89 @@ export default function Testimonials() {
             Conheça pessoas que já tiveram evolução com nosso acompanhamento
           </p>
         </div>
+      </div>
 
-        <div className="max-w-6xl mx-auto">
-          <Carousel
-            setApi={setApi}
-            className="w-full"
+      {/* Marquee full width sem container */}
+      <div className="relative overflow-hidden w-full">
+          {/* Marquee Container */}
+          <div 
+            className={`flex gap-6 w-max marquee-responsive ${isPaused ? 'animation-paused' : ''} mb-4`}
+            style={{
+              paddingLeft: '50vw',
+            }}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
-            opts={{
-              align: "start",
-              loop: true,
-            }}
+            onTouchStart={handleMouseEnter}
+            onTouchEnd={handleMouseLeave}
           >
-            <CarouselContent className="-ml-4">
-              {testimonials.map((testimonial, index) => (
-                <CarouselItem key={index} className="pl-4 md:basis-1/2 lg:basis-1/3">
-                  <Card className="shadow-fitness-card hover:shadow-lg transition-all duration-300 border-0 bg-testimonial-gradient h-full">
-                    <CardContent className="p-8 flex flex-col h-full">
-                      {/* Before/After Image */}
-                      <div className="mb-6 relative overflow-hidden rounded-lg">
-                        <img 
-                          src={testimonial.image} 
-                          alt={`Transformação de ${testimonial.name}`}
-                          className="w-full h-auto max-h-48 object-cover object-top"
-                        />
-                        <div className="absolute bottom-2 left-2 bg-primary text-white px-3 py-1 rounded-full text-xs font-bold">
-                          {testimonial.result}
-                        </div>
+            {/* Primeiro conjunto de testimonials */}
+            {testimonials.map((testimonial, index) => (
+              <div key={`first-${index}`} className="w-80 flex-shrink-0">
+                <Card className="shadow-fitness-card hover:shadow-lg transition-all duration-300 border-0 bg-testimonial-gradient h-full">
+                  <CardContent className="p-8 flex flex-col h-full">
+                    {/* Before/After Image */}
+                    <div className="mb-6 relative overflow-hidden rounded-lg">
+                      <img 
+                        src={testimonial.image} 
+                        alt={`Transformação de ${testimonial.name}`}
+                        className="w-full h-auto max-h-48 object-cover object-top"
+                      />
+                      <div className="absolute bottom-2 left-2 bg-primary text-white px-3 py-1 rounded-full text-xs font-bold">
+                        {testimonial.result}
                       </div>
+                    </div>
 
-                      {/* Quote */}
-                      <blockquote className="text-muted-foreground mb-6 italic leading-relaxed flex-1">
-                        "{testimonial.quote}"
-                      </blockquote>
+                    {/* Quote */}
+                    <blockquote className="text-muted-foreground mb-6 italic leading-relaxed flex-1">
+                      "{testimonial.quote}"
+                    </blockquote>
 
-                      {/* Author */}
-                      <div className="border-t pt-4 mt-auto">
-                        <div className="font-bold text-fitness-dark">{testimonial.name}</div>
-                        <div className="text-sm text-muted-foreground">{testimonial.age} anos</div>
+                    {/* Author */}
+                    <div className="border-t pt-4 mt-auto">
+                      <div className="font-bold text-fitness-dark">{testimonial.name}</div>
+                      <div className="text-sm text-muted-foreground">{testimonial.age} anos</div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            ))}
+            
+            {/* Segundo conjunto para loop infinito */}
+            {testimonials.map((testimonial, index) => (
+              <div key={`second-${index}`} className="w-80 flex-shrink-0">
+                <Card className="shadow-fitness-card hover:shadow-lg transition-all duration-300 border-0 bg-testimonial-gradient h-full">
+                  <CardContent className="p-8 flex flex-col h-full">
+                    {/* Before/After Image */}
+                    <div className="mb-6 relative overflow-hidden rounded-lg">
+                      <img 
+                        src={testimonial.image} 
+                        alt={`Transformação de ${testimonial.name}`}
+                        className="w-full h-auto max-h-48 object-cover object-top"
+                      />
+                      <div className="absolute bottom-2 left-2 bg-primary text-white px-3 py-1 rounded-full text-xs font-bold">
+                        {testimonial.result}
                       </div>
-                    </CardContent>
-                  </Card>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            <CarouselPrevious className="hidden lg:flex" />
-            <CarouselNext className="hidden lg:flex" />
-          </Carousel>
-        </div>
+                    </div>
+
+                    {/* Quote */}
+                    <blockquote className="text-muted-foreground mb-6 italic leading-relaxed flex-1">
+                      "{testimonial.quote}"
+                    </blockquote>
+
+                    {/* Author */}
+                    <div className="border-t pt-4 mt-auto">
+                      <div className="font-bold text-fitness-dark">{testimonial.name}</div>
+                      <div className="text-sm text-muted-foreground">{testimonial.age} anos</div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            ))}
+          </div>
+          
+        {/* Gradient overlays para um efeito mais suave nas bordas */}
+        <div className="absolute top-0 left-0 w-8 sm:w-12 md:w-16 lg:w-20 h-full bg-gradient-to-r from-white to-transparent pointer-events-none z-10"></div>
+        <div className="absolute top-0 right-0 w-8 sm:w-12 md:w-16 lg:w-20 h-full bg-gradient-to-l from-white to-transparent pointer-events-none z-10"></div>
       </div>
     </section>
   );
