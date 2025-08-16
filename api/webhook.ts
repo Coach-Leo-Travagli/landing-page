@@ -120,6 +120,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
                 user = await prisma.user.update({
                   where: { email: customerEmail },
                   data: {
+                    name: customerName,
+                    phone: customerPhone,
                     stripeCustomerId,
                     subscriptionId,
                     planName,
