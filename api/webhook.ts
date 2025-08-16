@@ -45,6 +45,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             // Extract customer and subscription data
             const customerEmail = invoice.customer_email || "unknown";
             const customerName = invoice.customer_name || "unknown";
+            const customerPhone = invoice.customer_phone || "unknown";
             const stripeCustomerId = invoice.customer as string;
             const subscriptionId = (typeof (lineItem as Stripe.InvoiceLineItem)?.parent?.subscription_item_details?.subscription === 'string' 
               ? (lineItem as Stripe.InvoiceLineItem)?.parent?.subscription_item_details?.subscription 
@@ -140,6 +141,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
                   data: {
                     email: customerEmail,
                     name: customerName,
+                    phone: customerPhone,
                     stripeCustomerId,
                     subscriptionId,
                     planName,
