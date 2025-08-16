@@ -21,7 +21,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     const stripe = new Stripe(stripeSecretKey);
-    const { setup_intent_id, customer_id, price_id, plan_type, plan_name, email, name } = req.body;
+    const { setup_intent_id, customer_id, price_id, plan_type, plan_name, email, name, phone } = req.body;
 
     console.log('🔍 [create-subscription] Request parameters:', {
       setup_intent_id,
@@ -30,7 +30,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       plan_type,
       plan_name,
       email,
-      name
+      name,
+      phone
     });
 
     if (!setup_intent_id || !customer_id || !price_id) {
@@ -84,12 +85,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     console.log('✅ [create-subscription] No existing subscriptions found, proceeding with creation...');
 
-    // Update customer with email and name if provided
-    if (email || name) {
-      console.log('🔍 [create-subscription] Updating customer with:', { email, name });
-      const updateData: { email?: string; name?: string } = {};
+    // Update customer with email and name and phone if provided
+    if (email || name || phone) {
+      console.log('🔍 [create-subscription] Updating customer with:', { email, name, phone });
+      const updateData: { email?: string; name?: string; phone?: string } = {};
       if (email) updateData.email = email;
       if (name) updateData.name = name;
+      if (phone) updateData.phone = phone;
       
       await stripe.customers.update(customer_id, updateData);
       console.log('✅ [create-subscription] Customer updated successfully');
@@ -107,6 +109,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         plan_type: plan_type || '',
         plan_name: plan_name || '',
         customer_email: email || '',
+        customer_phone: phone || '',
+        customer_name: name || '',
       },
     });
 

@@ -20,7 +20,7 @@ function UserDataForm({
   showProsseguirButton = true,
   readOnly = false,
 }: { 
-  onProsseguir: (name: string, email: string) => void;
+  onProsseguir: (name: string, email: string, phone: string) => void;
   isCheckingSubscription: boolean;
   showProsseguirButton?: boolean;
   readOnly?: boolean;
@@ -29,10 +29,17 @@ function UserDataForm({
   const [nameError, setNameError] = useState('');
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState('');
+  const [phone, setPhone] = useState('');
+  const [phoneError, setPhoneError] = useState('');
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
+  };
+
+  const validatePhone = (phone: string) => {
+    const phoneRegex = /^\d{11}$/;
+    return phoneRegex.test(phone);
   };
 
   const handleProsseguir = () => {
@@ -49,6 +56,14 @@ function UserDataForm({
 
     setNameError('');
 
+    // Validate phone
+    if (!validatePhone(phone)) {
+      setPhoneError('Digite um telefone válido (11 dígitos)');
+      return;
+    }
+
+    setPhoneError('');
+
     // Validate email
     if (!email.trim()) {
       setEmailError('Email é obrigatório');
@@ -61,13 +76,13 @@ function UserDataForm({
     }
 
     setEmailError('');
-    onProsseguir(name, email);
+    onProsseguir(name, email, phone);
   };
 
   return (
-    <div className="space-y-4 rounded-lg shadow-sm border overflow-hidden">
+    <div className="rounded-lg shadow-sm border overflow-hidden space-y-4">
       {/* Name Input */}
-      <div className="bg-white px-6 py-4">
+      <div className="bg-white px-6 pt-4">
         <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
           Nome completo
         </label>
@@ -88,6 +103,31 @@ function UserDataForm({
         />
         {nameError && (
           <p className="mt-2 text-sm text-red-600">{nameError}</p>
+        )}
+      </div>
+
+      {/* Phone Input */}
+      <div className="bg-white px-6">
+        <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
+          Telefone
+        </label>
+        <input
+          id="phone"
+          type="tel"
+          value={phone}
+          onChange={(e) => {
+            setPhone(e.target.value);
+            if (phoneError) setPhoneError('');
+          }}
+          placeholder="Seu telefone"
+          className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent ${
+            phoneError ? 'border-red-500' : 'border-gray-300'
+          } ${readOnly ? 'bg-gray-50 text-gray-700' : ''}`}
+          disabled={isCheckingSubscription || readOnly}
+          readOnly={readOnly}
+        />
+        {phoneError && (
+          <p className="mt-2 text-sm text-red-600">{phoneError}</p>
         )}
       </div>
 
@@ -122,7 +162,7 @@ function UserDataForm({
           <Button 
             type="button"
             onClick={handleProsseguir}
-            disabled={isCheckingSubscription || !name.trim() || !email.trim()}
+            disabled={isCheckingSubscription || !name.trim() || !email.trim() || !phone.trim()}
             className="w-full h-12 text-lg font-semibold"
             size="lg"
           >
@@ -148,7 +188,8 @@ function PaymentForm({
   customerId, 
   setupIntentId,
   name,
-  email
+  email,
+  phone
 }: { 
   clientSecret: string; 
   planDetails: { 
@@ -164,6 +205,7 @@ function PaymentForm({
   setupIntentId: string;
   name: string;
   email: string;
+  phone: string;
 }) {
   const stripe = useStripe();
   const elements = useElements();
@@ -242,6 +284,7 @@ function PaymentForm({
         plan_name: planDetails.name,
         email: email,
         name: name,
+        phone: phone,
       });
       
       const subscriptionResponse = await fetch('/api/create-subscription', {
@@ -257,6 +300,7 @@ function PaymentForm({
           plan_name: planDetails.name,
           email: email,
           name: name,
+          phone: phone,
         }),
       });
 
@@ -368,6 +412,7 @@ export default function StripePayment() {
   const [isCheckingSubscription, setIsCheckingSubscription] = useState(false);
   const [userName, setUserName] = useState('');
   const [userEmail, setUserEmail] = useState('');
+  const [userPhone, setUserPhone] = useState('');
   const [showProsseguirButton, setShowProsseguirButton] = useState(true);
 
   const planType = searchParams.get('plan') || 'standard';
@@ -420,13 +465,14 @@ export default function StripePayment() {
   }, [planType, navigate, plans]); // Include all dependencies
 
   // Function to handle "Prosseguir" button click
-  const handleProsseguir = async (name: string, email: string) => {
+  const handleProsseguir = async (name: string, email: string, phone: string) => {
     try {
       setIsCheckingSubscription(true);
       setUserName(name);
       setUserEmail(email);
-      
-      console.log('🚀 [StripePayment] Checking for existing subscriptions with email:', { email, planType });
+      setUserPhone(phone);
+
+      console.log('🚀 [StripePayment] Checking for existing subscriptions with email:', { email, name, phone, planType });
       
       // First, check if a customer with this email already exists and has active subscriptions
       const checkResponse = await fetch('/api/check-existing-subscription', {
@@ -436,6 +482,8 @@ export default function StripePayment() {
         },
         body: JSON.stringify({
           email: email,
+          name: name,
+          phone: phone,
         }),
       });
 
@@ -463,6 +511,7 @@ export default function StripePayment() {
           planType,
           email,
           name,
+          phone,
         }),
       });
 
@@ -690,6 +739,7 @@ export default function StripePayment() {
                             setupIntentId={setupIntentId}
                             name={userName}
                             email={userEmail}
+                            phone={userPhone}
                           />
                         </Elements>
                       </div>

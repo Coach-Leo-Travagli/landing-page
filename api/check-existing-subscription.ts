@@ -21,9 +21,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     const stripe = new Stripe(stripeSecretKey);
-    const { customer_id, email } = req.body;
+    const { customer_id, email, name, phone } = req.body;
 
-    console.log('🔍 [check-existing-subscription] Checking for:', { customer_id, email });
+    console.log('🔍 [check-existing-subscription] Checking for:', { customer_id, email, name, phone });
 
     if (!customer_id && !email) {
       console.log('❌ [check-existing-subscription] Missing both customer_id and email in request body');
@@ -74,7 +74,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     console.log('🔍 [check-existing-subscription] Result:', {
       hasActiveSubscription,
       subscriptionCount: existingSubscriptions?.data.length || 0,
-      searchMethod: email ? 'email' : 'customer_id'
+      searchMethod: email ? 'email' : 'customer_id',
+      name,
+      phone
     });
 
     return res.status(200).json({
