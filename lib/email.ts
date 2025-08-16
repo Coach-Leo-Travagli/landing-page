@@ -124,13 +124,15 @@ export async function sendWelcomeEmail(data: EmailData): Promise<void> {
     });
     const text = htmlToText(html) as string;
     
-    await resend.emails.send({
+    const response = await resend.emails.send({
       from: 'Team Travagli <noreply@teamtravagli.com.br>',
       to: data.customerEmail,
       subject: '🎉 Bem-vindo(a) à sua transformação fitness!',
       html,
       text,
     });
+
+    console.log('🔍 [sendWelcomeEmail] Response:', response);
 
     console.log('✅ Welcome email sent successfully');
   } catch (error) {
@@ -144,13 +146,15 @@ export async function sendPaymentFailedEmail(data: EmailData): Promise<void> {
     const html = replaceTemplateVariables(template, data);
     const text = htmlToText(html) as string;
     
-    await resend.emails.send({
+    const response = await resend.emails.send({
       from: 'Team Travagli <noreply@teamtravagli.com.br>',
       to: data.customerEmail,
       subject: '⚠️ Houve um problema com seu pagamento',
       html,
       text,
     });
+
+    console.log('🔍 [sendPaymentFailedEmail] Response:', response);
 
     console.log('✅ Payment failed email sent successfully');
   } catch (error) {
@@ -164,13 +168,15 @@ export async function sendRenewalEmail(data: EmailData): Promise<void> {
     const html = replaceTemplateVariables(template, data);
     const text = htmlToText(html) as string;
 
-    await resend.emails.send({
+    const response = await resend.emails.send({
       from: 'Team Travagli <noreply@teamtravagli.com.br>',
       to: data.customerEmail,
       subject: '🔁 Assinatura renovada com sucesso',
       html,
       text,
     });
+
+    console.log('🔍 [sendRenewalEmail] Response:', response);
 
     console.log('✅ Renewal email sent successfully');
   } catch (error) {
@@ -184,13 +190,15 @@ export async function sendCancellationEmail(data: CancellationEmailData): Promis
     const html = replaceCancellationVariables(template, data);
     const text = htmlToText(html) as string;
 
-    await resend.emails.send({
+    const response = await resend.emails.send({
       from: 'Team Travagli <noreply@teamtravagli.com.br>',
       to: data.customerEmail,
       subject: '😔 Assinatura cancelada - Sentiremos sua falta!',
       html,
       text,
     });
+
+    console.log('🔍 [sendCancellationEmail] Response:', response);
 
     console.log('✅ Cancellation email sent successfully');
   } catch (error) {
@@ -230,13 +238,15 @@ export async function sendSubscriptionChangeEmail(data: SubscriptionChangeEmailD
       subject = '📋 Plano alterado - Confirmação da mudança';
     }
 
-    await resend.emails.send({
+    const response = await resend.emails.send({
       from: 'Team Travagli <noreply@teamtravagli.com.br>',
       to: data.customerEmail,
       subject,
       html,
       text,
     });
+
+    console.log('🔍 [sendSubscriptionChangeEmail] Response:', response);
 
     console.log('✅ Subscription change email sent successfully');
   } catch (error) {
