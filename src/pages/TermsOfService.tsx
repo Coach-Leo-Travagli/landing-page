@@ -97,7 +97,7 @@ export default function TermsOfService() {
                <strong>Política de Preços:</strong> Aumentos de preço não se aplicam a assinantes ativos. Novos preços valem apenas para novas contratações. Mudanças de plano podem resultar na aplicação dos preços atuais.
              </p>
              <p className="text-muted-foreground mb-4">
-               <strong>Cancelamentos:</strong> Você pode cancelar sua assinatura a qualquer momento através da sua conta. 
+               <strong>Cancelamentos:</strong> Você pode cancelar sua assinatura a qualquer momento entrando em contato conosco. 
                O cancelamento será efetivo no final do período de cobrança atual.
              </p>
              <p className="text-muted-foreground mb-4">

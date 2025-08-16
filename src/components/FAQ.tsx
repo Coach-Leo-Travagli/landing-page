@@ -26,7 +26,7 @@ const faqs = [
   {
     id: "refund-policy",
     question: "E se eu não ficar satisfeito?",
-    answer: "Oferecemos uma garantia de 7 dias. Caso não esteja satisfeito com o serviço nesse período, devolvemos o valor pago sem burocracia."
+    answer: "Oferecemos uma garantia de 7 dias. Caso não esteja satisfeito com o serviço nesse período, devolvemos o valor pago sem burocracia. Mesmo após o período de garantia, você pode cancelar a assinatura a qualquer momento entrando em contato conosco."
   },
   {
     id: "results-timeline",
