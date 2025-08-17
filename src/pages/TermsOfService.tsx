@@ -60,7 +60,7 @@ export default function TermsOfService() {
               As orientações nutricionais e os planos alimentares são elaborados exclusivamente por nutricionista habilitado e registrado no Conselho Regional de Nutricionistas (CRN), contratado especificamente para esta finalidade.
             </p>
             <p className="text-muted-foreground mb-4">
-              O Team Travagli não realiza atendimentos nutricionais diretamente e não é responsável pela prescrição de dietas. O profissional de Educação Física atua dentro de sua competência legal, focando no desenvolvimento físico e orientação de treinos.
+              O Coach Travagli não realiza atendimentos nutricionais diretamente e não é responsável pela prescrição de dietas. O profissional de Educação Física atua dentro de sua competência legal, focando no desenvolvimento físico e orientação de treinos.
             </p>
             <p className="text-muted-foreground mb-4">
               Os serviços são oferecidos exclusivamente online e podem incluir atualizações, modificações ou acréscimos a critério da Team Travagli.
@@ -88,7 +88,7 @@ export default function TermsOfService() {
              <h2 className="text-2xl font-bold text-fitness-dark mb-4">4. Pagamentos e Cancelamentos</h2>
              <p className="text-muted-foreground mb-4">
                <strong>Pagamentos:</strong> Os pagamentos são processados no início de cada ciclo de cobrança. 
-               Aceitamos os principais cartões de crédito e métodos de pagamento online. As assinaturas são renovadas automaticamente no final de cada ciclo, salvo cancelamento prévio pelo usuário.
+               Aceitamos os principais cartões de crédito. As assinaturas são renovadas automaticamente no final de cada ciclo, salvo cancelamento prévio pelo usuário.
              </p>
              <p className="text-muted-foreground mb-4">
                <strong>Preços Promocionais:</strong> Clientes que contratarem durante períodos promocionais manterão o valor especial durante toda a vigência da assinatura ativa. O cancelamento da assinatura resultará na perda do preço promocional. Nova contratação será pelo valor vigente no momento da reassinatura.
@@ -98,7 +98,7 @@ export default function TermsOfService() {
              </p>
              <p className="text-muted-foreground mb-4">
                <strong>Cancelamentos:</strong> Você pode cancelar sua assinatura a qualquer momento entrando em contato conosco. 
-               O cancelamento será efetivo no final do período de cobrança atual.
+               O cancelamento será efetivo ao final do período de cobrança atual.
              </p>
              <p className="text-muted-foreground mb-4">
                <strong>Reembolsos:</strong> Oferecemos garantia de 7 dias de devolução do dinheiro para novos clientes. A garantia de 7 dias é válida apenas para a primeira contratação do serviço por novos clientes.
