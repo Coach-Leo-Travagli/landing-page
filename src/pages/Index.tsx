@@ -49,22 +49,24 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background scroll-smooth">
       <Header />
-      <Hero />
-      <div id="how-it-works">
-        <HowItWorks />
-      </div>
-      <div id="coach-video">
-        <CoachVideo />
-      </div>
-      <div id="pricing">
-        <Pricing />
-      </div>
-      <div id="testimonials">
-        <Testimonials />
-      </div>
-      <div id="faq">
-        <FAQ />
-      </div>
+      <main role="main">
+        <Hero />
+        <section id="how-it-works">
+          <HowItWorks />
+        </section>
+        <section id="coach-video">
+          <CoachVideo />
+        </section>
+        <section id="pricing">
+          <Pricing />
+        </section>
+        <section id="testimonials">
+          <Testimonials />
+        </section>
+        <section id="faq">
+          <FAQ />
+        </section>
+      </main>
       <Footer />
     </div>
   );

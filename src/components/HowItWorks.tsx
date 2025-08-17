@@ -30,25 +30,24 @@ const steps = [
 
 export default function HowItWorks() {
   return (
-    <section className="py-20 bg-fitness-light">
+    <section className="py-20 bg-fitness-light" aria-labelledby="how-it-works-title">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-black mb-6 text-fitness-dark">
-            Como Funciona
+          <h2 id="how-it-works-title" className="text-4xl md:text-5xl font-black mb-6 text-fitness-dark">
+            Como Funciona Nosso Método
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            {/* Veja como funciona o acompanhamento para você alcançar seus objetivos com segurança e personalização. */}
             Nosso processo simples em 3 etapas foi pensado para facilitar sua jornada de transformação, do cadastro ao acompanhamento contínuo.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto">
+        <div className="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto" role="list" aria-label="Etapas do processo">
           {steps.map((step, index) => (
-            <div key={index} className="relative">
+            <div key={index} className="relative" role="listitem">
               <Card className="h-full shadow-fitness-card hover:shadow-lg transition-all duration-300 border-0 bg-white">
                 <CardContent className="p-8 text-center">
-                  <div className="text-6xl mb-6">{step.icon}</div>
-                  <div className="text-5xl font-black text-primary mb-4">{step.number}</div>
+                  <div className="text-6xl mb-6" role="img" aria-label={`Ícone representando ${step.title}`}>{step.icon}</div>
+                  <div className="text-5xl font-black text-primary mb-4" aria-label={`Etapa número ${step.number}`}>{step.number}</div>
                   <h3 className="text-lg sm:text-xl lg:text-2xl font-bold mb-4 text-fitness-dark leading-tight">{step.title}</h3>
                   <p className="text-muted-foreground leading-relaxed">{step.description}</p>
                 </CardContent>
@@ -56,7 +55,7 @@ export default function HowItWorks() {
               
               {/* Connector Arrow */}
               {index < steps.length - 1 && (
-                <div className="hidden md:block absolute top-1/2 -right-4 transform -translate-y-1/2 z-10">
+                <div className="hidden md:block absolute top-1/2 -right-4 transform -translate-y-1/2 z-10" aria-hidden="true">
                   <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white">
                     →
                   </div>

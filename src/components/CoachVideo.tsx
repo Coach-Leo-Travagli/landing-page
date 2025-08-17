@@ -28,29 +28,34 @@ const CoachVideo = () => {
       className={`py-20 bg-white transition-all duration-700 ${
         isVisible ? "animate-fade-up opacity-100" : "opacity-0"
       }`}
+      aria-labelledby="coach-video-title"
     >
       <div className="container mx-auto px-6">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-fitness-dark mb-4">
+          <h2 id="coach-video-title" className="text-3xl md:text-4xl font-bold text-fitness-dark mb-4">
             Conheça o Team Travagli
           </h2>
           <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-            Assista ao vídeo para saber mais sobre como funciona nossa consultoria.
+            Descubra como nossa metodologia de treino e nutrição pode transformar sua vida.
           </p>
         </div>
         
         <div className="max-w-4xl mx-auto">
-          <div className="fitness-shadow rounded-2xl overflow-hidden bg-white">
+          <div className="fitness-shadow rounded-2xl overflow-hidden bg-white" role="region" aria-label="Vídeo sobre o Team Travagli">
             <AspectRatio ratio={16 / 9}>
               <iframe
                 src="https://www.youtube.com/embed/dQw4w9WgXcQ?si=example"
-                title="Conheça o Team Travagli"
+                title="Vídeo de apresentação do Team Travagli - Personal Trainer Online e metodologia de transformação corporal"
                 className="w-full h-full"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 referrerPolicy="strict-origin-when-cross-origin"
                 allowFullScreen
                 loading="lazy"
+                aria-describedby="video-description"
               />
+              <div id="video-description" className="sr-only">
+                Vídeo explicativo sobre a metodologia do Team Travagli, apresentando os serviços de personal trainer online, planos de treino personalizado e acompanhamento nutricional.
+              </div>
             </AspectRatio>
           </div>
         </div>
