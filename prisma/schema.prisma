@@ -99,7 +99,7 @@ model Question {
   formTemplateId String
   title          String       // Texto da pergunta
   description    String?      // Descrição adicional ou instrução
-  config          Json?        // Exemplo: { "multiline": true, "maxLength": 500, "long": true }
+  config          Json?        // Exemplo: { "multiline": true, "maxLength": 500, "text_long": true, "text_short": false }
   type           QuestionType
   isRequired     Boolean      @default(true)
   order          Int          // Ordem da pergunta no formulário
