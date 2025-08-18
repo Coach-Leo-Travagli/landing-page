@@ -185,7 +185,7 @@ const FormUser: React.FC = () => {
 
     switch (question.type) {
       case 'TEXT':
-        const isLongText = question.config?.text_long || question.config?.multiline;
+        const isLongText = question.config?.textFormat === 'longa';
         
         return isLongText ? (
           <Textarea
