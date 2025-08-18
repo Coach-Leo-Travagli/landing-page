@@ -18,7 +18,7 @@ GET /api/forms/[formId]?userId=[userId]
 - Informações do usuário
 - Status se já foi respondido
 
-### 2. Enviar Resposta do Formulário
+### 2. Enviar Resposta do Formulário (Primeira vez)
 ```
 POST /api/forms/[formId]/submit
 ```
@@ -35,6 +35,29 @@ POST /api/forms/[formId]/submit
     {
       "questionId": "question_id_here", 
       "selectedOptions": ["option_id_1", "option_id_2"] // Para CHOICE
+    }
+  ]
+}
+```
+
+### 2b. Atualizar Resposta do Formulário (Edição)
+```
+POST /api/forms/[formId]/update
+```
+
+**Body:**
+```json
+{
+  "userId": "user_id_here",
+  "responseId": "response_id_here",
+  "answers": [
+    {
+      "questionId": "question_id_here",
+      "textAnswer": "nova resposta texto"
+    },
+    {
+      "questionId": "question_id_here", 
+      "selectedOptions": ["option_id_1"]
     }
   ]
 }
@@ -71,10 +94,10 @@ https://sua-landing.vercel.app/form/clm123abc456/user/cln789def012
 - ✅ Prevenção de múltiplas respostas
 
 ### 📝 Tipos de Pergunta Suportados
-- ✅ **TEXT**: Texto curto e longo (textarea)
+- ✅ **TEXT**: Texto curto e longo (textarea baseado em `config.textFormat`)
 - ✅ **NUMBER**: Campos numéricos
 - ✅ **DATE**: Seletor de data
-- ✅ **SINGLE_CHOICE**: Radio buttons
+- ✅ **SINGLE_CHOICE**: Select dropdown (melhor UX que radio)
 - ✅ **MULTIPLE_CHOICE**: Checkboxes
 - ✅ **IMAGE**: URL de imagem
 
@@ -85,6 +108,9 @@ https://sua-landing.vercel.app/form/clm123abc456/user/cln789def012
 - ✅ Suporte a vídeo explicativo
 - ✅ Perguntas obrigatórias marcadas
 - ✅ Navegação intuitiva
+- ✅ **Modo de edição**: Visualizar respostas já enviadas
+- ✅ **Edição de respostas**: Alterar formulários já respondidos
+- ✅ **Visualização read-only**: Mostra respostas com formatação
 
 ### 🔍 Validações
 - ✅ Campos obrigatórios

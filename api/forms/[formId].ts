@@ -70,9 +70,16 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         formTemplateId: formId,
         userId: userId
       },
-      select: {
-        id: true,
-        completedAt: true
+      include: {
+        questionAnswers: {
+          include: {
+            selectedOptions: {
+              include: {
+                option: true
+              }
+            }
+          }
+        }
       }
     });
 
@@ -105,7 +112,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       },
       existingResponse: existingResponse ? {
         id: existingResponse.id,
-        completedAt: existingResponse.completedAt
+        completedAt: existingResponse.completedAt,
+        answers: existingResponse.questionAnswers.map(qa => ({
+          questionId: qa.questionId,
+          textAnswer: qa.textAnswer,
+          selectedOptions: qa.selectedOptions.map(so => so.optionId)
+        }))
       } : null
     });
 

@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Loader2, CheckCircle, AlertCircle } from "lucide-react";
@@ -38,6 +38,16 @@ interface FormTemplate {
   questions: Question[];
 }
 
+interface ExistingResponse {
+  id: string;
+  completedAt: string;
+  answers: {
+    questionId: string;
+    textAnswer?: string;
+    selectedOptions: string[];
+  }[];
+}
+
 interface FormAnswer {
   questionId: string;
   textAnswer?: string;
@@ -53,7 +63,8 @@ const FormUser: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [submitted, setSubmitted] = useState(false);
+  const [existingResponse, setExistingResponse] = useState<ExistingResponse | null>(null);
+  const [isEditing, setIsEditing] = useState(false);
 
   // Load form template
   useEffect(() => {
@@ -76,7 +87,17 @@ const FormUser: React.FC = () => {
         
         // Check if form was already answered
         if (data.existingResponse) {
-          setSubmitted(true);
+          setExistingResponse(data.existingResponse);
+          // Load existing answers into form
+          const existingAnswers: Record<string, FormAnswer> = {};
+          data.existingResponse.answers.forEach((answer: any) => {
+            existingAnswers[answer.questionId] = {
+              questionId: answer.questionId,
+              textAnswer: answer.textAnswer,
+              selectedOptions: answer.selectedOptions
+            };
+          });
+          setAnswers(existingAnswers);
         }
       } catch (err) {
         console.error("Error fetching form:", err);
@@ -152,14 +173,18 @@ const FormUser: React.FC = () => {
     setSubmitting(true);
 
     try {
-      const response = await fetch(`/api/forms/${formId}/submit`, {
+      const isUpdate = existingResponse !== null;
+      const url = `/api/forms/${formId}/${isUpdate ? 'update' : 'submit'}`;
+      
+      const response = await fetch(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           userId,
-          answers: Object.values(answers)
+          answers: Object.values(answers),
+          ...(isUpdate && { responseId: existingResponse.id })
         }),
       });
 
@@ -169,8 +194,22 @@ const FormUser: React.FC = () => {
         throw new Error(data.error || "Erro ao enviar formulário");
       }
 
-      setSubmitted(true);
-      toast.success("Formulário enviado com sucesso!");
+      if (isUpdate) {
+        toast.success("Formulário atualizado com sucesso!");
+        setIsEditing(false);
+      } else {
+        toast.success("Formulário enviado com sucesso!");
+        // Create a mock existing response to show the form is now answered
+        setExistingResponse({
+          id: data.formResponseId,
+          completedAt: data.completedAt,
+          answers: Object.values(answers).map(answer => ({
+            questionId: answer.questionId,
+            textAnswer: answer.textAnswer || "",
+            selectedOptions: answer.selectedOptions || []
+          }))
+        });
+      }
       
     } catch (err) {
       console.error("Error submitting form:", err);
@@ -229,22 +268,24 @@ const FormUser: React.FC = () => {
 
       case 'SINGLE_CHOICE':
         return (
-          <RadioGroup
+          <Select
             value={answer?.selectedOptions?.[0] || ''}
             onValueChange={(value) => handleAnswerChange(question.id, { selectedOptions: [value] })}
             required={question.isRequired}
           >
-            {question.options
-              .sort((a, b) => a.order - b.order)
-              .map(option => (
-                <div key={option.id} className="flex items-center space-x-2">
-                  <RadioGroupItem value={option.id} id={option.id} />
-                  <Label htmlFor={option.id} className="cursor-pointer">
+            <SelectTrigger>
+              <SelectValue placeholder="Selecione uma opção..." />
+            </SelectTrigger>
+            <SelectContent>
+              {question.options
+                .sort((a, b) => a.order - b.order)
+                .map(option => (
+                  <SelectItem key={option.id} value={option.id}>
                     {option.text}
-                  </Label>
-                </div>
-              ))}
-          </RadioGroup>
+                  </SelectItem>
+                ))}
+            </SelectContent>
+          </Select>
         );
 
       case 'MULTIPLE_CHOICE':
@@ -325,26 +366,7 @@ const FormUser: React.FC = () => {
     );
   }
 
-  if (submitted) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center p-4">
-        <Card className="max-w-md w-full">
-          <CardContent className="pt-6">
-            <div className="text-center">
-              <CheckCircle className="h-12 w-12 text-green-600 mx-auto mb-4" />
-              <h2 className="text-xl font-semibold mb-2">Formulário Enviado!</h2>
-              <p className="text-muted-foreground mb-4">
-                Suas respostas foram enviadas com sucesso. Obrigado por participar!
-              </p>
-              <Button onClick={() => navigate('/')} variant="outline">
-                Voltar ao Início
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
+
 
   if (!formTemplate) {
     return (
@@ -376,6 +398,27 @@ const FormUser: React.FC = () => {
             {formTemplate.description && (
               <p className="text-muted-foreground">{formTemplate.description}</p>
             )}
+            {existingResponse && !isEditing && (
+              <Alert className="mt-4">
+                <CheckCircle className="h-4 w-4" />
+                <AlertDescription>
+                  Você já respondeu este formulário em {new Date(existingResponse.completedAt).toLocaleDateString('pt-BR', {
+                    day: '2-digit',
+                    month: '2-digit', 
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                  })}. 
+                  <Button 
+                    variant="link" 
+                    className="p-0 h-auto ml-2"
+                    onClick={() => setIsEditing(true)}
+                  >
+                    Clique aqui para editar suas respostas.
+                  </Button>
+                </AlertDescription>
+              </Alert>
+            )}
           </CardHeader>
           
           <CardContent>
@@ -393,49 +436,116 @@ const FormUser: React.FC = () => {
               </div>
             )}
 
-            <form onSubmit={handleSubmit} className="space-y-8">
-              {formTemplate.questions
-                .sort((a, b) => a.order - b.order)
-                .map((question, index) => (
-                  <div key={question.id} className="space-y-4">
-                    <div>
-                      <Label className="text-base font-medium">
-                        {index + 1}. {question.title}
-                        {question.isRequired && <span className="text-destructive ml-1">*</span>}
-                      </Label>
-                      {question.description && (
-                        <p className="text-sm text-muted-foreground mt-1">
-                          {question.description}
-                        </p>
-                      )}
+            {/* Show form if no existing response OR if editing */}
+            {(!existingResponse || isEditing) && (
+              <form onSubmit={handleSubmit} className="space-y-8">
+                {formTemplate.questions
+                  .sort((a, b) => a.order - b.order)
+                  .map((question, index) => (
+                    <div key={question.id} className="space-y-4">
+                      <div>
+                        <Label className="text-base font-medium">
+                          {index + 1}. {question.title}
+                          {question.isRequired && <span className="text-destructive ml-1">*</span>}
+                        </Label>
+                        {question.description && (
+                          <p className="text-sm text-muted-foreground mt-1">
+                            {question.description}
+                          </p>
+                        )}
+                      </div>
+                      
+                      <div>
+                        {renderQuestion(question)}
+                      </div>
                     </div>
-                    
-                    <div>
-                      {renderQuestion(question)}
-                    </div>
-                  </div>
-                ))}
+                  ))}
 
-              <div className="flex gap-4 pt-6">
-                <Button 
-                  type="submit" 
-                  disabled={submitting}
-                  className="flex-1"
-                >
-                  {submitting && <Loader2 className="h-4 w-4 animate-spin mr-2" />}
-                  {submitting ? 'Enviando...' : 'Enviar Formulário'}
-                </Button>
+                <div className="flex gap-4 pt-6">
+                  <Button 
+                    type="submit" 
+                    disabled={submitting}
+                    className="flex-1"
+                  >
+                    {submitting && <Loader2 className="h-4 w-4 animate-spin mr-2" />}
+                    {submitting ? (existingResponse ? 'Atualizando...' : 'Enviando...') : (existingResponse ? 'Atualizar Formulário' : 'Enviar Formulário')}
+                  </Button>
+                  
+                  {existingResponse && isEditing && (
+                    <Button 
+                      type="button" 
+                      variant="outline"
+                      onClick={() => setIsEditing(false)}
+                      disabled={submitting}
+                    >
+                      Cancelar Edição
+                    </Button>
+                  )}
+                  
+                  {!existingResponse && (
+                    <Button 
+                      type="button" 
+                      variant="outline"
+                      onClick={() => navigate('/')}
+                      disabled={submitting}
+                    >
+                      Cancelar
+                    </Button>
+                  )}
+                </div>
+              </form>
+            )}
+
+            {/* Show read-only view if existing response and not editing */}
+            {existingResponse && !isEditing && (
+              <div className="space-y-8">
+                <h3 className="text-lg font-semibold mb-4">Suas Respostas:</h3>
+                {formTemplate.questions
+                  .sort((a, b) => a.order - b.order)
+                  .map((question, index) => {
+                    const answer = answers[question.id];
+                    return (
+                      <div key={question.id} className="space-y-2 p-4 bg-muted/30 rounded-lg">
+                        <Label className="text-base font-medium">
+                          {index + 1}. {question.title}
+                        </Label>
+                        <div className="text-sm text-muted-foreground">
+                          {question.type === 'SINGLE_CHOICE' || question.type === 'MULTIPLE_CHOICE' ? (
+                            <div>
+                              {answer?.selectedOptions?.map(optionId => {
+                                const option = question.options.find(o => o.id === optionId);
+                                return option ? (
+                                  <span key={optionId} className="inline-block bg-primary/10 text-primary px-2 py-1 rounded-sm mr-2 mb-1">
+                                    {option.text}
+                                  </span>
+                                ) : null;
+                              })}
+                            </div>
+                          ) : (
+                            <p className="whitespace-pre-wrap">{answer?.textAnswer || 'Sem resposta'}</p>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
                 
-                <Button 
-                  type="button" 
-                  variant="outline"
-                  onClick={() => navigate('/')}
-                  disabled={submitting}
-                >
-                  Cancelar
-                </Button>
+                <div className="flex gap-4 pt-6">
+                  <Button 
+                    onClick={() => setIsEditing(true)}
+                    className="flex-1"
+                  >
+                    Editar Respostas
+                  </Button>
+                  
+                  <Button 
+                    variant="outline"
+                    onClick={() => navigate('/')}
+                  >
+                    Voltar ao Início
+                  </Button>
+                </div>
               </div>
-            </form>
+            )}
           </CardContent>
         </Card>
       </div>

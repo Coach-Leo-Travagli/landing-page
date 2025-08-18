@@ -9,8 +9,9 @@ interface FormAnswer {
   selectedOptions?: string[]; // Array of option IDs
 }
 
-interface SubmitFormRequest {
+interface UpdateFormRequest {
   userId: string;
+  responseId: string;
   answers: FormAnswer[];
 }
 
@@ -21,7 +22,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   try {
     const { formId } = req.query;
-    const { userId, answers }: SubmitFormRequest = req.body;
+    const { userId, responseId, answers }: UpdateFormRequest = req.body;
 
     if (!formId || typeof formId !== 'string') {
       return res.status(400).json({ error: 'Form ID is required' });
@@ -29,6 +30,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     if (!userId || typeof userId !== 'string') {
       return res.status(400).json({ error: 'User ID is required' });
+    }
+
+    if (!responseId || typeof responseId !== 'string') {
+      return res.status(400).json({ error: 'Response ID is required' });
     }
 
     if (!answers || !Array.isArray(answers)) {
@@ -40,8 +45,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       where: { id: userId },
       select: {
         id: true,
-        name: true,
-        email: true,
         subscriptionId: true
       }
     });
@@ -52,7 +55,22 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     if (!user.subscriptionId) {
       return res.status(403).json({ 
-        error: 'Acesso negado. É necessário ter uma assinatura ativa para responder formulários.' 
+        error: 'Acesso negado. É necessário ter uma assinatura ativa para atualizar formulários.' 
+      });
+    }
+
+    // Verificar se o FormResponse existe e pertence ao usuário
+    const existingResponse = await prisma.formResponse.findFirst({
+      where: {
+        id: responseId,
+        formTemplateId: formId,
+        userId: userId
+      }
+    });
+
+    if (!existingResponse) {
+      return res.status(404).json({ 
+        error: 'Resposta do formulário não encontrada ou não pertence a este usuário' 
       });
     }
 
@@ -73,20 +91,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     if (!formTemplate) {
       return res.status(404).json({ error: 'Formulário não encontrado ou não está ativo' });
-    }
-
-    // Verificar se o usuário já respondeu este formulário
-    const existingResponse = await prisma.formResponse.findFirst({
-      where: {
-        formTemplateId: formId,
-        userId: userId
-      }
-    });
-
-    if (existingResponse) {
-      return res.status(409).json({ 
-        error: 'Você já respondeu este formulário. Use a funcionalidade de edição para atualizar suas respostas.' 
-      });
     }
 
     // Validar as respostas
@@ -154,22 +158,28 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       });
     }
 
-    // Usar transação para salvar as respostas
+    // Usar transação para atualizar as respostas
     const result = await prisma.$transaction(async (tx) => {
-      // Criar a resposta do formulário
-      const formResponse = await tx.formResponse.create({
+      // Atualizar a data de modificação da resposta
+      const updatedFormResponse = await tx.formResponse.update({
+        where: { id: responseId },
         data: {
-          formTemplateId: formId,
-          userId: userId,
-          completedAt: new Date()
+          updatedAt: new Date()
         }
       });
 
-      // Criar as respostas individuais das perguntas
+      // Remover todas as respostas antigas das perguntas
+      await tx.questionAnswer.deleteMany({
+        where: {
+          formResponseId: responseId
+        }
+      });
+
+      // Criar as novas respostas
       for (const answer of answers) {
         const questionAnswer = await tx.questionAnswer.create({
           data: {
-            formResponseId: formResponse.id,
+            formResponseId: responseId,
             questionId: answer.questionId,
             textAnswer: answer.textAnswer || null
           }
@@ -186,20 +196,20 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         }
       }
 
-      return formResponse;
+      return updatedFormResponse;
     });
 
     return res.status(200).json({
       success: true,
-      message: 'Formulário enviado com sucesso',
+      message: 'Formulário atualizado com sucesso',
       formResponseId: result.id,
-      completedAt: result.completedAt
+      updatedAt: result.updatedAt
     });
 
   } catch (error) {
-    console.error('Error submitting form:', error);
+    console.error('Error updating form:', error);
     return res.status(500).json({ 
-      error: 'Erro interno do servidor ao enviar formulário' 
+      error: 'Erro interno do servidor ao atualizar formulário' 
     });
   } finally {
     await prisma.$disconnect();
