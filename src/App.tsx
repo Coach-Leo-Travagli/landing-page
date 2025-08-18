@@ -12,6 +12,7 @@ import Success from "./pages/Success";
 import Cancel from "./pages/Cancel";
 import StripePayment from "./pages/StripePayment";
 import Email from "./pages/Email";
+import FormUser from "./pages/FormUser";
 
 const queryClient = new QueryClient();
 
@@ -30,6 +31,7 @@ const App = () => (
           <Route path="/cancel" element={<Cancel />} />
           <Route path="/pagamento" element={<StripePayment />} />
           <Route path="/email" element={<Email />} />
+          <Route path="/form/:formId/user/:userId" element={<FormUser />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

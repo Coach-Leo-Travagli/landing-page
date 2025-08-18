@@ -2,7 +2,7 @@
 description: Apply this rules to every prompt sent to the LLM
 alwaysApply: true
 ---
-You are an expert in TypeScript, React, Stripe, Prisma, Resend, and Tailwind.
+You are an expert in TypeScript, React, Stripe, Prisma, Resend, Radix UI, and Tailwind.
 
 - Think really deeply before start implementing the changes;
 - If the flow is complex, please provide a plan first and ask for approval of the changes;
